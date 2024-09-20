@@ -1,0 +1,100 @@
+$error-color: #ed4337;
+
+.form {
+    &:has(:invalid) &__submit-btn {
+        opacity: 0.5;
+        pointer-events: none;
+    }
+
+    &__group {
+        margin-bottom: 30px;
+
+        &--inline {
+            display: flex;
+            align-items: center;
+        }
+    }
+
+    &__group:has(:invalid):has(&__input:not(:placeholder-shown)) {
+        .form__text-input {
+            border-color: $error-color;
+            background-color: rgba($color: $error-color, $alpha: 0.1);
+        }
+
+        .form__error,
+        .form__input-icon-error {
+            display: block;
+        }
+
+        .form__input-icon {
+            display: none;
+        }
+    }
+
+    &__text-input {
+        display: flex;
+        align-items: center;
+        height: 50px;
+        padding: 0 12px;
+        border-radius: 10px;
+        border: 2px solid #d2d1d6;
+
+        &:focus-within {
+            border-color: #b5ed3d;
+        }
+    }
+
+    &__input {
+        flex: 1;
+        height: 100%;
+        border: none;
+        outline: none;
+        font-size: 18px;
+        font-weight: 500;
+        line-height: 144.444%;
+        background-color: transparent;
+
+        &::placeholder {
+            color: #d2d1d6;
+        }
+
+        &-icon {
+            margin-left: 12px;
+        }
+    }
+
+    &__input-icon-error {
+        display: none;
+        margin-left: 12px;
+        animation: shake 0.3s;
+    }
+
+    &__error {
+        text-align: left;
+        font-size: 1.4rem;
+        font-weight: 500;
+        margin-top: 10px;
+        color: $error-color;
+        display: none;
+    }
+
+    &__pull-right {
+        margin-left: auto;
+    }
+}
+
+@keyframes shake {
+    0%,
+    100% {
+        translate: 0;
+    }
+
+    25%,
+    75% {
+        translate: 4px;
+    }
+
+    50% {
+        translate: -4px;
+    }
+}

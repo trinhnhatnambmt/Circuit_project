@@ -1,0 +1,24 @@
+html {
+    --text-color: #032e32;
+    --icon-color: brightness(0) saturate(100%) invert(12%) sepia(14%)
+        saturate(4021%) hue-rotate(145deg) brightness(104%) contrast(98%);
+
+    --body--bg: #e0eae5;
+    --header-bg-color: #eeeeee;
+    --top-act-group-bg-color: #fff;
+    --top-act-group-shadow: rgba(237, 237, 246, 0.2);
+    --top-act-group-separate: #ededf6;
+
+    // Dropdown
+    --dropdown-bg-color: #fff;
+    --dropdown-shadow-color: rgba(200, 200, 200, 0.4);
+    --top-menu-border-color: #d2d1d6;
+
+    // @include mixins.breakpoint(lg) {
+    //     --header-bg-color: #fff;
+    //     --header-shadow-color: rgba(237, 237, 246, 0.2);
+    // }
+
+    //Auth
+    --auth-content-bg: #fff;
+}

@@ -1,0 +1,25 @@
+.btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 167px;
+    height: 62px;
+    border-radius: 8px;
+    background: #b5ed3d;
+    color: var(--text-color);
+    font-weight: 600;
+
+    &--text {
+        color: var(--text-color);
+        font-weight: 600;
+    }
+
+    &--signUp {
+        width: 104px;
+        height: 50px;
+        border-radius: 6px;
+        background: #032e32;
+        color: #fff;
+        font-weight: 600;
+    }
+}
