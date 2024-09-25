@@ -1,30 +1,67 @@
 .admin {
     display: grid;
     gap: 20px;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(4, 1fr); // Màn hình lớn (desktop)
     grid-auto-rows: minmax(180px, auto);
 
     .box {
         padding: 20px;
         border-radius: 10px;
-        // border: 1px solid #384256;
         background-color: #fff;
         box-shadow: 0px 20px 60px 10px rgba(237, 237, 246, 0.2);
     }
 
-    .box4,
-    .box1 {
+    // Box cụ thể
+    .box1,
+    .box4 {
         grid-column: span 1;
         grid-row: span 3;
     }
 
-    // .box8 {
-    //     grid-column: span 1;
-    //     grid-row: span 2;
-    // }
-
     .box7 {
         grid-column: span 2;
         grid-row: span 2;
+    }
+
+    /* Responsive cho màn hình lớn (khoảng 1200px trở lên) */
+    @media (min-width: 1200px) {
+        grid-template-columns: repeat(4, 1fr);
+    }
+
+    /* Màn hình trung bình (lớn hơn 768px và nhỏ hơn 1200px) */
+    @media (max-width: 1200px) and (min-width: 768px) {
+        grid-template-columns: repeat(2, 1fr); // 2 cột cho tablet
+        grid-auto-rows: auto;
+
+        .box1,
+        .box4 {
+            grid-column: span 2; // Chiếm hết 2 cột trên màn hình tablet
+        }
+
+        .box7 {
+            grid-column: span 2; // Giữ nguyên 2 cột
+        }
+    }
+
+    /* Màn hình nhỏ (lớn hơn 576px và nhỏ hơn 768px) */
+    @media (max-width: 768px) and (min-width: 576px) {
+        grid-template-columns: repeat(1, 1fr); // 1 cột cho thiết bị di động lớn
+        grid-auto-rows: auto;
+
+        .box {
+            grid-column: span 1; // Tất cả box chiếm hết 1 cột
+            grid-row: auto;
+        }
+    }
+
+    /* Màn hình rất nhỏ (dưới 576px) */
+    @media (max-width: 576px) {
+        grid-template-columns: 1fr; // 1 cột cho điện thoại
+        grid-auto-rows: auto;
+
+        .box {
+            grid-column: span 1; // Tất cả box chiếm hết 1 cột
+            padding: 10px; // Giảm padding cho điện thoại
+        }
     }
 }
