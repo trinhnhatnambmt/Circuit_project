@@ -128,12 +128,12 @@ function Register() {
                         </Link>
                     </p>
 
-                    {/* <p className="auth__text">
+                    <p className="auth__text">
                         Go to admin page
                         <Link to="/admin" className="auth__link">
                             Admin
                         </Link>
-                    </p> */}
+                    </p>
                 </div>
             </div>
         </div>
