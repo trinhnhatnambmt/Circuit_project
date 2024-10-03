@@ -1,20 +1,19 @@
 import { Link } from "react-router-dom";
-import Logo from "../../../components/Header/Logo/Logo";
-import "./register.scss";
-import "../../../components/Form/forms.scss";
 import {
-    signUp,
     form_error,
     google,
     lock,
     message,
+    login,
 } from "../../../assets/image";
-function Register() {
+import Logo from "../../../components/Header/Logo/Logo";
+
+function Login() {
     return (
         <div className="auth">
             {/* Auth Intro */}
             <div className="auth__intro">
-                <img src={signUp} alt="" className="auth__intro-img" />
+                <img src={login} alt="" className="auth__intro-img" />
             </div>
 
             {/* Auth content */}
@@ -22,9 +21,10 @@ function Register() {
                 <div className="auth__content-inner">
                     <Logo />
 
-                    <h1 className="auth__heading">Sign Up</h1>
+                    <h1 className="auth__heading">Hello Again!</h1>
                     <p className="auth__desc">
-                        Let’s create your account and choose your mentor.
+                        Welcome back to sign in. As a returning customer, you
+                        have access to your previously saved all information.
                     </p>
 
                     <form action="" className="form auth__form">
@@ -79,36 +79,14 @@ function Register() {
                                 Password must be at least 6 characters !!!
                             </p>
                         </div>
-                        <div className="form__group">
-                            <div className="form__text-input">
-                                <input
-                                    type="password"
-                                    name=""
-                                    id=""
-                                    placeholder="Confirm password"
-                                    className="form__input"
-                                    required
-                                    minLength={6}
-                                />
-                                <img
-                                    src={lock}
-                                    alt=""
-                                    className="form__input-icon"
-                                />
-                                <img
-                                    src={form_error}
-                                    alt=""
-                                    className="form__input-icon-error"
-                                />
-                            </div>
-                            <p className="form__error">
-                                Password must be at least 6 characters !!!
-                            </p>
+
+                        <div className="auth__forgotPass">
+                            <Link to="/forgotPassword">Forgot Password?</Link>
                         </div>
 
                         <div className="form__group auth__btn-group">
                             <button className="btn auth__btn form__submit-btn">
-                                Sign Up
+                                Login
                             </button>
                             <button className="btn auth__btn auth__btn-outline">
                                 <img
@@ -122,22 +100,15 @@ function Register() {
                     </form>
 
                     <p className="auth__text">
-                        You have an account yet?
-                        <Link to="/login" className="auth__link">
-                            Sign in
+                        Don’t have an account yet?
+                        <Link to="/signUp" className="auth__link">
+                            Sign Up
                         </Link>
                     </p>
-
-                    {/* <p className="auth__text">
-                        Go to admin page
-                        <Link to="/admin" className="auth__link">
-                            Admin
-                        </Link>
-                    </p> */}
                 </div>
             </div>
         </div>
     );
 }
 
-export default Register;
+export default Login;

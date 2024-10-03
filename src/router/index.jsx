@@ -4,6 +4,9 @@ import Home from "../pages/home/Home";
 import Register from "../pages/auth/Register/Register";
 import Admin from "../pages/admin/admin";
 import AdminLayout from "../components/Layout/AdminLayout";
+import Login from "../pages/auth/Login/Login";
+import ForgotPassword from "../pages/auth/ForgotPassword/ForgotPassword";
+import CreateNewPassWord from "../pages/auth/ForgotPassword/CreateNewPassWord";
 
 function Routers() {
     const router = createBrowserRouter([
@@ -20,6 +23,18 @@ function Routers() {
         {
             path: "/signUp",
             element: <Register />,
+        },
+        {
+            path: "/login",
+            element: <Login />,
+        },
+        {
+            path: "/forgotPassword",
+            element: <ForgotPassword />,
+        },
+        {
+            path: "/createNewPassword",
+            element: <CreateNewPassWord />,
         },
 
         {

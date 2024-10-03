@@ -91,4 +91,13 @@
     &__text {
         margin-top: 108px;
     }
+
+    &__forgotPass {
+        display: flex;
+        justify-content: flex-end;
+        font-size: 1.5rem;
+        font-weight: 500;
+        line-height: 146.667%;
+        color: #0071dc;
+    }
 }
