@@ -24,6 +24,13 @@ import play from "./img/Play.png";
 import hero__more from "./img/hero__more.png";
 import mountain from "./icons/mountain.svg";
 import board from "./icons/board.svg";
+import goals1 from "./img/goals1.png";
+import goals2 from "./img/goals2.png";
+import benefit_1 from "./img/benefit_1.png";
+import benefit_2 from "./img/benefit_2.png";
+import benefit_3 from "./img/benefit_3.png";
+import mentor from "./img/mentor.png";
+import footer__socials from "./icons/footer__socials.svg";
 export {
     Logo,
     app,
@@ -50,4 +57,11 @@ export {
     hero__more,
     mountain,
     board,
+    goals1,
+    goals2,
+    benefit_1,
+    benefit_2,
+    benefit_3,
+    mentor,
+    footer__socials,
 };
