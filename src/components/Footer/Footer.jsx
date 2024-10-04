@@ -1,4 +1,4 @@
-import { footer__socials } from "../../assets/image";
+import { footer__socials, master, paypal, visa } from "../../assets/image";
 import Logo from "../Header/Logo/Logo";
 import "./index.scss";
 function Footer() {
@@ -58,7 +58,12 @@ function Footer() {
                 <hr />
                 <div className="footer__end">
                     <Logo />
-                    <p>Copyright © 2022 UIHUT all rights reserved.</p>
+                    <div className="footer__end-icons">
+                        <img src={paypal} alt="" />
+                        <img src={visa} alt="" />
+                        <img src={master} alt="" />
+                    </div>
+                    <p>Copyright © 2024 FPT all rights reserved.</p>
                 </div>
             </div>
         </div>

@@ -1,0 +1,81 @@
+.mentor__page {
+    margin-top: 83px;
+
+    .mentor__page-title {
+        color: #032e32;
+        text-align: center;
+        font-size: 42px;
+        font-weight: 800;
+        line-height: 123.81%;
+    }
+
+    .mentor__page-group {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 20px; /* Khoảng cách giữa các item */
+        margin-top: 54px;
+        width: 100%; /* Đảm bảo full width */
+
+        .mentor__page-item {
+            position: relative;
+            width: 100%; /* Cho item rộng full khung grid */
+            max-width: 370px; /* Giới hạn chiều rộng tối đa */
+            height: 481px;
+            border-radius: 12px;
+            background: #fff;
+            margin: 0 auto; /* Giúp căn giữa item nếu nhỏ hơn khung grid */
+
+            .mentor__img {
+                width: 100%; /* Đảm bảo ảnh full width của item */
+                border-radius: 12px;
+                height: 332px;
+                object-fit: cover;
+            }
+
+            .mentor__page-liked {
+                position: absolute;
+                z-index: 10;
+                bottom: 20px;
+                right: 20px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 50px;
+                height: 50px;
+                background-color: #fff;
+                box-shadow: 0px 20px 60px rgba(124, 124, 124, 0.2);
+                border-radius: 50%;
+            }
+
+            .mentor__info {
+                margin-top: 22px;
+                padding: 20px;
+
+                .mentor__major {
+                    color: #686977;
+                    font-size: 1.6rem;
+                    font-weight: 400;
+                    line-height: 162.5%;
+                }
+                .mentor__name {
+                    display: flex;
+                    align-items: center;
+                    gap: 10px;
+
+                    .name {
+                        margin-top: 5px;
+                        color: #0b0d21;
+                        font-size: 1.8rem;
+                        font-weight: 500;
+                    }
+                }
+                .mentor__email {
+                    margin-top: 14px;
+                    display: flex;
+                    align-items: center;
+                    gap: 7px;
+                }
+            }
+        }
+    }
+}

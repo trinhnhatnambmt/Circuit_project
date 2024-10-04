@@ -31,6 +31,18 @@ import benefit_2 from "./img/benefit_2.png";
 import benefit_3 from "./img/benefit_3.png";
 import mentor from "./img/mentor.png";
 import footer__socials from "./icons/footer__socials.svg";
+import master from "./img/master.png";
+import paypal from "./img/paypal.png";
+import visa from "./img/visa.png";
+import story from "./img/story.png";
+import avt__result1 from "./img/avt__result-1.png";
+import avt__result2 from "./img/avt__result-2.png";
+import avt__result3 from "./img/avt__result-3.png";
+import avt__result4 from "./img/avt__result-4.png";
+import avt__result5 from "./img/avt__result-5.png";
+import avt__result6 from "./img/avt__result-6.png";
+import mentor__icon from "./icons/mentor__icon.svg";
+import tick from "./icons/tick.svg";
 export {
     Logo,
     app,
@@ -64,4 +76,16 @@ export {
     benefit_3,
     mentor,
     footer__socials,
+    master,
+    paypal,
+    visa,
+    story,
+    avt__result1,
+    avt__result2,
+    avt__result3,
+    avt__result4,
+    avt__result5,
+    avt__result6,
+    mentor__icon,
+    tick,
 };

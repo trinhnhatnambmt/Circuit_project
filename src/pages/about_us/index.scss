@@ -1,0 +1,145 @@
+.aboutUs__story {
+    padding: 100px 0;
+    background-color: #fff;
+}
+
+.aboutUs__story-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    .story__img {
+        width: 465px;
+        height: 406px;
+        object-fit: cover;
+    }
+
+    .story__content {
+        width: 670px;
+
+        .story__title {
+            color: #0b0d21;
+            font-size: 4.2rem;
+            font-weight: 800;
+            line-height: 109.524%;
+        }
+
+        .story__desc {
+            margin-top: 30px;
+            color: #000;
+            font-size: 2rem;
+            font-weight: 500;
+            line-height: 130%;
+        }
+
+        .story__more {
+            margin-top: 46px;
+            color: #686977;
+            font-size: 1.6rem;
+            font-weight: 400;
+            line-height: 26px;
+
+            b {
+                color: #000;
+                font-size: 1.8rem;
+                font-weight: 700;
+                line-height: 155.556%;
+            }
+        }
+    }
+}
+
+.aboutUs__grow {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    padding: 100px 227px;
+    margin-top: 124px;
+    width: 100%;
+    height: 444px;
+    border-radius: 12px;
+    background: #032e32;
+
+    .aboutUs__grow-title {
+        color: #fff;
+        font-size: 4.2rem;
+        font-weight: 800;
+        line-height: 123.81%;
+    }
+
+    .aboutUs__grow-desc {
+        margin-top: 20px;
+        color: #c5d8d9;
+        font-size: 1.8rem;
+        font-weight: 400;
+        line-height: 166.667%;
+    }
+
+    .aboutUs__grow-quantity {
+        margin-top: 90px;
+        display: flex;
+        align-items: center;
+        gap: 86px;
+
+        .quantity-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        .number {
+            color: #fff;
+            font-size: 4.2rem;
+            font-weight: 800;
+            line-height: 123.81%;
+        }
+
+        .desc {
+            color: #c5d8d9;
+            font-size: 1.8rem;
+            font-weight: 400;
+            line-height: 166.667%;
+        }
+    }
+}
+
+.aboutUs__result {
+    position: relative;
+    padding: 100px 0;
+    background: #04704e;
+
+    .aboutUs__result-content {
+        margin-top: 250px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+
+        .aboutUs__result-title {
+            width: 570px;
+            text-align: center;
+            color: #fff;
+            font-size: 4.2rem;
+            font-weight: 800;
+            line-height: 123.81%;
+        }
+
+        .aboutUs__result-desc {
+            margin-top: 18px;
+            width: 570px;
+            color: #fff;
+            text-align: center;
+            font-size: 1.8rem;
+            font-weight: 400;
+            line-height: 166.667%;
+        }
+
+        .about__result-btn {
+            margin-top: 38px;
+            font-size: 1.8rem;
+            font-weight: 600;
+            line-height: 166.667%;
+        }
+    }
+}

@@ -4,38 +4,48 @@ import "../Button/buttons.scss";
 import Logo from "./Logo/Logo";
 import { avatar, heart, money, search } from "../../assets/image";
 function Header() {
-  return (
-    <header className="header">
-      <div className="container">
-        <div className="top-bar">
-          {/* Logo */}
-          <Logo />
+    return (
+        <header className="header">
+            <div className="container">
+                <div className="top-bar">
+                    {/* Logo */}
+                    <Logo />
 
-          {/* Navbar */}
+                    {/* Navbar */}
 
-          <nav className="navbar">
-            <ul className="navbar__list">
-              <li>
-                <Link className="navbar__link">Home</Link>
-              </li>
-              <li>
-                <Link className="navbar__link">About us</Link>
-              </li>
-              <li>
-                <Link className="navbar__link">Mentor</Link>
-              </li>
-              <li>
-                <Link className="navbar__link">Pricing</Link>
-              </li>
-              <li>
-                <Link className="navbar__link">Blog</Link>
-              </li>
-            </ul>
-          </nav>
+                    <nav className="navbar">
+                        <ul className="navbar__list">
+                            <li>
+                                <Link to="/" className="navbar__link">
+                                    Home
+                                </Link>
+                            </li>
+                            <li>
+                                <Link to="/aboutUs" className="navbar__link">
+                                    About us
+                                </Link>
+                            </li>
+                            <li>
+                                <Link to="/mentor" className="navbar__link">
+                                    Mentor
+                                </Link>
+                            </li>
+                            <li>
+                                <Link to="/pricing" className="navbar__link">
+                                    Pricing
+                                </Link>
+                            </li>
+                            <li>
+                                <Link to="/blog" className="navbar__link">
+                                    Blog
+                                </Link>
+                            </li>
+                        </ul>
+                    </nav>
 
-          {/* Action */}
-          <div className="top-act">
-            {/* <div className="top-act__group top-act__group--single">
+                    {/* Action */}
+                    <div className="top-act">
+                        {/* <div className="top-act__group top-act__group--single">
               <button className="top-act__btn">
                 <img src={search} alt="" className="icon top-act__icon" />
               </button>
@@ -59,18 +69,18 @@ function Header() {
               <img src={avatar} alt="" className="top-act__avatar" />
             </div> */}
 
-            <Link to="/logIn" className="btn--text">
-              Log in
-            </Link>
+                        <Link to="/logIn" className="btn--text">
+                            Log in
+                        </Link>
 
-            <Link to="/signUp" className="btn btn--signUp">
-              Sign Up
-            </Link>
-          </div>
-        </div>
-      </div>
-    </header>
-  );
+                        <Link to="/signUp" className="btn btn--signUp">
+                            Sign Up
+                        </Link>
+                    </div>
+                </div>
+            </div>
+        </header>
+    );
 }
 
 export default Header;

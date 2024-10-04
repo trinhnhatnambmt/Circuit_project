@@ -7,6 +7,9 @@ import AdminLayout from "../components/Layout/AdminLayout";
 import Login from "../pages/auth/Login/Login";
 import ForgotPassword from "../pages/auth/ForgotPassword/ForgotPassword";
 import CreateNewPassWord from "../pages/auth/ForgotPassword/CreateNewPassWord";
+import About_us from "../pages/about_us/About_us";
+import Mentor from "../pages/mentorPage/Mentor";
+import PricingPage from "../pages/pricingPage/PricingPage";
 
 function Routers() {
     const router = createBrowserRouter([
@@ -17,6 +20,18 @@ function Routers() {
                 {
                     path: "/",
                     element: <Home />,
+                },
+                {
+                    path: "/aboutUs",
+                    element: <About_us />,
+                },
+                {
+                    path: "/mentor",
+                    element: <Mentor />,
+                },
+                {
+                    path: "/pricing",
+                    element: <PricingPage />,
                 },
             ],
         },
