@@ -81,6 +81,41 @@ $error-color: #ed4337;
     &__pull-right {
         margin-left: auto;
     }
+
+    &__select {
+        font-size: 1.6rem;
+
+        &:focus-within {
+            border-color: #b5ed3d;
+        }
+    }
+
+    &__select {
+        .ant-select-selector {
+            height: 50px !important;
+            display: flex;
+            align-items: center;
+            border-radius: 10px !important;
+            font-size: 1.6rem;
+            padding: 0 16px !important;
+            border: 2px solid #d2d1d6 !important;
+            transition: border 0.2s ease;
+
+            &:focus-within {
+                border-color: #b5ed3d !important;
+            }
+        }
+
+        .ant-select-selection-placeholder {
+            font-size: 1.8rem;
+            color: #9e9da8;
+        }
+
+        .ant-select-arrow {
+            font-size: 1.6rem;
+            top: 25px;
+        }
+    }
 }
 
 @keyframes shake {

@@ -43,6 +43,18 @@ import avt__result5 from "./img/avt__result-5.png";
 import avt__result6 from "./img/avt__result-6.png";
 import mentor__icon from "./icons/mentor__icon.svg";
 import tick from "./icons/tick.svg";
+import personal_info from "./icons/personal_info.svg";
+import myOrder from "./icons/myOrder.svg";
+import shield from "./icons/shield.svg";
+import help from "./icons/help.svg";
+import tofu from "./icons/tofu.svg";
+import feedBack from "./icons/feedBack.svg";
+import background from "./img/background_profile.jpg";
+import add from "./icons/add.svg";
+import leaf from "./icons/leaf-bg.svg";
+import trash from "./icons/delete.svg";
+import major from "./icons/major.svg";
+
 export {
     Logo,
     app,
@@ -88,4 +100,15 @@ export {
     avt__result6,
     mentor__icon,
     tick,
+    background,
+    personal_info,
+    myOrder,
+    shield,
+    tofu,
+    help,
+    feedBack,
+    add,
+    leaf,
+    trash,
+    major,
 };

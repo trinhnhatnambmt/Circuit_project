@@ -1,0 +1,79 @@
+.mentor-detail {
+    background-color: #fff;
+    padding: 30px 0;
+}
+
+.mentor-detail__media {
+    img {
+        width: 277px;
+        height: 314.196px;
+        border-radius: 10px;
+        object-fit: cover;
+    }
+}
+
+.mentor-detail__inner {
+    display: flex;
+    gap: 30px;
+}
+
+.mentor-detail__content {
+    padding: 28px;
+    background-color: #fff;
+    border: 1px solid #adadad;
+    border-radius: 8px;
+
+    .mentor__detail-title {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        color: #374151;
+        font-size: 30px;
+        font-weight: 500;
+    }
+
+    .mentor__detail-major {
+        display: flex;
+        margin-top: 15px;
+        align-items: center;
+        gap: 10px;
+        width: 220px;
+        height: 44px;
+        padding: 0 20px;
+        border-radius: 10px;
+        border: 1px solid #d2d1d6;
+        font-size: 1.5rem;
+        font-weight: 500;
+        line-height: 146.667%;
+    }
+
+    .mentor__detail-desc {
+        margin-top: 15px;
+        color: #4b5563;
+        font-size: 17px;
+        p {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+    }
+
+    .mentor__detail-appointment {
+        margin-top: 20px;
+
+        .mentor__detail-appointment-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .mentor__detail-appointment-fee {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            p {
+                font-size: 20px;
+            }
+        }
+    }
+}

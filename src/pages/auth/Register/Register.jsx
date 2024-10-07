@@ -9,6 +9,7 @@ import {
     lock,
     message,
 } from "../../../assets/image";
+import { Select } from "antd";
 function Register() {
     return (
         <div className="auth">
@@ -53,6 +54,7 @@ function Register() {
                                 Email is not in correct format !!!
                             </p>
                         </div>
+
                         <div className="form__group">
                             <div className="form__text-input">
                                 <input
@@ -104,6 +106,26 @@ function Register() {
                             <p className="form__error">
                                 Password must be at least 6 characters !!!
                             </p>
+                        </div>
+
+                        <div className="form__group">
+                            <Select
+                                className="form__select"
+                                style={{
+                                    width: "100%",
+                                }}
+                                placeholder="Select a role"
+                                options={[
+                                    {
+                                        value: "1",
+                                        label: "Student",
+                                    },
+                                    {
+                                        value: "2",
+                                        label: "Mentor",
+                                    },
+                                ]}
+                            />
                         </div>
 
                         <div className="form__group auth__btn-group">

@@ -6,6 +6,7 @@ import "./base/reset.scss";
 import "./base/index.scss";
 import "./scss/theme/light.scss";
 import "./scss/theme/dark.scss";
+import "animate.css";
 
 createRoot(document.getElementById("root")).render(
     <StrictMode>

@@ -28,7 +28,7 @@ function Home() {
                     {/* Hero */}
                     <div className="home__hero">
                         <div className="home__hero-content">
-                            <h1 className="home__hero-title">
+                            <h1 className="home__hero-title animate__animated animate__swing">
                                 We share knowledge with the world
                             </h1>
                             <div className="home__hero-desc">

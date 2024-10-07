@@ -1,0 +1,18 @@
+.time__slot {
+    margin-top: 20px;
+}
+
+.time__slot-item {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    border: 1px solid #ededed;
+    padding: 10px;
+
+    h2 {
+        text-align: center;
+        padding: 10px;
+        border: 1px solid #ededed;
+        border-radius: 100px;
+    }
+}

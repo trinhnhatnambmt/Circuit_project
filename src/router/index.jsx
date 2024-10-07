@@ -10,6 +10,8 @@ import CreateNewPassWord from "../pages/auth/ForgotPassword/CreateNewPassWord";
 import About_us from "../pages/about_us/About_us";
 import Mentor from "../pages/mentorPage/Mentor";
 import PricingPage from "../pages/pricingPage/PricingPage";
+import Profile from "../pages/profile/Profile";
+import MentorDetail from "../pages/mentorDetail/MentorDetail";
 
 function Routers() {
     const router = createBrowserRouter([
@@ -30,8 +32,16 @@ function Routers() {
                     element: <Mentor />,
                 },
                 {
+                    path: "/mentorDetail",
+                    element: <MentorDetail />,
+                },
+                {
                     path: "/pricing",
                     element: <PricingPage />,
+                },
+                {
+                    path: "/profile",
+                    element: <Profile />,
                 },
             ],
         },

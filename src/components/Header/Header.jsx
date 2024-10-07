@@ -45,7 +45,7 @@ function Header() {
 
                     {/* Action */}
                     <div className="top-act">
-                        {/* <div className="top-act__group top-act__group--single">
+                        <div className="top-act__group top-act__group--single">
               <button className="top-act__btn">
                 <img src={search} alt="" className="icon top-act__icon" />
               </button>
@@ -67,15 +67,15 @@ function Header() {
 
             <div className="top-act__user">
               <img src={avatar} alt="" className="top-act__avatar" />
-            </div> */}
+            </div>
 
-                        <Link to="/logIn" className="btn--text">
+                        {/* <Link to="/logIn" className="btn--text">
                             Log in
                         </Link>
 
                         <Link to="/signUp" className="btn btn--signUp">
                             Sign Up
-                        </Link>
+                        </Link> */}
                     </div>
                 </div>
             </div>
