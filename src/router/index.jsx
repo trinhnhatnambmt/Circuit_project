@@ -12,6 +12,7 @@ import Mentor from "../pages/mentorPage/Mentor";
 import PricingPage from "../pages/pricingPage/PricingPage";
 import Profile from "../pages/profile/Profile";
 import MentorDetail from "../pages/mentorDetail/MentorDetail";
+import ManageUsers from "../pages/admin/ManageUsers/ManageUsers";
 
 function Routers() {
     const router = createBrowserRouter([
@@ -67,8 +68,12 @@ function Routers() {
             element: <AdminLayout />,
             children: [
                 {
-                    path: "/admin",
+                    path: "",
                     element: <Admin />,
+                },
+                {
+                    path: "manageUsers",
+                    element: <ManageUsers />,
                 },
             ],
         },

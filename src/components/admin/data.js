@@ -1,3 +1,5 @@
+import { home } from "../../assets/image";
+
 export const menu = [
     {
         id: 1,
@@ -6,15 +8,9 @@ export const menu = [
             {
                 id: 1,
                 title: "Dashboard",
-                url: "/",
-                icon: "src/assets/icons/home.svg",
+                url: "/admin",
+                icon: { home },
             },
-            // {
-            //     id: 2,
-            //     title: "Profile",
-            //     url: "/users/1",
-            //     icon: "src/assets/icons/profile.svg",
-            // },
         ],
     },
     {
@@ -24,7 +20,7 @@ export const menu = [
             {
                 id: 1,
                 title: "Users",
-                url: "/users",
+                url: "/admin/manageUsers",
                 icon: "user.svg",
             },
             {

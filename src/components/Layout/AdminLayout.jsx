@@ -1,4 +1,3 @@
-import React from "react";
 import AdminNavbar from "../admin/Navbar/AdminNavbar";
 import AdminMenu from "../admin/Menu/AdminMenu";
 import { Outlet } from "react-router-dom";

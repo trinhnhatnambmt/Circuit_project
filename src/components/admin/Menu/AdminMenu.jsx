@@ -9,7 +9,7 @@ function AdminMenu() {
                     <span className="title">{item.title}</span>
                     {item.listItems.map((listItem) => (
                         <Link
-                            to="/admin"
+                            to={listItem.url}
                             className="listItem"
                             key={listItem.id}
                         >
