@@ -5,16 +5,16 @@ export const menu = [
         listItems: [
             {
                 id: 1,
-                title: "Homepage",
+                title: "Dashboard",
                 url: "/",
                 icon: "src/assets/icons/home.svg",
             },
-            {
-                id: 2,
-                title: "Profile",
-                url: "/users/1",
-                icon: "src/assets/icons/profile.svg",
-            },
+            // {
+            //     id: 2,
+            //     title: "Profile",
+            //     url: "/users/1",
+            //     icon: "src/assets/icons/profile.svg",
+            // },
         ],
     },
     {

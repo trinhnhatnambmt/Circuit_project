@@ -5,6 +5,7 @@ import "./index.scss";
 function BookAppointment() {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [timeSlot, setTimeSlot] = useState([]);
+    const [selectTimeSlot, setSelectTimeSlot] = useState();
 
     useEffect(() => {
         getTime();
@@ -106,7 +107,20 @@ function BookAppointment() {
                             </h1>
                             <div className="time__slot-item">
                                 {timeSlot.map((item, index) => (
-                                    <h2 key={index}>{item.time}</h2>
+                                    <h2
+                                        onClick={() =>
+                                            setSelectTimeSlot(item.time)
+                                        }
+                                        key={index}
+                                        style={{
+                                            backgroundColor:
+                                                selectTimeSlot === item.time
+                                                    ? "#b5ed3d"
+                                                    : "transparent",
+                                        }}
+                                    >
+                                        {item.time}
+                                    </h2>
                                 ))}
                             </div>
                         </div>

@@ -77,3 +77,81 @@
         }
     }
 }
+
+.mentor-detail__reviews {
+    margin-top: 40px;
+
+    .reviews__title {
+        font-size: 30px;
+        font-style: normal;
+        font-weight: 500;
+        line-height: 145.455%;
+        font-weight: 700;
+    }
+
+    .mentor-detail__feedback {
+        margin-top: 30px;
+
+        .feedback__title {
+            font-size: 24px;
+            font-weight: 500;
+            line-height: 141.667%;
+        }
+
+        .feedback__act {
+            margin-top: 20px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            justify-content: end;
+
+            .submit__btn {
+                width: 150px;
+                height: 30px;
+                cursor: pointer;
+            }
+
+            .cancel__btn {
+                width: 100px;
+                background-color: #f3f3f3;
+            }
+        }
+    }
+
+    .customer__feedback {
+        margin-top: 20px;
+
+        .customer__feedback-title {
+            font-size: 24px;
+            font-weight: 500;
+            line-height: 141.667%;
+        }
+
+        .customer__feedback-card {
+            margin-top: 30px;
+            display: flex;
+            align-items: center;
+            border-radius: 16px;
+            background-color: #fafafd;
+            padding: 30px;
+            gap: 20px;
+
+            .feedback-avt {
+                width: 80px;
+                height: 80px;
+                border-radius: 50%;
+                object-fit: cover;
+            }
+
+            .info-name {
+                font-size: 22px;
+                font-weight: 500;
+                line-height: 145.455%;
+            }
+
+            .info-desc {
+                margin-top: 10px;
+            }
+        }
+    }
+}
