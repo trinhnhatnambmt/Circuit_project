@@ -13,7 +13,9 @@ import { useEffect, useState } from "react";
 import "./index.scss";
 import axios from "axios";
 import { useForm } from "antd/es/form/Form";
-import { PlusOutlined } from "@ant-design/icons";
+import { PlusOutlined, PlusSquareOutlined } from "@ant-design/icons";
+import uploadFile from "../../../../utils/upload";
+import { postCreateNewUser } from "../../../services/apiServices";
 
 function ManageUsers() {
     const [isOpen, setIsOpen] = useState(false);
@@ -27,6 +29,8 @@ function ManageUsers() {
     };
     const handleCloseModal = () => {
         setIsOpen(false);
+        form.resetFields();
+        setFileList([]);
     };
 
     const columns = [
@@ -46,10 +50,10 @@ function ManageUsers() {
             key: "role",
         },
         {
-            title: "Poster",
-            dataIndex: "poster_path",
-            key: "poster_path",
-            render: (poster_path) => <Image src={poster_path} width={200} />,
+            title: "Avatar",
+            dataIndex: "avatar",
+            key: "avatar",
+            render: (avatar) => <Image src={avatar} width={200} />,
         },
         {
             title: "Action",
@@ -59,7 +63,11 @@ function ManageUsers() {
                 <div>
                     {/* Nút Update */}
                     <Button
-                        style={{ marginRight: "10px" }} // Tạo khoảng cách 10px giữa Update và Delete
+                        style={{
+                            marginRight: "10px",
+                            backgroundColor: "#b5ed3d",
+                            color: "#032e32",
+                        }}
                         type="primary"
                     >
                         Update
@@ -68,8 +76,8 @@ function ManageUsers() {
                     {/* Nút Delete */}
                     <Popconfirm
                         title="Delete the task"
-                        description="Are you sure to delete this task?"
-                        // onConfirm={() => handleDelete(id)}
+                        description="Are you sure to delete this user?"
+                        onConfirm={() => handleDelete(id)}
                         okText="Yes"
                         cancelText="No"
                     >
@@ -95,9 +103,24 @@ function ManageUsers() {
         setPreviewImage(file.url || file.preview);
         setPreviewOpen(true);
     };
-
-    const handleChange = ({ fileList: newFileList }) =>
-        setFileList(newFileList);
+    const handleChange = ({ fileList: newFileList }) => {
+        const updatedFileList = newFileList.map((file) => {
+            // Nếu file đang trong quá trình upload
+            if (file.status === "uploading") {
+                return { ...file }; // Giữ trạng thái uploading
+            }
+            // Nếu upload thành công thì luôn set trạng thái thành "done"
+            if (file.response && file.response.status === "ok") {
+                return { ...file, status: "done" }; // Thành công
+            }
+            // Nếu upload thất bại thì vẫn để trạng thái "done" để không hiện đỏ
+            if (file.status === "error") {
+                return { ...file, status: "done" }; // Thất bại nhưng hiển thị màu xanh
+            }
+            return file; // Giữ nguyên các trạng thái khác nếu có
+        });
+        setFileList(updatedFileList);
+    };
 
     const uploadButton = (
         <button
@@ -127,16 +150,47 @@ function ManageUsers() {
 
     useEffect(() => {
         fetchDataUser();
-    }, []);
+    }, [dataSource]);
 
     const handleOk = () => {
         form.submit();
     };
 
+    const handleDelete = async (id) => {
+        console.log("Delete User: ", id);
+        await axios.delete(
+            `https://662b5a5cde35f91de157f14d.mockapi.io/pets/${id}`
+        );
+        const listAfterDelete = dataSource.filter((user) => user.id !== id);
+        setDataSource(listAfterDelete);
+    };
+
+    // const validateEmail = (email) => {
+    //     return String(email)
+    //         .toLowerCase()
+    //         .match(
+    //             /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+    //         );
+    // };
+
+    const handleSubmit = async (values) => {
+        const url = await uploadFile(values.avatar.file.originFileObj);
+        values.avatar = url;
+        const response = await postCreateNewUser(values);
+
+        setDataSource([...dataSource, values]);
+        form.resetFields();
+        setFileList([]);
+        handleCloseModal();
+    };
+
     return (
         <div className="manage__user">
-            <h1 className="manage__user-title">Manage User</h1>
+            <h1 className="manage__user-title"> Manage User</h1>
             <button onClick={handleOpenModal} className="btn add__user-btn">
+                <PlusSquareOutlined
+                    style={{ marginRight: "8px", fontSize: "17px" }}
+                />
                 Add New User
             </button>
             <Table
@@ -156,6 +210,7 @@ function ManageUsers() {
                         span: 24,
                     }}
                     form={form}
+                    onFinish={handleSubmit}
                 >
                     <Form.Item
                         label="Email"
@@ -184,7 +239,7 @@ function ManageUsers() {
                     </Form.Item>
                     <Form.Item
                         label="Name"
-                        name="Name"
+                        name="name"
                         rules={[
                             {
                                 required: true,
@@ -214,32 +269,23 @@ function ManageUsers() {
                             }
                             options={[
                                 {
-                                    value: "1",
+                                    value: "Mentor",
                                     label: "Mentor",
                                 },
                                 {
-                                    value: "2",
+                                    value: "Student",
                                     label: "Student",
                                 },
                             ]}
                         />
                     </Form.Item>
-                    <Form.Item
-                        label="Poster"
-                        name="poster_path"
-                        rules={[
-                            {
-                                required: true,
-                                message: "Please upload a poster!",
-                            },
-                        ]}
-                    >
+                    <Form.Item label="Avatar" name="avatar">
                         <Upload
+                            action="https://660d2bd96ddfa2943b33731c.mockapi.io/api/upload"
                             listType="picture-card"
                             fileList={fileList}
                             onPreview={handlePreview}
                             onChange={handleChange}
-                            beforeUpload={() => false} // Prevent automatic upload
                         >
                             {fileList.length >= 8 ? null : uploadButton}
                         </Upload>
