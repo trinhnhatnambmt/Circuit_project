@@ -10,7 +10,30 @@ import {
     message,
 } from "../../../assets/image";
 import { Select } from "antd";
+import { useState } from "react";
+import { postRegister } from "../../../services/apiServices";
+import { toast } from "react-toastify";
 function Register() {
+    const [email, setEmail] = useState("");
+    const [password, setPassWord] = useState("");
+    const [name, setName] = useState("");
+    const [role, setRole] = useState("STUDENT");
+
+    const handleRegister = async () => {
+        const res = await postRegister(email, password, name, role);
+
+        if (res && res.code === 200) {
+            toast.success(res.message);
+        } else if (res && res.code === 1501) {
+            toast.error(res.message);
+            toast.error(res.error);
+        }
+
+        // console.log("Email:", email);
+        // console.log("Password:", password);
+        // console.log("name:", name);
+        // console.log("Role:", role);
+    };
     return (
         <div className="auth">
             {/* Auth Intro */}
@@ -28,7 +51,7 @@ function Register() {
                         Let’s create your account and choose your mentor.
                     </p>
 
-                    <form action="" className="form auth__form">
+                    <div action="" className="form auth__form">
                         <div className="form__group">
                             <div className="form__text-input">
                                 <input
@@ -37,6 +60,10 @@ function Register() {
                                     id=""
                                     placeholder="Email"
                                     className="form__input"
+                                    value={email}
+                                    onChange={(event) =>
+                                        setEmail(event.target.value)
+                                    }
                                     required
                                 />
                                 <img
@@ -63,6 +90,10 @@ function Register() {
                                     id=""
                                     placeholder="Password"
                                     className="form__input"
+                                    value={password}
+                                    onChange={(event) =>
+                                        setPassWord(event.target.value)
+                                    }
                                     required
                                     minLength={6}
                                 />
@@ -81,16 +112,20 @@ function Register() {
                                 Password must be at least 6 characters !!!
                             </p>
                         </div>
+
                         <div className="form__group">
                             <div className="form__text-input">
                                 <input
-                                    type="password"
+                                    type="text"
                                     name=""
                                     id=""
-                                    placeholder="Confirm password"
+                                    placeholder="Name"
                                     className="form__input"
+                                    value={name}
+                                    onChange={(event) =>
+                                        setName(event.target.value)
+                                    }
                                     required
-                                    minLength={6}
                                 />
                                 <img
                                     src={lock}
@@ -103,9 +138,6 @@ function Register() {
                                     className="form__input-icon-error"
                                 />
                             </div>
-                            <p className="form__error">
-                                Password must be at least 6 characters !!!
-                            </p>
                         </div>
 
                         <div className="form__group">
@@ -117,19 +149,24 @@ function Register() {
                                 placeholder="Select a role"
                                 options={[
                                     {
-                                        value: "1",
+                                        value: "STUDENT",
                                         label: "Student",
                                     },
                                     {
-                                        value: "2",
+                                        value: "MENTOR",
                                         label: "Mentor",
                                     },
                                 ]}
+                                value={role}
+                                onChange={(value) => setRole(value)}
                             />
                         </div>
 
                         <div className="form__group auth__btn-group">
-                            <button className="btn auth__btn form__submit-btn">
+                            <button
+                                className="btn auth__btn form__submit-btn"
+                                onClick={() => handleRegister()}
+                            >
                                 Sign Up
                             </button>
                             <button className="btn auth__btn auth__btn-outline">
@@ -141,7 +178,7 @@ function Register() {
                                 Continue with Google
                             </button>
                         </div>
-                    </form>
+                    </div>
 
                     <p className="auth__text">
                         You have an account yet?

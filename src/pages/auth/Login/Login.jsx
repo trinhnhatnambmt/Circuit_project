@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
     form_error,
     google,
@@ -7,8 +7,29 @@ import {
     login,
 } from "../../../assets/image";
 import Logo from "../../../components/Header/Logo/Logo";
+import { useState } from "react";
+import { postLogin } from "../../../services/apiServices";
+import { toast } from "react-toastify";
+import { useDispatch } from "react-redux";
+import { FETCH_USER_LOGIN_SUCCESS } from "../../../features/user/userSlice";
 
 function Login() {
+    const [email, setEmail] = useState("");
+    const [password, setPassWord] = useState("");
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
+
+    const handleLogin = async () => {
+        let res = await postLogin(email, password);
+        if (res && res.code === 200) {
+            dispatch(FETCH_USER_LOGIN_SUCCESS(res));
+            toast.success(res.message);
+            navigate("/");
+        } else {
+            toast.error(res.message);
+            toast.error(res.error);
+        }
+    };
     return (
         <div className="auth">
             {/* Auth Intro */}
@@ -27,7 +48,7 @@ function Login() {
                         have access to your previously saved all information.
                     </p>
 
-                    <form action="" className="form auth__form">
+                    <div className="form auth__form">
                         <div className="form__group">
                             <div className="form__text-input">
                                 <input
@@ -36,6 +57,10 @@ function Login() {
                                     id=""
                                     placeholder="Email"
                                     className="form__input"
+                                    value={email}
+                                    onChange={(event) =>
+                                        setEmail(event.target.value)
+                                    }
                                     required
                                 />
                                 <img
@@ -61,6 +86,10 @@ function Login() {
                                     id=""
                                     placeholder="Password"
                                     className="form__input"
+                                    value={password}
+                                    onChange={(event) =>
+                                        setPassWord(event.target.value)
+                                    }
                                     required
                                     minLength={6}
                                 />
@@ -85,7 +114,10 @@ function Login() {
                         </div>
 
                         <div className="form__group auth__btn-group">
-                            <button className="btn auth__btn form__submit-btn">
+                            <button
+                                className="btn auth__btn form__submit-btn"
+                                onClick={() => handleLogin()}
+                            >
                                 Login
                             </button>
                             <button className="btn auth__btn auth__btn-outline">
@@ -97,7 +129,7 @@ function Login() {
                                 Continue with Google
                             </button>
                         </div>
-                    </form>
+                    </div>
 
                     <p className="auth__text">
                         Don’t have an account yet?

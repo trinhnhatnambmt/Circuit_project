@@ -3,7 +3,9 @@ import "./Header.scss";
 import "../Button/buttons.scss";
 import Logo from "./Logo/Logo";
 import { avatar, heart, money, search } from "../../assets/image";
+import { useSelector } from "react-redux";
 function Header() {
+    const isAuthenticated = useSelector((state) => state.user.isAuthenticated);
     return (
         <header className="header">
             <div className="container">
@@ -44,38 +46,65 @@ function Header() {
                     </nav>
 
                     {/* Action */}
+
                     <div className="top-act">
-                        <div className="top-act__group top-act__group--single">
-              <button className="top-act__btn">
-                <img src={search} alt="" className="icon top-act__icon" />
-              </button>
-            </div>
+                        {isAuthenticated === false ? (
+                            <>
+                                <Link to="/logIn" className="btn--text">
+                                    Log in
+                                </Link>
 
-            <div className="top-act__group">
-              <button className="top-act__btn">
-                <img src={heart} alt="" className="icon top-act__icon" />
-                <span className="top-act__title">03</span>
-              </button>
+                                <Link to="/signUp" className="btn btn--signUp">
+                                    Sign Up
+                                </Link>
+                            </>
+                        ) : (
+                            <>
+                                <div className="top-act__group top-act__group--single">
+                                    <button className="top-act__btn">
+                                        <img
+                                            src={search}
+                                            alt=""
+                                            className="icon top-act__icon"
+                                        />
+                                    </button>
+                                </div>
 
-              <div className="top-act__separate"></div>
+                                <div className="top-act__group">
+                                    <button className="top-act__btn">
+                                        <img
+                                            src={heart}
+                                            alt=""
+                                            className="icon top-act__icon"
+                                        />
+                                        <span className="top-act__title">
+                                            03
+                                        </span>
+                                    </button>
 
-              <button className="top-act__btn">
-                <img src={money} alt="" className="icon top-act__icon" />
-                <span className="top-act__title">65.42</span>
-              </button>
-            </div>
+                                    <div className="top-act__separate"></div>
 
-            <div className="top-act__user">
-              <img src={avatar} alt="" className="top-act__avatar" />
-            </div>
+                                    <button className="top-act__btn">
+                                        <img
+                                            src={money}
+                                            alt=""
+                                            className="icon top-act__icon"
+                                        />
+                                        <span className="top-act__title">
+                                            65.42
+                                        </span>
+                                    </button>
+                                </div>
 
-                        {/* <Link to="/logIn" className="btn--text">
-                            Log in
-                        </Link>
-
-                        <Link to="/signUp" className="btn btn--signUp">
-                            Sign Up
-                        </Link> */}
+                                <div className="top-act__user">
+                                    <img
+                                        src={avatar}
+                                        alt=""
+                                        className="top-act__avatar"
+                                    />
+                                </div>
+                            </>
+                        )}
                     </div>
                 </div>
             </div>

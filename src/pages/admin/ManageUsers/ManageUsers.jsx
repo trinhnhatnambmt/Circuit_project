@@ -14,16 +14,19 @@ import "./index.scss";
 import axios from "axios";
 import { useForm } from "antd/es/form/Form";
 import { PlusOutlined, PlusSquareOutlined } from "@ant-design/icons";
-import uploadFile from "../../../../utils/upload";
 import { postCreateNewUser } from "../../../services/apiServices";
+import { toast } from "react-toastify";
+import uploadFile from "../../../utils/upload";
 
-function ManageUsers() {
+function ManageUsers({ roleFilter, showAddButton = true }) {
     const [isOpen, setIsOpen] = useState(false);
     const [dataSource, setDataSource] = useState([]);
     const [form] = useForm();
     const [previewOpen, setPreviewOpen] = useState(false);
     const [previewImage, setPreviewImage] = useState("");
     const [fileList, setFileList] = useState([]);
+    const [loading, setLoading] = useState(false);
+
     const handleOpenModal = () => {
         setIsOpen(true);
     };
@@ -53,13 +56,20 @@ function ManageUsers() {
             title: "Avatar",
             dataIndex: "avatar",
             key: "avatar",
-            render: (avatar) => <Image src={avatar} width={200} />,
+            render: (avatar) => (
+                <Image
+                    src={avatar}
+                    width={50}
+                    height={50}
+                    style={{ borderRadius: "50%" }}
+                />
+            ),
         },
         {
             title: "Action",
             dataIndex: "id",
             key: "id",
-            render: (id) => (
+            render: (id, user) => (
                 <div>
                     {/* Nút Update */}
                     <Button
@@ -69,6 +79,10 @@ function ManageUsers() {
                             color: "#032e32",
                         }}
                         type="primary"
+                        onClick={() => {
+                            setIsOpen(true);
+                            form.setFieldsValue(user);
+                        }}
                     >
                         Update
                     </Button>
@@ -105,19 +119,17 @@ function ManageUsers() {
     };
     const handleChange = ({ fileList: newFileList }) => {
         const updatedFileList = newFileList.map((file) => {
-            // Nếu file đang trong quá trình upload
             if (file.status === "uploading") {
-                return { ...file }; // Giữ trạng thái uploading
+                return { ...file };
             }
-            // Nếu upload thành công thì luôn set trạng thái thành "done"
             if (file.response && file.response.status === "ok") {
                 return { ...file, status: "done" }; // Thành công
             }
-            // Nếu upload thất bại thì vẫn để trạng thái "done" để không hiện đỏ
+
             if (file.status === "error") {
-                return { ...file, status: "done" }; // Thất bại nhưng hiển thị màu xanh
+                return { ...file, status: "done" };
             }
-            return file; // Giữ nguyên các trạng thái khác nếu có
+            return file;
         });
         setFileList(updatedFileList);
     };
@@ -145,12 +157,17 @@ function ManageUsers() {
         const response = await axios.get(
             "https://662b5a5cde35f91de157f14d.mockapi.io/pets"
         );
-        setDataSource(response.data);
+        let data = response.data;
+
+        if (roleFilter) {
+            data = data.filter((user) => user.role === roleFilter);
+        }
+        setDataSource(data);
     };
 
     useEffect(() => {
         fetchDataUser();
-    }, [dataSource]);
+    }, [roleFilter]);
 
     const handleOk = () => {
         form.submit();
@@ -173,26 +190,45 @@ function ManageUsers() {
     //         );
     // };
 
-    const handleSubmit = async (values) => {
-        const url = await uploadFile(values.avatar.file.originFileObj);
-        values.avatar = url;
-        const response = await postCreateNewUser(values);
+    const handleSaveUser = async (values) => {
+        setLoading(true);
+        try {
+            if (values.id) {
+                await axios.put(
+                    `https://662b5a5cde35f91de157f14d.mockapi.io/pets/${values.id}`,
+                    values
+                );
+            } else {
+                const url = await uploadFile(values.avatar.file.originFileObj);
+                values.avatar = url;
+                await postCreateNewUser(values);
+            }
 
-        setDataSource([...dataSource, values]);
-        form.resetFields();
-        setFileList([]);
-        handleCloseModal();
+            setLoading(false);
+            toast.success("Successfully created new user");
+            fetchDataUser();
+            form.resetFields();
+            setFileList([]);
+            handleCloseModal();
+        } catch (error) {
+            toast.error("Error creating user");
+        }
     };
 
     return (
         <div className="manage__user">
-            <h1 className="manage__user-title"> Manage User</h1>
-            <button onClick={handleOpenModal} className="btn add__user-btn">
-                <PlusSquareOutlined
-                    style={{ marginRight: "8px", fontSize: "17px" }}
-                />
-                Add New User
-            </button>
+            <h1 className="manage__user-title">
+                {" "}
+                {roleFilter ? `Manage ${roleFilter}s` : "Manage Users"}
+            </h1>
+            {showAddButton && (
+                <button onClick={handleOpenModal} className="btn add__user-btn">
+                    <PlusSquareOutlined
+                        style={{ marginRight: "8px", fontSize: "17px" }}
+                    />
+                    Add New User
+                </button>
+            )}
             <Table
                 dataSource={dataSource}
                 columns={columns}
@@ -201,8 +237,22 @@ function ManageUsers() {
             <Modal
                 title="Add New User"
                 open={isOpen}
-                onOk={handleOk}
+                // onOk={handleOk}
                 onCancel={handleCloseModal}
+                footer={[
+                    <Button key="back" onClick={handleCloseModal}>
+                        Cancel
+                    </Button>,
+                    <Button
+                        type="primary"
+                        onClick={handleOk}
+                        loading={loading}
+                        key=""
+                        style={{ backgroundColor: "#b5ed3d", color: "#032e32" }}
+                    >
+                        Create
+                    </Button>,
+                ]}
             >
                 <Form
                     name="basic"
@@ -210,8 +260,11 @@ function ManageUsers() {
                         span: 24,
                     }}
                     form={form}
-                    onFinish={handleSubmit}
+                    onFinish={handleSaveUser}
                 >
+                    <Form.Item name="id" hidden>
+                        <Input />
+                    </Form.Item>
                     <Form.Item
                         label="Email"
                         name="email"
@@ -222,7 +275,7 @@ function ManageUsers() {
                             },
                         ]}
                     >
-                        <Input />
+                        <Input disabled={!!form.getFieldValue("id")} />
                     </Form.Item>
 
                     <Form.Item
@@ -235,7 +288,7 @@ function ManageUsers() {
                             },
                         ]}
                     >
-                        <Input.Password />
+                        <Input.Password disabled={!!form.getFieldValue("id")} />
                     </Form.Item>
                     <Form.Item
                         label="Name"

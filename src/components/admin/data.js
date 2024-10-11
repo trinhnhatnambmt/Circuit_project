@@ -26,13 +26,13 @@ export const menu = [
             {
                 id: 2,
                 title: "Mentor",
-                url: "/products",
+                url: "/admin/manageMentors",
                 icon: "product.svg",
             },
             {
                 id: 3,
                 title: "Student",
-                url: "/orders",
+                url: "/admin/manageStudents",
                 icon: "order.svg",
             },
             {
