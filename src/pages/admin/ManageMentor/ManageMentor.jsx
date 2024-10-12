@@ -3,7 +3,7 @@ import ManageUsers from "../ManageUsers/ManageUsers";
 function ManageMentor() {
     return (
         <div>
-            <ManageUsers roleFilter="Mentor" showAddButton={false} />
+            <ManageUsers roleFilter="MENTOR" showAddButton={false} />
         </div>
     );
 }

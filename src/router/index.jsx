@@ -15,6 +15,8 @@ import MentorDetail from "../pages/mentorDetail/MentorDetail";
 import ManageUsers from "../pages/admin/ManageUsers/ManageUsers";
 import ManageMentor from "../pages/admin/ManageMentor/ManageMentor";
 import ManageStudent from "../pages/admin/ManageStudent/ManageStudent";
+import Blog from "../pages/blog/Blog";
+import BlogCategories from "../pages/blog__categories/BlogCategories";
 
 function Routers() {
     const router = createBrowserRouter([
@@ -45,6 +47,14 @@ function Routers() {
                 {
                     path: "/profile",
                     element: <Profile />,
+                },
+                {
+                    path: "/blog",
+                    element: <Blog />,
+                },
+                {
+                    path: "blogCategories",
+                    element: <BlogCategories />,
                 },
             ],
         },

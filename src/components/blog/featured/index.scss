@@ -1,0 +1,50 @@
+.featured {
+    padding: 50px 0;
+    background-color: #fff;
+
+    &__title {
+        b {
+            font-weight: 800;
+        }
+        font-size: 96px;
+        font-weight: 300;
+    }
+
+    &__post {
+        margin-top: 60px;
+        display: flex;
+        align-items: center;
+        gap: 50px;
+    }
+
+    &___post-imgContainer {
+        .post__img {
+            flex: 1;
+            border-radius: 15px;
+            height: 500px;
+            // position: relative;
+            object-fit: cover;
+        }
+    }
+
+    &__post-title {
+        font-size: 40px;
+    }
+
+    &__post-desc {
+        margin-top: 20px;
+        font-size: 20px;
+        font-weight: 300;
+    }
+
+    &__post-btn {
+        width: 100px;
+        height: 45px;
+        margin-top: 20px;
+
+        &:hover {
+            opacity: 0.9;
+            cursor: pointer;
+        }
+    }
+}

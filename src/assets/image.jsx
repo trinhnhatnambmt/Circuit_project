@@ -54,8 +54,11 @@ import add from "./icons/add.svg";
 import leaf from "./icons/leaf-bg.svg";
 import trash from "./icons/delete.svg";
 import major from "./icons/major.svg";
+import blog__test from "./img/blog__test.jpg";
+import fire from "./img/fire.png";
 
 export {
+    fire,
     Logo,
     app,
     expand,
@@ -111,4 +114,5 @@ export {
     leaf,
     trash,
     major,
+    blog__test,
 };

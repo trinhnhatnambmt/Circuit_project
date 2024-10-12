@@ -1,0 +1,9 @@
+.blog {
+    background-color: #fff;
+    padding-bottom: 50px;
+    &__main {
+        margin-top: 50px;
+        display: flex;
+        gap: 50px;
+    }
+}

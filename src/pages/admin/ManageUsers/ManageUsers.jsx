@@ -7,6 +7,7 @@ import {
     Popconfirm,
     Select,
     Table,
+    Tag,
     Upload,
 } from "antd";
 import { useEffect, useState } from "react";
@@ -14,7 +15,7 @@ import "./index.scss";
 import axios from "axios";
 import { useForm } from "antd/es/form/Form";
 import { PlusOutlined, PlusSquareOutlined } from "@ant-design/icons";
-import { postCreateNewUser } from "../../../services/apiServices";
+import { getAllUser, postCreateNewUser } from "../../../services/apiServices";
 import { toast } from "react-toastify";
 import uploadFile from "../../../utils/upload";
 
@@ -51,6 +52,9 @@ function ManageUsers({ roleFilter, showAddButton = true }) {
             title: "Role",
             dataIndex: "role",
             key: "role",
+            render: (role) => (
+                <Tag color={role === "MENTOR" ? "blue" : "green"}>{role}</Tag>
+            ),
         },
         {
             title: "Avatar",
@@ -72,7 +76,7 @@ function ManageUsers({ roleFilter, showAddButton = true }) {
             render: (id, user) => (
                 <div>
                     {/* Nút Update */}
-                    <Button
+                    {/* <Button
                         style={{
                             marginRight: "10px",
                             backgroundColor: "#b5ed3d",
@@ -85,7 +89,7 @@ function ManageUsers({ roleFilter, showAddButton = true }) {
                         }}
                     >
                         Update
-                    </Button>
+                    </Button> */}
 
                     {/* Nút Delete */}
                     <Popconfirm
@@ -154,9 +158,8 @@ function ManageUsers({ roleFilter, showAddButton = true }) {
     );
 
     const fetchDataUser = async () => {
-        const response = await axios.get(
-            "https://662b5a5cde35f91de157f14d.mockapi.io/pets"
-        );
+        const response = await getAllUser();
+        console.log(response.data);
         let data = response.data;
 
         if (roleFilter) {

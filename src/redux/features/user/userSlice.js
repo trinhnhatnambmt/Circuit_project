@@ -17,7 +17,6 @@ export const userSlice = createSlice({
     initialState,
     reducers: {
         FETCH_USER_LOGIN_SUCCESS: (state, action) => {
-            console.log("Check actions: ", action);
             state.account.access_token = action?.payload?.accessToken;
             state.account.refresh_token = action?.payload?.refreshToken;
             state.isAuthenticated = true;
@@ -27,12 +26,8 @@ export const userSlice = createSlice({
 
         USER_LOGOUT_SUCCESS: (state, action) => {
             state.account = {
-                email: "",
                 access_token: "",
                 refresh_token: "",
-                username: "",
-                image: "",
-                role: "",
             };
 
             state.isAuthenticated = false;

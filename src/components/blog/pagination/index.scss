@@ -1,0 +1,15 @@
+.blog__pagination {
+    display: flex;
+    justify-content: space-between;
+
+    button {
+        width: 100px;
+        cursor: pointer;
+        font-size: 15px;
+        height: 40px;
+
+        &:hover {
+            opacity: 0.9;
+        }
+    }
+}

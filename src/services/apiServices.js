@@ -8,6 +8,10 @@ const postCreateNewUser = async (values) => {
     // return response;
 };
 
+const getAllUser = () => {
+    return axios.get("admin/accounts");
+};
+
 const postLogin = (email, password) => {
     return axios.post(`auth/login`, {
         email,
@@ -19,4 +23,4 @@ const postRegister = (email, password, name, role) => {
     return axios.post(`auth/register`, { email, password, role, name });
 };
 
-export { postCreateNewUser, postLogin, postRegister };
+export { postCreateNewUser, postLogin, postRegister, getAllUser };

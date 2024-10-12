@@ -9,7 +9,7 @@ import "./base/index.scss";
 import "./scss/theme/light.scss";
 import "./scss/theme/dark.scss";
 import "animate.css";
-import { store } from "./app/store";
+import { store } from "./redux/store";
 import { Provider } from "react-redux";
 createRoot(document.getElementById("root")).render(
     <StrictMode>

@@ -11,7 +11,7 @@ import { useState } from "react";
 import { postLogin } from "../../../services/apiServices";
 import { toast } from "react-toastify";
 import { useDispatch } from "react-redux";
-import { FETCH_USER_LOGIN_SUCCESS } from "../../../features/user/userSlice";
+import { FETCH_USER_LOGIN_SUCCESS } from "../../../redux/features/user/userSlice";
 
 function Login() {
     const [email, setEmail] = useState("");

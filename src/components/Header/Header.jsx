@@ -3,9 +3,33 @@ import "./Header.scss";
 import "../Button/buttons.scss";
 import Logo from "./Logo/Logo";
 import { avatar, heart, money, search } from "../../assets/image";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { Dropdown, Menu } from "antd";
+import { LogoutOutlined, SmileOutlined } from "@ant-design/icons";
+import { USER_LOGOUT_SUCCESS } from "../../redux/features/user/userSlice";
+
 function Header() {
     const isAuthenticated = useSelector((state) => state.user.isAuthenticated);
+    const dispatch = useDispatch();
+    // Tạo menu cho dropdown
+    const menu = (
+        <Menu style={{ width: "100px" }}>
+            <Menu.Item key="0">
+                <Link to="/profile">
+                    <SmileOutlined style={{ marginRight: "5px" }} />
+                    Profile
+                </Link>
+            </Menu.Item>
+
+            <Menu.Divider />
+            <Menu.Item key="1">
+                <button onClick={() => dispatch(USER_LOGOUT_SUCCESS())}>
+                    Log out
+                </button>
+            </Menu.Item>
+        </Menu>
+    );
+
     return (
         <header className="header">
             <div className="container">
@@ -14,7 +38,6 @@ function Header() {
                     <Logo />
 
                     {/* Navbar */}
-
                     <nav className="navbar">
                         <ul className="navbar__list">
                             <li>
@@ -46,7 +69,6 @@ function Header() {
                     </nav>
 
                     {/* Action */}
-
                     <div className="top-act">
                         {isAuthenticated === false ? (
                             <>
@@ -78,7 +100,7 @@ function Header() {
                                             className="icon top-act__icon"
                                         />
                                         <span className="top-act__title">
-                                            03
+                                            0
                                         </span>
                                     </button>
 
@@ -91,18 +113,24 @@ function Header() {
                                             className="icon top-act__icon"
                                         />
                                         <span className="top-act__title">
-                                            65.42
+                                            0
                                         </span>
                                     </button>
                                 </div>
 
-                                <div className="top-act__user">
-                                    <img
-                                        src={avatar}
-                                        alt=""
-                                        className="top-act__avatar"
-                                    />
-                                </div>
+                                {/* Dropdown Menu */}
+                                <Dropdown overlay={menu} trigger={["click"]}>
+                                    <div
+                                        className="top-act__user"
+                                        onClick={(e) => e.preventDefault()}
+                                    >
+                                        <img
+                                            src={avatar}
+                                            alt=""
+                                            className="top-act__avatar"
+                                        />
+                                    </div>
+                                </Dropdown>
                             </>
                         )}
                     </div>
