@@ -56,8 +56,14 @@ import trash from "./icons/delete.svg";
 import major from "./icons/major.svg";
 import blog__test from "./img/blog__test.jpg";
 import fire from "./img/fire.png";
+import image from "./img/image.png";
+import plus from "./img/plus.png";
+import video from "./img/video.png";
 
 export {
+    image,
+    plus,
+    video,
     fire,
     Logo,
     app,

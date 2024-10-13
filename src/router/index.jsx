@@ -17,6 +17,8 @@ import ManageMentor from "../pages/admin/ManageMentor/ManageMentor";
 import ManageStudent from "../pages/admin/ManageStudent/ManageStudent";
 import Blog from "../pages/blog/Blog";
 import BlogCategories from "../pages/blog__categories/BlogCategories";
+import BlogDetail from "../pages/blogDetail/BlogDetail";
+import WritePage from "../pages/writePage/WritePage";
 
 function Routers() {
     const router = createBrowserRouter([
@@ -55,6 +57,14 @@ function Routers() {
                 {
                     path: "blogCategories",
                     element: <BlogCategories />,
+                },
+                {
+                    path: "blogDetail",
+                    element: <BlogDetail />,
+                },
+                {
+                    path: "writePage",
+                    element: <WritePage />,
                 },
             ],
         },

@@ -12,7 +12,7 @@ function Card() {
                     <span className="blog__card-date">11.02.2023</span>
                     <span className="blog__card-category">Front end</span>
                 </div>
-                <Link>
+                <Link to="/blogDetail">
                     <h1 className="blog__card-title">
                         Lorem ipsum dolor sit amet consectetur adipisicing elit.
                         Sint, iure?
@@ -24,7 +24,9 @@ function Card() {
                     aliquid doloribus aperiam libero in numquam impedit quasi
                     vitae explicabo nisi dolorem harum.
                 </p>
-                <Link className="blog__card-link">Read more</Link>
+                <Link to="/blogDetail" className="blog__card-link">
+                    Read more
+                </Link>
             </div>
         </div>
     );

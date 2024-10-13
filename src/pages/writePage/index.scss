@@ -1,0 +1,48 @@
+.writePage {
+    background-color: #fff;
+    padding: 30px 0;
+
+    &__inner {
+        display: flex;
+        justify-content: space-between;
+    }
+    &__input {
+        padding: 20px 50px 50px;
+        font-size: 64px;
+        border: none;
+        outline: none;
+
+        &::placeholder {
+            color: #b3b3b1;
+        }
+    }
+
+    .writePage__editor {
+        display: flex;
+        align-items: center; // Đảm bảo các thành phần nằm ngang và căn giữa theo chiều dọc
+        justify-content: space-between;
+        position: relative;
+        .textArea {
+            flex: 1; // Đảm bảo ReactQuill chiếm phần lớn không gian
+            margin-left: 50px;
+        }
+
+        .ant-float-btn-group {
+            position: absolute;
+            top: 0;
+            right: auto;
+        }
+    }
+
+    &__btn {
+        margin-top: 20px;
+        width: 120px;
+        height: 38px;
+        border-radius: 99px;
+
+        &:hover {
+            opacity: 0.9;
+            cursor: pointer;
+        }
+    }
+}

@@ -13,19 +13,24 @@ function Header() {
     const dispatch = useDispatch();
     // Tạo menu cho dropdown
     const menu = (
-        <Menu style={{ width: "100px" }}>
+        <Menu style={{ width: "250px" }}>
             <Menu.Item key="0">
-                <Link to="/profile">
-                    <SmileOutlined style={{ marginRight: "5px" }} />
-                    Profile
-                </Link>
+                <Link to="/profile">Profile</Link>
+            </Menu.Item>
+            <Menu.Divider />
+
+            <Menu.Item key="1">
+                <Link to="/writePage">Write Blog</Link>
+            </Menu.Item>
+            <Menu.Item key="2">
+                <Link to="/myBlogPage">My Blog</Link>
             </Menu.Item>
 
             <Menu.Divider />
-            <Menu.Item key="1">
-                <button onClick={() => dispatch(USER_LOGOUT_SUCCESS())}>
+            <Menu.Item key="3">
+                <Link onClick={() => dispatch(USER_LOGOUT_SUCCESS())}>
                     Log out
-                </button>
+                </Link>
             </Menu.Item>
         </Menu>
     );
