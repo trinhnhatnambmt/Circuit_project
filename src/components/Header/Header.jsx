@@ -2,32 +2,82 @@ import { Link } from "react-router-dom";
 import "./Header.scss";
 import "../Button/buttons.scss";
 import Logo from "./Logo/Logo";
-import { avatar, heart, money, search } from "../../assets/image";
+import {
+    avatar,
+    avt__result1,
+    heart,
+    money,
+    search,
+    tick,
+} from "../../assets/image";
 import { useDispatch, useSelector } from "react-redux";
-import { Dropdown, Menu } from "antd";
-import { LogoutOutlined, SmileOutlined } from "@ant-design/icons";
-import { USER_LOGOUT_SUCCESS } from "../../redux/features/user/userSlice";
+import { Avatar, Dropdown, Menu } from "antd";
+import { LogoutOutlined, SmileOutlined, UserOutlined } from "@ant-design/icons";
+import {
+    fetchUserData,
+    USER_LOGOUT_SUCCESS,
+} from "../../redux/features/user/userSlice";
+import { useEffect } from "react";
 
 function Header() {
     const isAuthenticated = useSelector((state) => state.user.isAuthenticated);
     const dispatch = useDispatch();
+    const accessToken = useSelector((state) => state.user.account.access_token);
+    const userInfo = useSelector((state) => state.user.account.userInfo);
+
+    useEffect(() => {
+        if (accessToken) {
+            dispatch(fetchUserData(accessToken)); // Gọi thunk action để fetch data
+        }
+    }, [accessToken, dispatch]);
     // Tạo menu cho dropdown
     const menu = (
         <Menu style={{ width: "250px" }}>
             <Menu.Item key="0">
+                <Avatar
+                    size="large"
+                    src={userInfo.data.avatar}
+                    style={{ marginRight: "10px" }}
+                />
+                <div className="user__info">
+                    <h1
+                        className="user__info-name"
+                        style={{ fontSize: "18px", fontWeight: 800 }}
+                    >
+                        {userInfo.data.name}
+                    </h1>
+                    <div
+                        style={{
+                            display: "flex",
+                            alignItems: "center",
+                            gap: 10,
+                        }}
+                    >
+                        <p
+                            className="user__info-role"
+                            style={{ fontSize: "15px", fontWeight: 500 }}
+                        >
+                            {userInfo.data.role}
+                        </p>
+                        <img src={tick} alt="" />
+                    </div>
+                </div>
+            </Menu.Item>
+            <Menu.Divider />
+            <Menu.Item key="1">
                 <Link to="/profile">Profile</Link>
             </Menu.Item>
             <Menu.Divider />
 
-            <Menu.Item key="1">
+            <Menu.Item key="2">
                 <Link to="/writePage">Write Blog</Link>
             </Menu.Item>
-            <Menu.Item key="2">
+            <Menu.Item key="3">
                 <Link to="/myBlogPage">My Blog</Link>
             </Menu.Item>
 
             <Menu.Divider />
-            <Menu.Item key="3">
+            <Menu.Item key="4">
                 <Link onClick={() => dispatch(USER_LOGOUT_SUCCESS())}>
                     Log out
                 </Link>
@@ -130,7 +180,7 @@ function Header() {
                                         onClick={(e) => e.preventDefault()}
                                     >
                                         <img
-                                            src={avatar}
+                                            src={userInfo.data.avatar}
                                             alt=""
                                             className="top-act__avatar"
                                         />

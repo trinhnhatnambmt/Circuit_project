@@ -43,9 +43,16 @@
         }
 
         .cart-item__checkout-btn {
+            width: 120px;
+            height: 40px;
             border-radius: 50px;
-            font-size: 18px;
-            font-weight: 500;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+
+            &:hover {
+                opacity: 0.9;
+            }
         }
     }
     &__title {

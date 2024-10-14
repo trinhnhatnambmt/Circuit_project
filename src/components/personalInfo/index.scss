@@ -7,6 +7,20 @@
     background: #fff;
     overflow: hidden;
     user-select: none;
+
+    .edit__profile-btn {
+        margin-top: 16px;
+        width: 150px;
+        height: 40px;
+        &:hover {
+            opacity: 0.9;
+            cursor: pointer;
+        }
+    }
+}
+
+.personal-info-item {
+    margin-bottom: 50px;
 }
 
 .personal-info__heading {

@@ -1,13 +1,26 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import axios from "axios";
+
+export const fetchUserData = createAsyncThunk(
+    "user/fetchUserData",
+    async (accessToken) => {
+        const response = await axios.get(
+            "http://167.71.220.5:8080/account/profile",
+            {
+                headers: {
+                    Authorization: `Bearer ${accessToken}`,
+                },
+            }
+        );
+        return response.data;
+    }
+);
 
 const initialState = {
     account: {
-        // email: "",
         access_token: "",
         refresh_token: "",
-        // name: "",
-        // avatar: "",
-        // role: "",
+        userInfo: {},
     },
     isAuthenticated: false,
 };
@@ -22,9 +35,7 @@ export const userSlice = createSlice({
             state.isAuthenticated = true;
         },
 
-        // isAuthenticated: true,
-
-        USER_LOGOUT_SUCCESS: (state, action) => {
+        USER_LOGOUT_SUCCESS: (state) => {
             state.account = {
                 access_token: "",
                 refresh_token: "",
@@ -32,6 +43,21 @@ export const userSlice = createSlice({
 
             state.isAuthenticated = false;
         },
+    },
+    extraReducers: (builder) => {
+        builder
+            .addCase(fetchUserData.pending, (state) => {
+                state.loading = true; // Đang gọi API
+                state.error = null; // Xóa lỗi
+            })
+            .addCase(fetchUserData.fulfilled, (state, action) => {
+                state.loading = false; // Gọi API thành công
+                state.account.userInfo = action.payload; // Lưu thông tin người dùng
+            })
+            .addCase(fetchUserData.rejected, (state, action) => {
+                state.loading = false; // Gọi API thất bại
+                state.error = action.error.message; // Lưu thông báo lỗi
+            });
     },
 });
 

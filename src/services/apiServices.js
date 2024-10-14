@@ -23,4 +23,8 @@ const postRegister = (email, password, name, role) => {
     return axios.post(`auth/register`, { email, password, role, name });
 };
 
-export { postCreateNewUser, postLogin, postRegister, getAllUser };
+const deleteUser = async (id) => {
+    return await axios.delete(`admin/account/delete/${id}`);
+};
+
+export { postCreateNewUser, postLogin, postRegister, getAllUser, deleteUser };

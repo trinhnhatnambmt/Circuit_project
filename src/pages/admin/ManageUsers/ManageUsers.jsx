@@ -15,7 +15,11 @@ import "./index.scss";
 import axios from "axios";
 import { useForm } from "antd/es/form/Form";
 import { PlusOutlined, PlusSquareOutlined } from "@ant-design/icons";
-import { getAllUser, postCreateNewUser } from "../../../services/apiServices";
+import {
+    deleteUser,
+    getAllUser,
+    postCreateNewUser,
+} from "../../../services/apiServices";
 import { toast } from "react-toastify";
 import uploadFile from "../../../utils/upload";
 
@@ -159,7 +163,6 @@ function ManageUsers({ roleFilter, showAddButton = true }) {
 
     const fetchDataUser = async () => {
         const response = await getAllUser();
-        console.log(response.data);
         let data = response.data;
 
         if (roleFilter) {
@@ -177,21 +180,22 @@ function ManageUsers({ roleFilter, showAddButton = true }) {
     };
 
     const handleDelete = async (id) => {
-        console.log("Delete User: ", id);
-        await axios.delete(
-            `https://662b5a5cde35f91de157f14d.mockapi.io/pets/${id}`
-        );
-        const listAfterDelete = dataSource.filter((user) => user.id !== id);
-        setDataSource(listAfterDelete);
-    };
+        try {
+            const response = await deleteUser(id);
 
-    // const validateEmail = (email) => {
-    //     return String(email)
-    //         .toLowerCase()
-    //         .match(
-    //             /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-    //         );
-    // };
+            console.log("response: ", response);
+            if (response?.code === 202) {
+                toast.success(response.message);
+                const updatedList = dataSource.filter((user) => user.id !== id);
+                setDataSource(updatedList);
+            } else {
+                toast.error("Failed to delete the user.");
+            }
+        } catch (error) {
+            console.error("Error deleting user: ", error);
+            toast.error("Error deleting user");
+        }
+    };
 
     const handleSaveUser = async (values) => {
         setLoading(true);

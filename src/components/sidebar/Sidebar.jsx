@@ -10,16 +10,32 @@ import {
     tofu,
 } from "../../assets/image";
 import "./index.scss";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
+import { fetchUserData } from "../../redux/features/user/userSlice";
 function Sidebar({ setActiveComponent }) {
+    const dispatch = useDispatch();
+    const accessToken = useSelector((state) => state.user.account.access_token);
+    const userInfo = useSelector((state) => state.user.account.userInfo);
+
+    useEffect(() => {
+        if (accessToken) {
+            dispatch(fetchUserData(accessToken)); // Gọi thunk action để fetch data
+        }
+    }, [accessToken, dispatch]);
     return (
         <div className="profile">
             <aside className="profile__sidebar">
                 {/* User */}
                 <div className="profile-user">
-                    <img src={avatar} alt className="profile-user__avatar" />
-                    <h1 className="profile-user__name">Imran Khan</h1>
+                    <img
+                        src={userInfo.data.avatar}
+                        alt
+                        className="profile-user__avatar"
+                    />
+                    <h1 className="profile-user__name">{userInfo.data.name}</h1>
                     <p className="profile-user__desc">
-                        Registered: 17th May 2022
+                    {userInfo.data.email}
                     </p>
                 </div>
                 {/* Menu 1 */}
