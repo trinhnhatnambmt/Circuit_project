@@ -2,14 +2,16 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    width: 370px;
-    padding: 20px 20px;
+    width: 100%;
+    padding: 20px 0;
     border-radius: 20px;
-    border: 1px solid #e9eaf0;
+    // border: 1px solid #e9eaf0;
     background: #fff;
+    gap: 20px;
 
     .points__group {
         display: flex;
+        // justify-content: space-between;
         gap: 10px;
 
         .point__img {
@@ -29,7 +31,10 @@
     }
 
     .points__btn {
-        font-size: 19px;
+        // margin-left: 10px;
+        width: 120px;
+        height: 50px;
+        font-size: 15px;
         cursor: pointer;
     }
 }

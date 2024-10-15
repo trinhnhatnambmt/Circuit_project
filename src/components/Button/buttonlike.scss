@@ -1,0 +1,84 @@
+.button__like {
+    button {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 20px 25px 20px 22px;
+        cursor: pointer;
+        font-weight: 900;
+        color: rgb(134, 124, 124);
+        font-family: monospace;
+        transition: transform 400ms cubic-bezier(0.68, -0.55, 0.27, 2.5),
+            border-color 400ms ease-in-out, background-color 400ms ease-in-out;
+        word-spacing: -2px;
+        position: relative; // Thêm position relative để căn chỉnh các SVG
+    }
+
+    .svg-container {
+        position: relative; // Thêm position relative để căn chỉnh các SVG
+        width: 32px; // Cố định chiều rộng
+        height: 32px; // Cố định chiều cao
+    }
+
+    button svg {
+        position: absolute; // Đặt các SVG ở vị trí tuyệt đối
+        top: 0; // Đưa lên đầu
+        left: 0; // Đưa sang trái
+        fill: rgb(255, 110, 110);
+        transition: opacity 100ms ease-in-out;
+    }
+
+    .hidden {
+        opacity: 0; // Ẩn SVG
+    }
+
+    @keyframes movingBorders {
+        0% {
+            border-color: #fce4e4;
+        }
+
+        50% {
+            border-color: #ffd8d8;
+        }
+
+        90% {
+            border-color: #fce4e4;
+        }
+    }
+
+    button:hover {
+        transform: scale(105%);
+        animation: movingBorders 3s infinite;
+    }
+
+    @keyframes beatingHeart {
+        0% {
+            transform: scale(1);
+        }
+
+        15% {
+            transform: scale(1.15);
+        }
+
+        30% {
+            transform: scale(1);
+        }
+
+        45% {
+            transform: scale(1.15);
+        }
+
+        60% {
+            transform: scale(1);
+        }
+    }
+
+    button:hover .empty {
+        opacity: 0;
+    }
+
+    button:hover .filled {
+        opacity: 1;
+        animation: beatingHeart 1.2s infinite;
+    }
+}
