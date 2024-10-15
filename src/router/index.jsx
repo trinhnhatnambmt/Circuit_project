@@ -19,6 +19,7 @@ import Blog from "../pages/blog/Blog";
 import BlogCategories from "../pages/blog__categories/BlogCategories";
 import BlogDetail from "../pages/blogDetail/BlogDetail";
 import WritePage from "../pages/writePage/WritePage";
+import ScheduleManagement from "../pages/scheduleManagement/ScheduleManagement";
 
 function Routers() {
     const router = createBrowserRouter([
@@ -65,6 +66,10 @@ function Routers() {
                 {
                     path: "writePage",
                     element: <WritePage />,
+                },
+                {
+                    path: "/scheduleManagement",
+                    element: <ScheduleManagement />,
                 },
             ],
         },

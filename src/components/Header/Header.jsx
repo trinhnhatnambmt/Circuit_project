@@ -27,16 +27,18 @@ function Header() {
 
     useEffect(() => {
         if (accessToken) {
-            dispatch(fetchUserData(accessToken)); // Gọi thunk action để fetch data
+            dispatch(fetchUserData(accessToken));
         }
     }, [accessToken, dispatch]);
-    // Tạo menu cho dropdown
+
+    const userRole = userInfo?.data?.role;
+
     const menu = (
         <Menu style={{ width: "250px" }}>
             <Menu.Item key="0">
                 <Avatar
                     size="large"
-                    src={userInfo.data.avatar}
+                    src={userInfo?.data?.avatar}
                     style={{ marginRight: "10px" }}
                 />
                 <div className="user__info">
@@ -44,7 +46,7 @@ function Header() {
                         className="user__info-name"
                         style={{ fontSize: "18px", fontWeight: 800 }}
                     >
-                        {userInfo.data.name}
+                        {userInfo?.data?.name || "User"}
                     </h1>
                     <div
                         style={{
@@ -57,7 +59,7 @@ function Header() {
                             className="user__info-role"
                             style={{ fontSize: "15px", fontWeight: 500 }}
                         >
-                            {userInfo.data.role}
+                            {userInfo?.data?.role || "Guest"}
                         </p>
                         <img src={tick} alt="" />
                     </div>
@@ -68,16 +70,26 @@ function Header() {
                 <Link to="/profile">Profile</Link>
             </Menu.Item>
             <Menu.Divider />
+            
+            {userRole === "MENTOR" && (
+                <>
+                    <Menu.Item key="2">
+                        <Link to="/scheduleManagement">
+                            Schedule Management
+                        </Link>
+                    </Menu.Item>
+                    <Menu.Divider />
+                </>
+            )}
 
-            <Menu.Item key="2">
+            <Menu.Item key="3">
                 <Link to="/writePage">Write Blog</Link>
             </Menu.Item>
-            <Menu.Item key="3">
+            <Menu.Item key="4">
                 <Link to="/myBlogPage">My Blog</Link>
             </Menu.Item>
-
             <Menu.Divider />
-            <Menu.Item key="4">
+            <Menu.Item key="5">
                 <Link onClick={() => dispatch(USER_LOGOUT_SUCCESS())}>
                     Log out
                 </Link>
@@ -180,7 +192,9 @@ function Header() {
                                         onClick={(e) => e.preventDefault()}
                                     >
                                         <img
-                                            src={userInfo.data.avatar}
+                                            src={
+                                                userInfo?.data?.avatar || avatar
+                                            } // Kiểm tra nếu avatar không có
                                             alt=""
                                             className="top-act__avatar"
                                         />

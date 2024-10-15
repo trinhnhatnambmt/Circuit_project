@@ -4,6 +4,7 @@ import PersonalInfo from "../../components/personalInfo/PersonalInfo";
 import Sidebar from "../../components/sidebar/Sidebar";
 import "./index.scss";
 import MyAppointment from "../../components/myAppointment/MyAppointment";
+import Password from "../../components/pass&Security/Password";
 function Profile() {
     const [activeComponent, setActiveComponent] = useState("PersonalInfo");
 
@@ -17,7 +18,9 @@ function Profile() {
         if (activeComponent === "MyAppointment") {
             return <MyAppointment />;
         }
-
+        if (activeComponent === "Password&Security") {
+            return <Password />;
+        }
         return null;
     };
 

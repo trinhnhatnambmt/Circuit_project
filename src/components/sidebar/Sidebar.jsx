@@ -23,6 +23,8 @@ function Sidebar({ setActiveComponent }) {
             dispatch(fetchUserData(accessToken)); // Gọi thunk action để fetch data
         }
     }, [accessToken, dispatch]);
+
+    const userRole = userInfo?.data?.role;
     return (
         <div className="profile">
             <aside className="profile__sidebar">
@@ -34,9 +36,7 @@ function Sidebar({ setActiveComponent }) {
                         className="profile-user__avatar"
                     />
                     <h1 className="profile-user__name">{userInfo.data.name}</h1>
-                    <p className="profile-user__desc">
-                    {userInfo.data.email}
-                    </p>
+                    <p className="profile-user__desc">{userInfo.data.email}</p>
                 </div>
                 {/* Menu 1 */}
                 <div className="profile-menu">
@@ -76,29 +76,40 @@ function Sidebar({ setActiveComponent }) {
                                 My Favourite
                             </Link>
                         </li>
-                        {/* <li>
-                            <a href="#!" className="profile-menu__link">
-                                <span className="profile-menu__icon">
-                                    <img src={feedBack} alt className="icon" />
-                                </span>
-                                My Feedback
-                            </a>
-                        </li> */}
+
+                        {userRole === "MENTOR" && (
+                            <li>
+                                <a href="#!" className="profile-menu__link">
+                                    <span className="profile-menu__icon">
+                                        <img
+                                            src={feedBack}
+                                            alt
+                                            className="icon"
+                                        />
+                                    </span>
+                                    My Feedback
+                                </a>
+                            </li>
+                        )}
                     </ul>
                 </div>
                 {/* Menu 3 */}
                 <div className="profile-menu">
                     <h3 className="profile-menu__title">
-                        Subscriptions &amp; plans
+                        Security &amp; plans
                     </h3>
                     <ul className="profile-menu__list">
-                        <li>
-                            <a href="#!" className="profile-menu__link">
+                        <li
+                            onClick={() =>
+                                setActiveComponent("Password&Security")
+                            }
+                        >
+                            <Link className="profile-menu__link">
                                 <span className="profile-menu__icon">
                                     <img src={shield} alt className="icon" />
                                 </span>
-                                Protection plans
-                            </a>
+                                Password and Security
+                            </Link>
                         </li>
                     </ul>
                 </div>

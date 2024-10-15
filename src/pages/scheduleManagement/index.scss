@@ -1,0 +1,35 @@
+.schedule__management {
+    background-color: #fff;
+    padding: 30px;
+    width: 100%;
+
+    .ant-picker-calendar {
+        // Đổi màu nền của calendar
+
+        .ant-calendar-header {
+            background-color: red !important; // Màu nền của header
+            color: #fff; // Màu chữ trong header
+        }
+
+        .ant-calendar-today {
+            background-color: #ffecb5; // Màu nền cho ngày hôm nay
+            border: 1px solid #ffc069; // Đường viền cho ngày hôm nay
+        }
+
+        .ant-calendar-selected-date {
+            background-color: #1890ff; // Màu nền cho ngày đã chọn
+            color: #fff; // Màu chữ cho ngày đã chọn
+        }
+
+        .ant-calendar-cell {
+            &:hover {
+                background-color: red !important; // Màu nền khi hover
+            }
+        }
+    }
+}
+
+.schedule__management-inner {
+    display: flex;
+    gap: 30px;
+}

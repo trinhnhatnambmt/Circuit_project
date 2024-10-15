@@ -80,7 +80,7 @@ function ManageUsers({ roleFilter, showAddButton = true }) {
             render: (id, user) => (
                 <div>
                     {/* Nút Update */}
-                    {/* <Button
+                    <Button
                         style={{
                             marginRight: "10px",
                             backgroundColor: "#b5ed3d",
@@ -93,7 +93,7 @@ function ManageUsers({ roleFilter, showAddButton = true }) {
                         }}
                     >
                         Update
-                    </Button> */}
+                    </Button>
 
                     {/* Nút Delete */}
                     <Popconfirm
@@ -225,7 +225,6 @@ function ManageUsers({ roleFilter, showAddButton = true }) {
     return (
         <div className="manage__user">
             <h1 className="manage__user-title">
-                {" "}
                 {roleFilter ? `Manage ${roleFilter}s` : "Manage Users"}
             </h1>
             {showAddButton && (
@@ -244,7 +243,7 @@ function ManageUsers({ roleFilter, showAddButton = true }) {
             <Modal
                 title="Add New User"
                 open={isOpen}
-                // onOk={handleOk}
+                onOk={handleOk}
                 onCancel={handleCloseModal}
                 footer={[
                     <Button key="back" onClick={handleCloseModal}>
