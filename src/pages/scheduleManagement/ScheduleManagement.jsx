@@ -1,32 +1,76 @@
-import { Alert, Button, Calendar, TimePicker } from "antd";
+import { Alert, Button, Calendar, Drawer, TimePicker } from "antd";
 import "./index.scss";
 import { useState } from "react";
 import dayjs from "dayjs";
+import { toast } from "react-toastify";
+
 function ScheduleManagement() {
     const [value, setValue] = useState(() => dayjs());
     const [selectedValue, setSelectedValue] = useState(() => dayjs());
-    const [time, setTime] = useState(dayjs());
+    const [time, setTime] = useState([dayjs(), dayjs().add(2, "hour")]); // Mặc định khoảng cách 2 giờ
+    const [formattedDateStarTime, setFormattedDateStarTime] = useState(""); // State for formatted start time
+    const [formattedDateEndTime, setFormattedDateEndTime] = useState(""); // State for formatted end time
+    const [isOpen, setIsOpen] = useState(false);
 
     const onSelect = (newValue) => {
         setValue(newValue);
         setSelectedValue(newValue);
     };
+
     const onPanelChange = (newValue) => {
         setValue(newValue);
     };
+
     const handleTimeChange = (newTime) => {
         setTime(newTime);
+        const [startTime, endTime] = newTime;
+
+        const selectedDateStartTime = dayjs(selectedValue)
+            .hour(startTime.hour())
+            .minute(startTime.minute());
+        const formattedStart =
+            selectedDateStartTime.format("YYYY-MM-DD'T'HH:mm");
+
+        const selectedDateEndTime = dayjs(selectedValue)
+            .hour(endTime.hour())
+            .minute(endTime.minute());
+        const formattedEnd = selectedDateEndTime.format("YYYY-MM-DD'T'HH:mm");
+
+        setFormattedDateStarTime(formattedStart);
+        setFormattedDateEndTime(formattedEnd);
     };
 
     const handleSubmit = () => {
-        // Kết hợp ngày đã chọn và thời gian đã chọn
-        const selectedDateTime = dayjs(selectedValue)
-            .hour(time.hour())
-            .minute(time.minute());
-        const formattedDateTime = selectedDateTime.format("YYYY-MM-DD'T'HH:mm");
-        console.log("Selected DateTime:", formattedDateTime);
-        // Gửi formattedDateTime tới backend tại đây
+        console.log("Selected Start DateTime:", formattedDateStarTime);
+        console.log("Selected End DateTime:", formattedDateEndTime);
+        toast.success("Free schedule registration successful!!");
     };
+
+    // Hàm để disable các giờ và phút cho endTime, đảm bảo cách ít nhất 2 giờ
+    const disabledEndTime = (selectedStartTime) => {
+        if (!selectedStartTime) return {};
+
+        const startHour = selectedStartTime.hour();
+        const startMinute = selectedStartTime.minute();
+
+        return {
+            disabledHours: () => {
+                const hours = Array.from({ length: 24 }, (_, i) => i).filter(
+                    (hour) => hour <= startHour || hour < startHour + 2
+                );
+                return hours;
+            },
+            disabledMinutes: (selectedHour) => {
+                if (selectedHour === startHour) {
+                    return Array.from({ length: 60 }, (_, i) => i).filter(
+                        (minute) => minute <= startMinute
+                    );
+                }
+                return [];
+            },
+        };
+    };
+
     return (
         <div className="schedule__management">
             <div className="container">
@@ -55,11 +99,22 @@ function ScheduleManagement() {
                         />
                     </div>
                     <div className="time" style={{ width: "50%" }}>
-                        <TimePicker
+                        <Alert
+                            message={`Choose your free time on ${selectedValue?.format(
+                                "YYYY-MM-DD"
+                            )}`}
+                            type="info"
+                            showIcon
+                        />
+                        <TimePicker.RangePicker
+                            style={{ width: "100%", marginTop: "10px" }}
+                            format="HH:mm"
                             value={time}
                             onChange={handleTimeChange}
-                            format="HH:mm"
-                            style={{ width: "100%" }}
+                            minuteStep={30} // Chỉ cho phép chọn phút là 00 hoặc 30
+                            disabledTime={(_, type) =>
+                                type === "end" ? disabledEndTime(time[0]) : {}
+                            } // Disable các giờ và phút cho endTime
                         />
                         <Button
                             type="primary"
@@ -72,6 +127,31 @@ function ScheduleManagement() {
                         >
                             Submit
                         </Button>
+                        <Button
+                            type="primary"
+                            style={{
+                                margin: "10px",
+                                backgroundColor: "#b5ed3d",
+                                color: "#032e32",
+                            }}
+                            onClick={() => setIsOpen(true)}
+                        >
+                            Show your free time
+                        </Button>
+                        <Drawer
+                            title="Your free time"
+                            onClose={() => setIsOpen(false)}
+                            open={isOpen}
+                        >
+                            <Alert
+                                message={`Your selected time on ${selectedValue?.format(
+                                    "YYYY-MM-DD"
+                                )}`}
+                                description={`From: ${formattedDateStarTime} To: ${formattedDateEndTime}`}
+                                type="success"
+                                showIcon
+                            />
+                        </Drawer>
                     </div>
                 </div>
             </div>
