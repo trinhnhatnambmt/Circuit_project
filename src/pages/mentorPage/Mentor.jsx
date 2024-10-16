@@ -37,7 +37,12 @@ function Mentor() {
                     <ButtonLike />
                   </button>
                   <div className="mentor__info">
-                    <div className="mentor__major">{mentor.enumList}</div>
+                    {/* {mentor.enumList.map((major, index) => (
+                      <div className="mentor__major">{major}</div>
+                    ))} */}
+                    <div className="mentor__major">
+                      {mentor.enumList.join(" | ")}
+                    </div>
                     <div className="mentor__name">
                       <Link to="/mentorDetail" className="name">
                         {mentor.accountName}
