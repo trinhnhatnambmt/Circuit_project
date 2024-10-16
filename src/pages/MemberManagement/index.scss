@@ -1,0 +1,7 @@
+$boardBar-height: 56px;
+$header-height: 110px;
+$board-content-height: calc(100vh - #{$boardBar-height} - #{$header-height});
+
+.member__management {
+    height: 100vh;
+}

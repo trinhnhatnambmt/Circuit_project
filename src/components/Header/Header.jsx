@@ -2,17 +2,9 @@ import { Link } from "react-router-dom";
 import "./Header.scss";
 import "../Button/buttons.scss";
 import Logo from "./Logo/Logo";
-import {
-    avatar,
-    avt__result1,
-    heart,
-    money,
-    search,
-    tick,
-} from "../../assets/image";
+import { avatar, heart, money, search, tick } from "../../assets/image";
 import { useDispatch, useSelector } from "react-redux";
 import { Avatar, Dropdown, Menu } from "antd";
-import { LogoutOutlined, SmileOutlined, UserOutlined } from "@ant-design/icons";
 import {
     fetchUserData,
     USER_LOGOUT_SUCCESS,
@@ -70,7 +62,7 @@ function Header() {
                 <Link to="/profile">Profile</Link>
             </Menu.Item>
             <Menu.Divider />
-            
+
             {userRole === "MENTOR" && (
                 <>
                     <Menu.Item key="2">
@@ -81,15 +73,26 @@ function Header() {
                     <Menu.Divider />
                 </>
             )}
+            {userRole === "STUDENT" && (
+                <>
+                    <Menu.Item key="3">
+                        <Link to="/memberManagement">Member Management</Link>
+                    </Menu.Item>
+                    <Menu.Item key="4">
+                        <Link to="/myGroup">My group</Link>
+                    </Menu.Item>
+                    <Menu.Divider />
+                </>
+            )}
 
-            <Menu.Item key="3">
+            <Menu.Item key="5">
                 <Link to="/writePage">Write Blog</Link>
             </Menu.Item>
-            <Menu.Item key="4">
+            <Menu.Item key="6">
                 <Link to="/myBlogPage">My Blog</Link>
             </Menu.Item>
             <Menu.Divider />
-            <Menu.Item key="5">
+            <Menu.Item key="7">
                 <Link onClick={() => dispatch(USER_LOGOUT_SUCCESS())}>
                     Log out
                 </Link>

@@ -1,0 +1,104 @@
+@import "../index.scss";
+
+$COLUMN_HEADER_HEIGHT: 50px;
+$COLUMN_FOOTER_HEIGHT: 56px;
+
+.boardContent {
+    width: 100%;
+    display: flex;
+    height: $board-content-height;
+    background-color: #4bbf6b;
+    padding: 10px 20px;
+
+    &__inner {
+        background-color: inherit;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        overflow-x: auto;
+        overflow-y: hidden;
+        gap: 13px;
+
+        &::-webkit-scrollbar {
+            width: 10px; /* Chiều rộng của scrollbar */
+        }
+
+        &::-webkit-scrollbar-track {
+            background-color: #f1f2f4; /* Màu nền của track (đường cuộn) */
+            border-radius: 10px;
+        }
+
+        &::-webkit-scrollbar-thumb {
+            background-color: #ced0da; /* Màu của thanh scrollbar */
+            border-radius: 10px;
+            border: 2px solid #f1f2f4; /* Khoảng cách giữa scrollbar và track */
+        }
+
+        &::-webkit-scrollbar-thumb:hover {
+            background-color: #a3a5b2; /* Màu của scrollbar khi hover */
+        }
+    }
+
+    &__column {
+        min-width: 272px;
+        max-width: 272px;
+        background-color: #f1f2f4;
+        border-radius: 12px;
+        height: fit-content;
+        max-height: calc($board-content-height - 40px);
+        // padding: 8px;
+
+        &-header {
+            height: $COLUMN_HEADER_HEIGHT;
+            padding: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            h3 {
+                font-size: 14px;
+                font-weight: 600;
+                cursor: pointer;
+            }
+        }
+
+        &-listCard {
+            display: flex;
+            padding: 0 5px;
+            flex-direction: column;
+            gap: 10px;
+            overflow-x: hidden;
+            overflow-y: auto;
+            max-height: calc(
+                #{$board-content-height} - 30px - #{$COLUMN_HEADER_HEIGHT} - #{$COLUMN_FOOTER_HEIGHT}
+            );
+
+            &::-webkit-scrollbar {
+                width: 10px; /* Chiều rộng của scrollbar */
+            }
+
+            &::-webkit-scrollbar-track {
+                background-color: #f1f2f4; /* Màu nền của track (đường cuộn) */
+                border-radius: 10px;
+            }
+
+            &::-webkit-scrollbar-thumb {
+                background-color: #ced0da; /* Màu của thanh scrollbar */
+                border-radius: 10px;
+                border: 2px solid #f1f2f4; /* Khoảng cách giữa scrollbar và track */
+            }
+
+            &::-webkit-scrollbar-thumb:hover {
+                background-color: #a3a5b2; /* Màu của scrollbar khi hover */
+            }
+        }
+
+        &-footer {
+            height: $COLUMN_FOOTER_HEIGHT;
+            padding: 15px 5px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+    }
+}
