@@ -13,13 +13,6 @@ function Mentor() {
     dispatch(fetchMentorData());
   }, [dispatch]);
 
-  if (loading) {
-    return <div>Loading...</div>;
-  }
-
-  if (error) {
-    return <div>Error: {error}</div>;
-  }
   return (
     <div className="mentor__page">
       <div className="container">
@@ -28,7 +21,7 @@ function Mentor() {
           <div className="mentor__page-group">
             {mentors.length > 0 &&
               mentors.map((mentor, index) => (
-                <div className="mentor__page-item">
+                <div className="mentor__page-item" key={index}>
                   <Link to="/mentorDetail">
                     {" "}
                     <img src={mentor.avatar} alt="" className="mentor__img" />
