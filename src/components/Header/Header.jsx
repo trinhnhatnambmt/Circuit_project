@@ -76,11 +76,11 @@ function Header() {
             {userRole === "STUDENT" && (
                 <>
                     <Menu.Item key="3">
-                        <Link to="/memberManagement">Member Management</Link>
+                        <Link to="/memberManagement">Project Management</Link>
                     </Menu.Item>
-                    <Menu.Item key="4">
+                    {/* <Menu.Item key="4">
                         <Link to="/myGroup">My group</Link>
-                    </Menu.Item>
+                    </Menu.Item> */}
                     <Menu.Divider />
                 </>
             )}

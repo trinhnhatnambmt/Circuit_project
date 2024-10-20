@@ -37,6 +37,14 @@ $COLUMN_FOOTER_HEIGHT: 56px;
         &::-webkit-scrollbar-thumb:hover {
             background-color: #a3a5b2; /* Màu của scrollbar khi hover */
         }
+
+        .addNewColumn {
+            min-width: 272px;
+            border-radius: 12px;
+            max-width: 272px;
+            height: fit-content;
+            background-color: #ffffff3d;
+        }
     }
 
     &__column {

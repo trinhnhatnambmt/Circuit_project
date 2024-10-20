@@ -1,420 +1,119 @@
-import { Button, Card, Dropdown, Menu, Space, Tooltip } from "antd";
 import "./index.scss";
+import ListColumn from "./ListColumns/ListColumn";
+import { mapOrder } from "~/utils/sort";
 import {
-    AntCloudOutlined,
-    CopyOutlined,
-    CreditCardOutlined,
-    DeleteOutlined,
-    DownOutlined,
-    DragOutlined,
-    EditOutlined,
-    EllipsisOutlined,
-    PlusOutlined,
-    SaveOutlined,
-    ScissorOutlined,
-} from "@ant-design/icons";
-import { Link } from "react-router-dom";
-import { colors } from "@mui/material";
-import Meta from "antd/es/card/Meta";
-import { background } from "~/assets/image";
-function BoardContent() {
-    const menu = (
-        <Menu style={{ width: "250px" }}>
-            <Menu.Item key="1" icon={<CreditCardOutlined />}>
-                <Link>Add new card</Link>
-            </Menu.Item>
-            <Menu.Item key="2" icon={<ScissorOutlined />}>
-                <Link>Cut</Link>
-            </Menu.Item>
-            <Menu.Item key="3" icon={<CopyOutlined />}>
-                <Link>Copy</Link>
-            </Menu.Item>
-            <Menu.Item key="4" icon={<SaveOutlined />}>
-                <Link>Paste</Link>
-            </Menu.Item>
+    DndContext,
+    PointerSensor,
+    useSensor,
+    useSensors,
+    DragOverlay,
+    defaultDropAnimation,
+    defaultDropAnimationSideEffects,
+} from "@dnd-kit/core";
+import { arrayMove } from "@dnd-kit/sortable";
+import { useEffect, useState } from "react";
 
-            <Menu.Divider />
-            <Menu.Item key="5" icon={<DeleteOutlined />}>
-                <Link>Remove this column</Link>
-            </Menu.Item>
-            <Menu.Item key="6" icon={<AntCloudOutlined />}>
-                <Link>Archive this column</Link>
-            </Menu.Item>
-        </Menu>
-    );
+import Column from "./ListColumns/Column/Column";
+import CardItem from "./ListColumns/Column/ListCards/Card/Card";
+
+const ACTIVE_DRAG_ITEM_TYPE = {
+    COLUMN: "ACTIVE_DRAG_ITEM_TYPE_COLUMN",
+    CARD: "ACTIVE_DRAG_ITEM_TYPE_CARD",
+};
+
+function BoardContent({ board }) {
+    const pointerSensor = useSensor(PointerSensor, {
+        activationConstraint: { distance: 10 },
+    });
+    const sensors = useSensors(pointerSensor);
+
+    const [orderedColumns, setOrderedColumns] = useState([]);
+
+    // Cùng 1 thời điểm chỉ có một phần tử đang được kéo (column hoặc card)
+    const [activeDragItemId, setActiveDragItemId] = useState(null);
+    const [activeDragItemType, setActiveDragItemType] = useState(null);
+    const [activeDragItemData, setActiveDragItemData] = useState(null);
+
+    useEffect(() => {
+        setOrderedColumns(
+            mapOrder(board?.columns, board?.columnOrderIds, "_id")
+        );
+    }, [board]);
+
+    const handleDragStart = (event) => {
+        console.log("Handle drag start:", event);
+        setActiveDragItemId(event?.active?.id);
+        setActiveDragItemType(
+            event?.active?.current?.columnId
+                ? ACTIVE_DRAG_ITEM_TYPE.CARD
+                : ACTIVE_DRAG_ITEM_TYPE.COLUMN
+        );
+        setActiveDragItemData(event?.active?.data?.current);
+    };
+
+    const handleDragEnd = (event) => {
+        console.log("Handle drag end: ", event);
+        const { active, over } = event;
+
+        if (!over) return;
+
+        if (active.id !== over.id) {
+            // Lay vi tri cu(tu thang active)
+            const oldIndex = orderedColumns.findIndex(
+                (c) => c._id === active.id
+            );
+
+            //Lay vi tri moi ( tu thang over)
+            const newIndex = orderedColumns.findIndex((c) => c._id === over.id);
+
+            //Dùng arrayMove của thằng dnd-kit để sắp xếp lại mảng columns ban đầu
+            const dndOrderedColumns = arrayMove(
+                orderedColumns,
+                oldIndex,
+                newIndex
+            );
+            //2 cái clg dữ liệu này sau dùng để gọi xử lí API
+            // const dndOrderedColumnsIds = dndOrderedColumns.map((c) => c._id);
+            // console.log("dndorderedcolumn:", dndOrderedColumns);
+            // console.log("dndorderedcolumnIds:", dndOrderedColumnsIds);
+
+            setOrderedColumns(dndOrderedColumns);
+        }
+
+        setActiveDragItemData(null);
+        setActiveDragItemId(null);
+        setActiveDragItemType(null);
+    };
+
+    const customDropAnimation = {
+        sideEffects: defaultDropAnimationSideEffects({
+            styles: {
+                active: {
+                    opacity: "0,5",
+                },
+            },
+        }),
+    };
+
     return (
-        <div className="boardContent">
-            <div className="boardContent__inner">
-                <div className="boardContent__column">
-                    <div className="boardContent__column-header">
-                        <h3>Column title</h3>
-                        <Dropdown overlay={menu} trigger={["click"]}>
-                            <div
-                                className="top-act__user"
-                                onClick={(e) => e.preventDefault()}
-                            >
-                                <Space
-                                    style={{
-                                        fontSize: "15px",
-                                        fontWeight: "600",
-                                        color: "#333",
-                                        cursor: "pointer",
-                                    }}
-                                >
-                                    <Tooltip title="List actions">
-                                        <DownOutlined />
-                                    </Tooltip>
-                                </Space>
-                            </div>
-                        </Dropdown>
-                    </div>
-
-                    <div className="boardContent__column-listCard">
-                        <Card
-                            style={{
-                                width: "100%",
-                                // cursor: "pointer",
-                                boxShadow: "0 1px 1px rgba(0,0,0,0.2)",
-                            }}
-                            cover={
-                                <img
-                                    alt="example"
-                                    src={background}
-                                    style={{
-                                        height: "180px",
-                                        objectFit: "cover",
-                                    }}
-                                />
-                            }
-                        >
-                            <div
-                                style={{
-                                    display: "flex",
-                                    justifyContent: "space-between",
-                                }}
-                            >
-                                <Meta
-                                    // title="Card title"
-                                    description="This is the description "
-                                />
-                                <Tooltip title="Edit">
-                                    <EditOutlined
-                                        key="edit"
-                                        style={{ cursor: "pointer" }}
-                                    />
-                                </Tooltip>
-                            </div>
-                        </Card>
-                        <Card
-                            style={{
-                                width: "100%",
-                                boxShadow: "0 1px 1px rgba(0,0,0,0.2)",
-                            }}
-                        >
-                            <div
-                                style={{
-                                    display: "flex",
-                                    justifyContent: "space-between",
-                                }}
-                            >
-                                <Meta
-                                    // title="Card title"
-                                    description="This is the description "
-                                />
-                                <Tooltip title="Edit">
-                                    <EditOutlined
-                                        key="edit"
-                                        style={{ cursor: "pointer" }}
-                                    />
-                                </Tooltip>
-                            </div>
-                        </Card>
-                        <Card
-                            style={{
-                                width: "100%",
-                                boxShadow: "0 1px 1px rgba(0,0,0,0.2)",
-                            }}
-                        >
-                            <div
-                                style={{
-                                    display: "flex",
-                                    justifyContent: "space-between",
-                                }}
-                            >
-                                <Meta
-                                    // title="Card title"
-                                    description="This is the description "
-                                />
-                                <Tooltip title="Edit">
-                                    <EditOutlined
-                                        key="edit"
-                                        style={{ cursor: "pointer" }}
-                                    />
-                                </Tooltip>
-                            </div>
-                        </Card>
-                        <Card
-                            style={{
-                                width: "100%",
-                                boxShadow: "0 1px 1px rgba(0,0,0,0.2)",
-                            }}
-                        >
-                            <div
-                                style={{
-                                    display: "flex",
-                                    justifyContent: "space-between",
-                                }}
-                            >
-                                <Meta
-                                    // title="Card title"
-                                    description="This is the description "
-                                />
-                                <Tooltip title="Edit">
-                                    <EditOutlined
-                                        key="edit"
-                                        style={{ cursor: "pointer" }}
-                                    />
-                                </Tooltip>
-                            </div>
-                        </Card>
-                        <Card
-                            style={{
-                                width: "100%",
-                                boxShadow: "0 1px 1px rgba(0,0,0,0.2)",
-                            }}
-                        >
-                            <div
-                                style={{
-                                    display: "flex",
-                                    justifyContent: "space-between",
-                                }}
-                            >
-                                <Meta
-                                    // title="Card title"
-                                    description="This is the description "
-                                />
-                                <Tooltip title="Edit">
-                                    <EditOutlined
-                                        key="edit"
-                                        style={{ cursor: "pointer" }}
-                                    />
-                                </Tooltip>
-                            </div>
-                        </Card>
-                        <Card
-                            style={{
-                                width: "100%",
-                                boxShadow: "0 1px 1px rgba(0,0,0,0.2)",
-                            }}
-                        >
-                            <div
-                                style={{
-                                    display: "flex",
-                                    justifyContent: "space-between",
-                                }}
-                            >
-                                <Meta
-                                    // title="Card title"
-                                    description="This is the description "
-                                />
-                                <Tooltip title="Edit">
-                                    <EditOutlined
-                                        key="edit"
-                                        style={{ cursor: "pointer" }}
-                                    />
-                                </Tooltip>
-                            </div>
-                        </Card>
-                        <Card
-                            style={{
-                                width: "100%",
-                                boxShadow: "0 1px 1px rgba(0,0,0,0.2)",
-                            }}
-                        >
-                            <div
-                                style={{
-                                    display: "flex",
-                                    justifyContent: "space-between",
-                                }}
-                            >
-                                <Meta
-                                    // title="Card title"
-                                    description="This is the description "
-                                />
-                                <Tooltip title="Edit">
-                                    <EditOutlined
-                                        key="edit"
-                                        style={{ cursor: "pointer" }}
-                                    />
-                                </Tooltip>
-                            </div>
-                        </Card>
-                        <Card
-                            style={{
-                                width: "100%",
-                                boxShadow: "0 1px 1px rgba(0,0,0,0.2)",
-                            }}
-                        >
-                            <div
-                                style={{
-                                    display: "flex",
-                                    justifyContent: "space-between",
-                                }}
-                            >
-                                <Meta
-                                    // title="Card title"
-                                    description="This is the description "
-                                />
-                                <Tooltip title="Edit">
-                                    <EditOutlined
-                                        key="edit"
-                                        style={{ cursor: "pointer" }}
-                                    />
-                                </Tooltip>
-                            </div>
-                        </Card>
-                    </div>
-
-                    <div className="boardContent__column-footer">
-                        <Button
-                            type="text"
-                            style={{
-                                width: "100%",
-                                display: "flex",
-                                justifyContent: "space-between",
-                            }}
-                        >
-                            <div style={{ display: "flex", gap: "10px" }}>
-                                <PlusOutlined style={{ color: "#399151" }} />
-                                <p
-                                    style={{
-                                        fontWeight: 600,
-                                        color: "#399151",
-                                    }}
-                                >
-                                    Add new card
-                                </p>
-                            </div>
-                            <Tooltip title="Drag to move">
-                                <DragOutlined />
-                            </Tooltip>
-                        </Button>
-                    </div>
-                </div>
-                <div className="boardContent__column">
-                    <div className="boardContent__column-header">
-                        <h3>Column title</h3>
-                        <Dropdown overlay={menu} trigger={["click"]}>
-                            <div
-                                className="top-act__user"
-                                onClick={(e) => e.preventDefault()}
-                            >
-                                <Space
-                                    style={{
-                                        fontSize: "15px",
-                                        fontWeight: "600",
-                                        color: "#333",
-                                        cursor: "pointer",
-                                    }}
-                                >
-                                    <Tooltip title="List actions">
-                                        <DownOutlined />
-                                    </Tooltip>
-                                </Space>
-                            </div>
-                        </Dropdown>
-                    </div>
-
-                    <div className="boardContent__column-listCard">
-                        <Card
-                            style={{
-                                width: "100%",
-                                // cursor: "pointer",
-                                boxShadow: "0 1px 1px rgba(0,0,0,0.2)",
-                            }}
-                            cover={
-                                <img
-                                    alt="example"
-                                    src={background}
-                                    style={{
-                                        height: "180px",
-                                        objectFit: "cover",
-                                    }}
-                                />
-                            }
-                        >
-                            <div
-                                style={{
-                                    display: "flex",
-                                    justifyContent: "space-between",
-                                }}
-                            >
-                                <Meta
-                                    // title="Card title"
-                                    description="This is the description "
-                                />
-                                <Tooltip title="Edit">
-                                    <EditOutlined
-                                        key="edit"
-                                        style={{ cursor: "pointer" }}
-                                    />
-                                </Tooltip>
-                            </div>
-                        </Card>
-                        <Card
-                            style={{
-                                width: "100%",
-                                boxShadow: "0 1px 1px rgba(0,0,0,0.2)",
-                            }}
-                        >
-                            <div
-                                style={{
-                                    display: "flex",
-                                    justifyContent: "space-between",
-                                }}
-                            >
-                                <Meta
-                                    // title="Card title"
-                                    description="This is the description "
-                                />
-                                <Tooltip title="Edit">
-                                    <EditOutlined
-                                        key="edit"
-                                        style={{ cursor: "pointer" }}
-                                    />
-                                </Tooltip>
-                            </div>
-                        </Card>
-                    </div>
-
-                    <div className="boardContent__column-footer">
-                        <Button
-                            type="text"
-                            style={{
-                                width: "100%",
-                                display: "flex",
-                                justifyContent: "space-between",
-                            }}
-                        >
-                            <div style={{ display: "flex", gap: "10px" }}>
-                                <PlusOutlined style={{ color: "#399151" }} />
-                                <p
-                                    style={{
-                                        fontWeight: 600,
-                                        color: "#399151",
-                                    }}
-                                >
-                                    Add new card
-                                </p>
-                            </div>
-                            <Tooltip title="Drag to move">
-                                <DragOutlined />
-                            </Tooltip>
-                        </Button>
-                    </div>
-                </div>
+        <DndContext
+            onDragStart={handleDragStart}
+            onDragEnd={handleDragEnd}
+            sensors={sensors}
+        >
+            <div className="boardContent">
+                <ListColumn columns={orderedColumns} />
+                <DragOverlay dropAnimation={customDropAnimation}>
+                    {!activeDragItemType && null}
+                    {activeDragItemType === ACTIVE_DRAG_ITEM_TYPE.COLUMN && (
+                        <Column column={activeDragItemData} />
+                    )}
+                    {activeDragItemType === ACTIVE_DRAG_ITEM_TYPE.CARD && (
+                        <CardItem card={activeDragItemData} />
+                    )}
+                </DragOverlay>
             </div>
-        </div>
+        </DndContext>
     );
 }
 
