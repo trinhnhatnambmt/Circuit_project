@@ -91,7 +91,7 @@ function Login() {
                                         setPassWord(event.target.value)
                                     }
                                     required
-                                    minLength={6}
+                                    // minLength={6}
                                 />
                                 <img
                                     src={lock}

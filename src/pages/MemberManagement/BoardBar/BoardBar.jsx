@@ -3,19 +3,15 @@ import "./index.scss";
 import Recent from "./Menus/Recents";
 import WorkSpace from "./Menus/WorkSpace";
 import AvatarGroup from "./Menus/AvatarGroup";
-import {
-    SearchOutlined,
-    UserAddOutlined,
-    UserOutlined,
-} from "@ant-design/icons";
-function BoardBar() {
+import { UserAddOutlined } from "@ant-design/icons";
+function BoardBar({ board }) {
     return (
         <div className="boardBar">
             <div className="boardBar__left">
-                <h1 className="boardBar-title">Member Management</h1>
-                <WorkSpace />
-                <Recent />
-                <Button
+                <h1 className="boardBar-title">Project Management</h1>
+                {/* <WorkSpace />
+                <Recent /> */}
+                {/* <Button
                     type="primary"
                     style={{
                         color: "#333",
@@ -24,7 +20,7 @@ function BoardBar() {
                     }}
                 >
                     Create
-                </Button>
+                </Button> */}
             </div>
             <div className="boardBar__right">
                 <Button
