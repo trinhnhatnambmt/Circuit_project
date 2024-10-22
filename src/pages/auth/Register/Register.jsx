@@ -21,8 +21,9 @@ function Register() {
 
     const handleRegister = async () => {
         const res = await postRegister(email, password, name, role);
+        console.log("response: ", res);
 
-        if (res && res.code === 200) {
+        if (res && res.code === 201) {
             toast.success(res.message);
         } else if (res && res.code === 1501) {
             toast.error(res.message);
