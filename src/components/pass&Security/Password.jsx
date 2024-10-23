@@ -1,16 +1,34 @@
 import { Button, Collapse, Divider, Form, Input } from "antd";
 import { useForm } from "antd/es/form/Form";
-import axios from "axios";
 import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
+import { resetPassword } from "~/services/apiServices";
 
 function Password() {
     const accessToken = useSelector((state) => state.user.account.access_token);
 
-    console.log(accessToken);
     const [form] = useForm();
 
-    const handleChangePassword = async (values) => {};
+    const handleChangePassword = async (values) => {
+        const { newPassword, confirmPassword } = values;
+        try {
+            const token = accessToken;
+
+            const response = await resetPassword(
+                token,
+                newPassword,
+                confirmPassword
+            );
+            if (response.code === 200) {
+                toast.success("Password reset successfully!");
+            } else {
+                toast.error("Failed to reset password.");
+            }
+        } catch (error) {
+            console.error("Failed to reset password: ", error);
+            toast.error("Failed to reset password. Please try again.");
+        }
+    };
 
     return (
         <div className="cart-info">

@@ -27,4 +27,37 @@ const deleteUser = async (id) => {
     return await axios.delete(`admin/account/delete/${id}`);
 };
 
-export { postCreateNewUser, postLogin, postRegister, getAllUser, deleteUser };
+const getUserProfile = async (accessToken) => {
+    const response = await axios.get("account/profile", {
+        headers: {
+            Authorization: `Bearer ${accessToken}`,
+        },
+    });
+    return response;
+};
+
+const resetPassword = async (token, newPassword, confirmPassword) => {
+    const response = await axios.post(
+        `auth/reset-password?token=${token}`,
+        {
+            new_password: newPassword,
+            repeat_password: confirmPassword,
+        },
+        {
+            headers: {
+                "Content-Type": "application/json",
+            },
+        }
+    );
+    return response;
+};
+
+export {
+    postCreateNewUser,
+    postLogin,
+    postRegister,
+    getAllUser,
+    deleteUser,
+    getUserProfile,
+    resetPassword,
+};
