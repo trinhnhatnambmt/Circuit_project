@@ -1,9 +1,13 @@
 .mentor__page {
     margin-top: 83px;
 
+    .mentor__page-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
     .mentor__page-title {
         color: #032e32;
-        text-align: center;
         font-size: 42px;
         font-weight: 800;
         line-height: 123.81%;
@@ -11,8 +15,9 @@
 
     .mentor__page-group {
         display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 20px; /* Khoảng cách giữa các item */
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 40px; /* Khoảng cách giữa các item */
+
         margin-top: 54px;
         width: 100%; /* Đảm bảo full width */
 

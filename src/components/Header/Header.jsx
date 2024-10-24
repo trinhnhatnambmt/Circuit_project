@@ -152,7 +152,7 @@ function Header() {
                             </>
                         ) : (
                             <>
-                                <div className="top-act__group top-act__group--single">
+                                {/* <div className="top-act__group top-act__group--single">
                                     <button className="top-act__btn">
                                         <img
                                             src={search}
@@ -160,7 +160,7 @@ function Header() {
                                             className="icon top-act__icon"
                                         />
                                     </button>
-                                </div>
+                                </div> */}
 
                                 <div className="top-act__group">
                                     <button className="top-act__btn">

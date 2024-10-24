@@ -8,29 +8,27 @@ import {
     Select,
     Table,
     Tag,
-    Upload,
 } from "antd";
 import { useEffect, useState } from "react";
 import "./index.scss";
-import axios from "axios";
 import { useForm } from "antd/es/form/Form";
-import { PlusOutlined, PlusSquareOutlined } from "@ant-design/icons";
+import {  PlusSquareOutlined } from "@ant-design/icons";
 import {
     deleteUser,
     getAllUser,
     postCreateNewUser,
 } from "../../../services/apiServices";
 import { toast } from "react-toastify";
-import uploadFile from "../../../utils/upload";
 
 function ManageUsers({ roleFilter, showAddButton = true }) {
     const [isOpen, setIsOpen] = useState(false);
     const [dataSource, setDataSource] = useState([]);
     const [form] = useForm();
-    const [previewOpen, setPreviewOpen] = useState(false);
-    const [previewImage, setPreviewImage] = useState("");
-    const [fileList, setFileList] = useState([]);
     const [loading, setLoading] = useState(false);
+    const [email, setEmail] = useState("");
+    const [password, setPassWord] = useState("");
+    const [name, setName] = useState("");
+    const [role, setRole] = useState("STUDENT");
 
     const handleOpenModal = () => {
         setIsOpen(true);
@@ -38,7 +36,6 @@ function ManageUsers({ roleFilter, showAddButton = true }) {
     const handleCloseModal = () => {
         setIsOpen(false);
         form.resetFields();
-        setFileList([]);
     };
 
     const columns = [
@@ -110,57 +107,6 @@ function ManageUsers({ roleFilter, showAddButton = true }) {
         },
     ];
 
-    const getBase64 = (file) =>
-        new Promise((resolve, reject) => {
-            const reader = new FileReader();
-            reader.readAsDataURL(file);
-            reader.onload = () => resolve(reader.result);
-            reader.onerror = (error) => reject(error);
-        });
-
-    const handlePreview = async (file) => {
-        if (!file.url && !file.preview) {
-            file.preview = await getBase64(file.originFileObj);
-        }
-        setPreviewImage(file.url || file.preview);
-        setPreviewOpen(true);
-    };
-    const handleChange = ({ fileList: newFileList }) => {
-        const updatedFileList = newFileList.map((file) => {
-            if (file.status === "uploading") {
-                return { ...file };
-            }
-            if (file.response && file.response.status === "ok") {
-                return { ...file, status: "done" }; // Thành công
-            }
-
-            if (file.status === "error") {
-                return { ...file, status: "done" };
-            }
-            return file;
-        });
-        setFileList(updatedFileList);
-    };
-
-    const uploadButton = (
-        <button
-            style={{
-                border: 0,
-                background: "none",
-            }}
-            type="button"
-        >
-            <PlusOutlined />
-            <div
-                style={{
-                    marginTop: 8,
-                }}
-            >
-                Upload
-            </div>
-        </button>
-    );
-
     const fetchDataUser = async () => {
         const response = await getAllUser();
         let data = response.data;
@@ -197,25 +143,23 @@ function ManageUsers({ roleFilter, showAddButton = true }) {
         }
     };
 
-    const handleSaveUser = async (values) => {
+    const handleSaveUser = async () => {
         setLoading(true);
-        try {
-            if (values.id) {
-                await axios.put(
-                    `https://662b5a5cde35f91de157f14d.mockapi.io/pets/${values.id}`,
-                    values
-                );
-            } else {
-                const url = await uploadFile(values.avatar.file.originFileObj);
-                values.avatar = url;
-                await postCreateNewUser(values);
-            }
 
+        try {
+            const response = await postCreateNewUser(
+                email,
+                password,
+                name,
+                role
+            );
+            console.log("response:", response);
             setLoading(false);
-            toast.success("Successfully created new user");
+            if (response && response.code === 201) {
+                toast.success("Create account successfully!!!");
+            }
             fetchDataUser();
             form.resetFields();
-            setFileList([]);
             handleCloseModal();
         } catch (error) {
             toast.error("Error creating user");
@@ -225,7 +169,7 @@ function ManageUsers({ roleFilter, showAddButton = true }) {
     return (
         <div className="manage__user">
             <h1 className="manage__user-title">
-                {roleFilter ? `Manage ${roleFilter}s` : "Manage Users"}
+                {roleFilter ? `Manage ${roleFilter}S` : "Manage Users"}
             </h1>
             {showAddButton && (
                 <button onClick={handleOpenModal} className="btn add__user-btn">
@@ -268,9 +212,6 @@ function ManageUsers({ roleFilter, showAddButton = true }) {
                     form={form}
                     onFinish={handleSaveUser}
                 >
-                    <Form.Item name="id" hidden>
-                        <Input />
-                    </Form.Item>
                     <Form.Item
                         label="Email"
                         name="email"
@@ -281,7 +222,11 @@ function ManageUsers({ roleFilter, showAddButton = true }) {
                             },
                         ]}
                     >
-                        <Input disabled={!!form.getFieldValue("id")} />
+                        <Input
+                            disabled={!!form.getFieldValue("id")}
+                            value={email}
+                            onChange={(event) => setEmail(event.target.value)}
+                        />
                     </Form.Item>
 
                     <Form.Item
@@ -294,7 +239,13 @@ function ManageUsers({ roleFilter, showAddButton = true }) {
                             },
                         ]}
                     >
-                        <Input.Password disabled={!!form.getFieldValue("id")} />
+                        <Input.Password
+                            disabled={!!form.getFieldValue("id")}
+                            value={password}
+                            onChange={(event) =>
+                                setPassWord(event.target.value)
+                            }
+                        />
                     </Form.Item>
                     <Form.Item
                         label="Name"
@@ -306,7 +257,10 @@ function ManageUsers({ roleFilter, showAddButton = true }) {
                             },
                         ]}
                     >
-                        <Input />
+                        <Input
+                            value={name}
+                            onChange={(event) => setName(event.target.value)}
+                        />
                     </Form.Item>
                     <Form.Item
                         label="Role"
@@ -328,43 +282,20 @@ function ManageUsers({ roleFilter, showAddButton = true }) {
                             }
                             options={[
                                 {
-                                    value: "Mentor",
-                                    label: "Mentor",
+                                    value: "MENTOR",
+                                    label: "MENTOR",
                                 },
                                 {
-                                    value: "Student",
-                                    label: "Student",
+                                    value: "STUDENT",
+                                    label: "STUDENT",
                                 },
                             ]}
+                            value={role}
+                            onChange={(value) => setRole(value)}
                         />
-                    </Form.Item>
-                    <Form.Item label="Avatar" name="avatar">
-                        <Upload
-                            action="https://660d2bd96ddfa2943b33731c.mockapi.io/api/upload"
-                            listType="picture-card"
-                            fileList={fileList}
-                            onPreview={handlePreview}
-                            onChange={handleChange}
-                        >
-                            {fileList.length >= 8 ? null : uploadButton}
-                        </Upload>
                     </Form.Item>
                 </Form>
             </Modal>
-            {previewImage && (
-                <Image
-                    wrapperStyle={{
-                        display: "none",
-                    }}
-                    preview={{
-                        visible: previewOpen,
-                        onVisibleChange: (visible) => setPreviewOpen(visible),
-                        afterOpenChange: (visible) =>
-                            !visible && setPreviewImage(""),
-                    }}
-                    src={previewImage}
-                />
-            )}
         </div>
     );
 }

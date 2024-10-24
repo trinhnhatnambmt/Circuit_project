@@ -1,11 +1,13 @@
 import axios from "../utils/axiosCustomize";
 
-const postCreateNewUser = async (values) => {
-    // const response = await axios.post(
-    //     "https://662b5a5cde35f91de157f14d.mockapi.io/pets",
-    //     values
-    // );
-    // return response;
+const postCreateNewUser = async (email, password, name, role) => {
+    const response = await axios.post("admin/account/add-new-account", {
+        email,
+        password,
+        name,
+        role,
+    });
+    return response;
 };
 
 const getAllUser = () => {
@@ -52,6 +54,11 @@ const resetPassword = async (token, newPassword, confirmPassword) => {
     return response;
 };
 
+const getAllSpecialization = () => {
+    const response = axios.get(`account/specialization/get-all`);
+    return response;
+};
+
 export {
     postCreateNewUser,
     postLogin,
@@ -60,4 +67,5 @@ export {
     deleteUser,
     getUserProfile,
     resetPassword,
+    getAllSpecialization,
 };
