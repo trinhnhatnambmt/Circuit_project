@@ -12,22 +12,24 @@ function BlogDetail() {
     const blogId = params.id;
     const [blogDetail, setBlogDetail] = useState({});
     const [comments, setComments] = useState([]);
-    // const formattedDate = format(new Date(blogDetail.createdAt), "dd / MM / yyyy");
-    const fetchMentorDetail = async () => {
-        // setLoading(true);
+
+    // Ensure createdAt is defined before formatting
+    const formattedDate = blogDetail.createdAt
+        ? format(new Date(blogDetail.createdAt), "dd / MM / yyyy")
+        : "Date not available";
+
+    const fetchBlogDetail = async () => {
         try {
             const response = await getBlogWithId(blogId);
             setBlogDetail(response.data);
-            setComments(response.data.comments);
+            setComments(response.data.comments || []);
         } catch (error) {
-            console.error("Failed to fetch mentor detail:", error);
-        } finally {
-            // setLoading(false);
+            console.error("Failed to fetch blog detail:", error);
         }
     };
 
     useEffect(() => {
-        fetchMentorDetail();
+        fetchBlogDetail();
     }, [blogId]);
 
     return (
@@ -46,8 +48,10 @@ function BlogDetail() {
                                     className="blog__detail-avatar"
                                 />
                                 <div className="blog__detail-media-info">
-                                    <span className="username">Trinh Huy</span>
-                                    <div className="date">01.01.2024</div>
+                                    <span className="username">
+                                        {blogDetail.authorName}
+                                    </span>
+                                    <div className="date">{formattedDate}</div>
                                 </div>
                             </div>
                         </div>
@@ -65,7 +69,7 @@ function BlogDetail() {
                                     {blogDetail.description}
                                 </p>
                             </div>
-                            <Comments comments={comments} />
+                            <Comments comments={comments} blogId={blogId} />
                         </div>
 
                         <Blog_Menu />

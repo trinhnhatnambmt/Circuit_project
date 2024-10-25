@@ -87,6 +87,14 @@ const getBlogCategories = () => {
     return axios.get(`blog/category/get-all`);
 };
 
+const getBlogFeatured = () => {
+    return axios.get(`blog/view/featured`);
+};
+
+const getBlogWithCategories = (categoryPath) => {
+    return axios.get(`blog/view/by-category/${categoryPath}`);
+};
+
 export {
     postCreateNewUser,
     postLogin,
@@ -103,4 +111,6 @@ export {
     getBlogWithId,
     getAdminTopics,
     getBlogCategories,
+    getBlogFeatured,
+    getBlogWithCategories,
 };

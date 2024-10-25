@@ -62,7 +62,7 @@ function Routers() {
                     element: <Blog />,
                 },
                 {
-                    path: "blogCategories",
+                    path: "blogCategories/:category",
                     element: <BlogCategories />,
                 },
                 {

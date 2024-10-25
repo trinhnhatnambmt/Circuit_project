@@ -138,10 +138,6 @@ function EditBlogPage() {
                 }
             );
             toast.success(response.data.message);
-            // setTitle("");
-            // setContent("");
-            // setFileList([]);
-            // setSelectedCategory(null);
         } catch (error) {
             console.error("Error create blog:", error);
             toast.error("Failed to create blog");
