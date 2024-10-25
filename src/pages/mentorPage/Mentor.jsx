@@ -5,27 +5,31 @@ import ButtonLike from "../../components/Button/ButtonLike";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { fetchMentorData } from "../../redux/features/mentor/mentorSlice";
+import FilterComponent from "~/components/Filter/Filter";
 function Mentor() {
     const dispatch = useDispatch();
     const { mentors, loading, error } = useSelector((state) => state.mentor);
 
     useEffect(() => {
-        dispatch(fetchMentorData());
+        dispatch(fetchMentorData({}));
     }, [dispatch]);
 
-    if (loading) {
-        return <div>Loading...</div>;
-    }
+    // Hàm xử lý khi người dùng bấm nút Apply
+    const handleFilterApply = (filters) => {
+        dispatch(fetchMentorData(filters));
+    };
 
-    if (error) {
-        return <div>Error: {error}</div>;
-    }
     return (
         <div className="mentor__page">
             <div className="container">
                 <div className="mentor__page-inner">
-                    <div className="mentor__page-title">Our mentor</div>
+                    <div className="mentor__page-header">
+                        <div className="mentor__page-title">Our mentor</div>
+                        <FilterComponent onApply={handleFilterApply} />
+                    </div>
                     <div className="mentor__page-group">
+                        {loading && <p>Loading...</p>}
+                        {error && <p>Error: {error}</p>}
                         {mentors.length > 0 &&
                             mentors.map((mentor, index) => (
                                 <div className="mentor__page-item" key={index}>
@@ -41,11 +45,8 @@ function Mentor() {
                                         <ButtonLike />
                                     </button>
                                     <div className="mentor__info">
-                                        {/* {mentor.enumList.map((major, index) => (
-                      <div className="mentor__major">{major}</div>
-                    ))} */}
                                         <div className="mentor__major">
-                                            {mentor.enumList.join(" | ")}
+                                            {mentor.specializationList}
                                         </div>
                                         <div className="mentor__name">
                                             <Link

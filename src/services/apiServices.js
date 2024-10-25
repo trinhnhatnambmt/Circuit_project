@@ -1,11 +1,13 @@
 import axios from "../utils/axiosCustomize";
 
-const postCreateNewUser = async (values) => {
-    // const response = await axios.post(
-    //     "https://662b5a5cde35f91de157f14d.mockapi.io/pets",
-    //     values
-    // );
-    // return response;
+const postCreateNewUser = async (email, password, name, role) => {
+    const response = await axios.post("admin/account/add-new-account", {
+        email,
+        password,
+        name,
+        role,
+    });
+    return response;
 };
 
 const getAllUser = () => {
@@ -27,4 +29,43 @@ const deleteUser = async (id) => {
     return await axios.delete(`admin/account/delete/${id}`);
 };
 
-export { postCreateNewUser, postLogin, postRegister, getAllUser, deleteUser };
+const getUserProfile = async (accessToken) => {
+    const response = await axios.get("account/profile", {
+        headers: {
+            Authorization: `Bearer ${accessToken}`,
+        },
+    });
+    return response;
+};
+
+const resetPassword = async (token, newPassword, confirmPassword) => {
+    const response = await axios.post(
+        `auth/reset-password?token=${token}`,
+        {
+            new_password: newPassword,
+            repeat_password: confirmPassword,
+        },
+        {
+            headers: {
+                "Content-Type": "application/json",
+            },
+        }
+    );
+    return response;
+};
+
+const getAllSpecialization = () => {
+    const response = axios.get(`account/specialization/get-all`);
+    return response;
+};
+
+export {
+    postCreateNewUser,
+    postLogin,
+    postRegister,
+    getAllUser,
+    deleteUser,
+    getUserProfile,
+    resetPassword,
+    getAllSpecialization,
+};

@@ -21,6 +21,7 @@ import BlogDetail from "../pages/blogDetail/BlogDetail";
 import WritePage from "../pages/writePage/WritePage";
 import ScheduleManagement from "../pages/scheduleManagement/ScheduleManagement";
 import MemberManagement from "../pages/MemberManagement/MemberManagement";
+import ProtectedRoute from "~/components/Protected/ProtectedRoute";
 
 function Routers() {
     const router = createBrowserRouter([
@@ -76,7 +77,11 @@ function Routers() {
         },
         {
             path: "/memberManagement",
-            element: <MemberManagement />,
+            element: (
+                <ProtectedRoute>
+                    <MemberManagement />
+                </ProtectedRoute>
+            ),
         },
         {
             path: "/signUp",

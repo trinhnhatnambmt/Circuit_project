@@ -2,17 +2,24 @@ import { CalendarOutlined, ClockCircleOutlined } from "@ant-design/icons";
 import { Calendar, Modal, theme } from "antd";
 import { useEffect, useState } from "react";
 import "./index.scss";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 function BookAppointment() {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [timeSlot, setTimeSlot] = useState([]);
     const [selectTimeSlot, setSelectTimeSlot] = useState();
+
+    const navigate = useNavigate();
+    const isAuthenticated = useSelector((state) => state.user.isAuthenticated);
 
     useEffect(() => {
         getTime();
     }, []);
 
     const showModal = () => {
-        setIsModalOpen(true);
+        if (!isAuthenticated) {
+            navigate("/login");
+        } else setIsModalOpen(true);
     };
 
     const handleOk = () => {

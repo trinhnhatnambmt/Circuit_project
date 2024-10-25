@@ -3,12 +3,20 @@ import axios from "axios";
 
 export const fetchMentorData = createAsyncThunk(
     "mentor/fetchMentorData",
-    async () => {
+    async ({ name, minPrice, maxPrice, specializations }) => {
+        // Gửi các tham số lọc tới API
+        const params = {};
+
+        if (name) params.name = name;
+        if (minPrice) params.minPrice = minPrice;
+        if (maxPrice) params.maxPrice = maxPrice;
+        if (specializations) params.specializations = specializations;
+
         const response = await axios.get(
-            "http://167.71.220.5:8080/account/search-mentor?minPrice=0&sort=service.price&sort=asc"
+            "http://167.71.220.5:8080/account/search-mentor",
+            { params } // axios sẽ tự động nối các query parameters vào URL
         );
-        console.log("fetchMentorData: ",response.data.data);
-        return response.data.data;
+        return response.data.data; // trả về danh sách mentor
     }
 );
 
