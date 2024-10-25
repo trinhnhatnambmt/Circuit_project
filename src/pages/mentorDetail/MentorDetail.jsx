@@ -85,7 +85,7 @@ function MentorDetail() {
                         </div>
                     </div>
 
-                    <Comments />
+                    <Comments comments={mentorDetail.comments || []} />
                 </div>
             )}
         </div>
