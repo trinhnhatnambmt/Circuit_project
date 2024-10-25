@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { fetchMentorData } from "../../redux/features/mentor/mentorSlice";
 import FilterComponent from "~/components/Filter/Filter";
+import Loader from "~/components/Loader/Loader";
 function Mentor() {
     const dispatch = useDispatch();
     const { mentors, loading, error } = useSelector((state) => state.mentor);
@@ -28,12 +29,19 @@ function Mentor() {
                         <FilterComponent onApply={handleFilterApply} />
                     </div>
                     <div className="mentor__page-group">
-                        {loading && <p>Loading...</p>}
+                        {loading && (
+                            <div className="loader-container">
+                                <Loader />
+                            </div>
+                        )}
                         {error && <p>Error: {error}</p>}
-                        {mentors.length > 0 &&
+                        {!loading &&
+                            mentors.length > 0 &&
                             mentors.map((mentor, index) => (
                                 <div className="mentor__page-item" key={index}>
-                                    <Link to="/mentorDetail">
+                                    <Link
+                                        to={`/mentorDetail/${mentor.accountId}`}
+                                    >
                                         {" "}
                                         <img
                                             src={mentor.avatar}
@@ -46,11 +54,13 @@ function Mentor() {
                                     </button>
                                     <div className="mentor__info">
                                         <div className="mentor__major">
-                                            {mentor.specializationList}
+                                            {mentor.specializationList.join(
+                                                " | "
+                                            )}
                                         </div>
                                         <div className="mentor__name">
                                             <Link
-                                                to="/mentorDetail"
+                                                to={`/mentorDetail/${mentor.accountId}`}
                                                 className="name"
                                             >
                                                 {mentor.accountName}

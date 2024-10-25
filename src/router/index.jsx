@@ -22,6 +22,8 @@ import WritePage from "../pages/writePage/WritePage";
 import ScheduleManagement from "../pages/scheduleManagement/ScheduleManagement";
 import MemberManagement from "../pages/MemberManagement/MemberManagement";
 import ProtectedRoute from "~/components/Protected/ProtectedRoute";
+import ManageTopic from "~/pages/admin/Topic/ManageTopic/ManageTopic";
+import ManageBlog from "~/pages/admin/ManageBlog/MangeBlog";
 
 function Routers() {
     const router = createBrowserRouter([
@@ -42,7 +44,7 @@ function Routers() {
                     element: <Mentor />,
                 },
                 {
-                    path: "/mentorDetail",
+                    path: "/mentorDetail/:id",
                     element: <MentorDetail />,
                 },
                 {
@@ -62,7 +64,7 @@ function Routers() {
                     element: <BlogCategories />,
                 },
                 {
-                    path: "blogDetail",
+                    path: "blogDetail/:id",
                     element: <BlogDetail />,
                 },
                 {
@@ -106,7 +108,11 @@ function Routers() {
             children: [
                 {
                     path: "",
-                    element: <Admin />,
+                    element: (
+                        // <ProtectedRoute>
+                        <Admin />
+                        // </ProtectedRoute>
+                    ),
                 },
                 {
                     path: "manageUsers",
@@ -119,6 +125,14 @@ function Routers() {
                 {
                     path: "manageStudents",
                     element: <ManageStudent />,
+                },
+                {
+                    path: "manageTopic",
+                    element: <ManageTopic />,
+                },
+                {
+                    path: "manageBlogs",
+                    element: <ManageBlog />,
                 },
             ],
         },

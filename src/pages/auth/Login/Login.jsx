@@ -10,7 +10,7 @@ import Logo from "../../../components/Header/Logo/Logo";
 import { useState } from "react";
 import { postLogin } from "../../../services/apiServices";
 import { toast } from "react-toastify";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { FETCH_USER_LOGIN_SUCCESS } from "../../../redux/features/user/userSlice";
 
 function Login() {
@@ -24,7 +24,10 @@ function Login() {
         if (res && res.code === 200) {
             dispatch(FETCH_USER_LOGIN_SUCCESS(res));
             toast.success(res.message);
-            navigate("/");
+
+            if (res.role === "ADMIN") {
+                navigate("/admin");
+            } else navigate("/");
         } else {
             toast.error(res.message);
             toast.error(res.error);
@@ -52,7 +55,7 @@ function Login() {
                         <div className="form__group">
                             <div className="form__text-input">
                                 <input
-                                    type="email"
+                                    type=""
                                     name=""
                                     id=""
                                     placeholder="Email"

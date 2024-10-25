@@ -2,7 +2,7 @@ import { Rate } from "antd";
 import TextArea from "antd/es/input/TextArea";
 import { mentor } from "../../assets/image";
 
-function Comments() {
+function Comments({ comments }) {
     return (
         <div className="mentor-detail__reviews">
             <div
@@ -40,26 +40,25 @@ function Comments() {
                 <div className="customer__feedback-title">
                     What our customers are saying
                 </div>
-                <div className="customer__feedback-card">
-                    <img src={mentor} alt="" className="feedback-avt" />
-                    <div className="customer__feedback-info">
-                        <h1 className="info-name">Jakir Hussen</h1>
-                        <Rate allowHalf defaultValue={2.5} />
-                        <p className="info-desc">
-                            Great product, I love this Coffee Beans{" "}
-                        </p>
-                    </div>
-                </div>
-                <div className="customer__feedback-card">
-                    <img src={mentor} alt="" className="feedback-avt" />
-                    <div className="customer__feedback-info">
-                        <h1 className="info-name">Jakir Hussen</h1>
-                        <Rate allowHalf defaultValue={2.5} />
-                        <p className="info-desc">
-                            Great product, I love this Coffee Beans{" "}
-                        </p>
-                    </div>
-                </div>
+                {comments.length > 0 ? (
+                    comments.map((comment) => (
+                        <div
+                            className="customer__feedback-card"
+                            key={comment.id}
+                        >
+                            <img src={mentor} alt="" className="feedback-avt" />
+                            <div className="customer__feedback-info">
+                                <h1 className="info-name">Jakir Hussen</h1>
+                                <Rate allowHalf defaultValue={2.5} />
+                                <p className="info-desc">
+                                    {comment.description}
+                                </p>
+                            </div>
+                        </div>
+                    ))
+                ) : (
+                    <p style={{ marginTop: "10px" }}>No comments yet...</p>
+                )}
             </div>
         </div>
     );

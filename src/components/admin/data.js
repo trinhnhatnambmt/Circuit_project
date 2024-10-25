@@ -49,33 +49,22 @@ export const menu = [
         listItems: [
             {
                 id: 1,
-                title: "Booking",
-                url: "/",
+                title: "Topic",
+                url: "/admin/manageTopic",
                 icon: "element.svg",
             },
             {
                 id: 2,
-                title: "Approve ",
-                url: "/",
-                icon: "note.svg",
+                title: "Blogs",
+                url: "/admin/manageBlogs",
+                icon: "calendar.svg",
             },
+
             {
-                id: 3,
+                id: 4,
                 title: "Project ",
                 url: "/",
                 icon: "form.svg",
-            },
-            {
-                id: 4,
-                title: "Calendar",
-                url: "/",
-                icon: "calendar.svg",
-            },
-            {
-                id: 5,
-                title: "Blogs",
-                url: "/",
-                icon: "calendar.svg",
             },
         ],
     },

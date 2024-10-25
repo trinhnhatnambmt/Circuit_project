@@ -2,12 +2,13 @@
     background-color: #fff;
     padding: 30px 0;
 
-    &__inner {
+    &__content-act {
         display: flex;
+        align-items: center;
         justify-content: space-between;
     }
     &__input {
-        padding: 20px 50px 50px;
+        padding: 50px 0;
         font-size: 64px;
         border: none;
         outline: none;
@@ -19,18 +20,19 @@
 
     .writePage__editor {
         display: flex;
-        align-items: center; // Đảm bảo các thành phần nằm ngang và căn giữa theo chiều dọc
-        justify-content: space-between;
-        position: relative;
-        .textArea {
-            flex: 1; // Đảm bảo ReactQuill chiếm phần lớn không gian
-            margin-left: 50px;
+        // align-items: center;
+        gap: 10px;
+        height: 500px; // Tăng chiều cao cho editor
+        .editor {
+            width: 70%;
         }
 
-        .ant-float-btn-group {
-            position: absolute;
-            top: 0;
-            right: auto;
+        .writePage__editor-img {
+            width: 30%;
+        }
+        .ql-container {
+            height: 457px; // Đảm bảo editor không bị cụt
+            overflow-y: auto;
         }
     }
 

@@ -11,7 +11,8 @@ const FilterDropdown = ({ onApply }) => {
     const [minPrice, setMinPrice] = useState("");
     const [maxPrice, setMaxPrice] = useState("");
     const [name, setName] = useState("");
-    const [selectedSpecialization, setSelectedSpecialization] = useState("SCIENCE");
+    const [selectedSpecialization, setSelectedSpecialization] =
+        useState("SCIENCE");
 
     const fetchSpecialization = async () => {
         const response = await getAllSpecialization();
@@ -34,7 +35,6 @@ const FilterDropdown = ({ onApply }) => {
 
     const menu = (
         <Menu>
-            {/* Thay Date range bằng price range */}
             <Menu.Item key="1">
                 <div>
                     <label style={{ fontWeight: "bold" }}>Price Range</label>

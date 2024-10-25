@@ -42,6 +42,13 @@
     .blog__card-desc {
         font-size: 18px;
         font-weight: 300;
+        display: -webkit-box; /* Dùng với line-clamp */
+        -webkit-line-clamp: 3; /* Số dòng muốn giới hạn */
+        -webkit-box-orient: vertical;
+        overflow: hidden; /* Ẩn phần text dư */
+        text-overflow: ellipsis; /* Hiển thị dấu "..." */
+        height: auto; /* Đảm bảo chiều cao thay đổi tuỳ nội dung */
+        line-height: 1.5; /* Khoảng cách dòng cho dễ đọc */
     }
 
     .blog__card-link {

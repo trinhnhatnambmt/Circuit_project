@@ -59,6 +59,34 @@ const getAllSpecialization = () => {
     return response;
 };
 
+const getDataUserWithId = (id) => {
+    return axios.get(`account/profile/${id}`);
+};
+
+const getAllTopic = () => {
+    return axios.get("topic/view");
+};
+
+const getAdminBlogs = () => {
+    return axios.get("admin/blogs");
+};
+
+const getAdminTopics = () => {
+    return axios.get("admin/topics");
+};
+
+const getAllBlog = () => {
+    return axios.get("blog/view/all");
+};
+
+const getBlogWithId = (id) => {
+    return axios.get(`blog/view/${id}`);
+};
+
+const getBlogCategories = () => {
+    return axios.get(`blog/category/get-all`);
+};
+
 export {
     postCreateNewUser,
     postLogin,
@@ -68,4 +96,11 @@ export {
     getUserProfile,
     resetPassword,
     getAllSpecialization,
+    getDataUserWithId,
+    getAllTopic,
+    getAdminBlogs,
+    getAllBlog,
+    getBlogWithId,
+    getAdminTopics,
+    getBlogCategories,
 };

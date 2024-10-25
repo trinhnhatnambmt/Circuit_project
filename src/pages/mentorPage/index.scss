@@ -1,3 +1,16 @@
+.loader-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 999;
+}
+
 .mentor__page {
     margin-top: 83px;
 
@@ -25,7 +38,7 @@
             position: relative;
             width: 100%; /* Cho item rộng full khung grid */
             max-width: 370px; /* Giới hạn chiều rộng tối đa */
-            height: 481px;
+            height: fit-content;
             border-radius: 12px;
             background: #fff;
             margin: 0 auto; /* Giúp căn giữa item nếu nhỏ hơn khung grid */

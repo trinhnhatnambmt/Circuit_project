@@ -104,7 +104,7 @@ function PersonalInfo() {
 
             dispatch(fetchUserData(accessToken));
             setLoading(false);
-            toast.success("Successfully updated user");
+            
             form.resetFields();
             setFileList([]);
             handleCloseModal();
