@@ -5,12 +5,14 @@ import axios from "axios";
 import { useSelector } from "react-redux";
 import Card from "~/components/blog/cardList/card/Card";
 import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 function MyBlog() {
     const [posts, setPosts] = useState([]); // Khởi tạo posts với mảng rỗng
     const accessToken = useSelector((state) => state.user.account.access_token);
     const [currentPage, setCurrentPage] = useState(1);
     const [postsPerPage] = useState(5);
+    const navigate = useNavigate();
 
     const fetchDataPosts = async () => {
         try {
@@ -53,6 +55,10 @@ function MyBlog() {
         }
     };
 
+    const handleEdit = (id) => {
+        navigate(`editBlogPage/${id}`);
+    };
+
     // Tính toán các bài viết hiển thị trên trang hiện tại
     const indexOfLastPost = currentPage * postsPerPage;
     const indexOfFirstPost = indexOfLastPost - postsPerPage;
@@ -75,6 +81,7 @@ function MyBlog() {
                                 post={post}
                                 isMyBlog={true}
                                 onDelete={handleDelete}
+                                onEdit={handleEdit}
                             />
                         ))}
                     </div>

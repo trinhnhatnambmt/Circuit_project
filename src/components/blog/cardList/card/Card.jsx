@@ -31,6 +31,7 @@ function Card({ post, isMyBlog, onEdit, onDelete }) {
                                 backgroundColor: "#b5ed3d",
                                 color: "#032e32",
                             }}
+                            onClick={() => onEdit(post.id)}
                         >
                             Edit
                         </Button>

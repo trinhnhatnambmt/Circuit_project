@@ -25,6 +25,7 @@ import ProtectedRoute from "~/components/Protected/ProtectedRoute";
 import ManageTopic from "~/pages/admin/Topic/ManageTopic/ManageTopic";
 import ManageBlog from "~/pages/admin/ManageBlog/MangeBlog";
 import MyBlog from "~/pages/myBlogPage/MyBlog";
+import EditBlogPage from "~/pages/editBlogPage/EditBlogPage";
 
 function Routers() {
     const router = createBrowserRouter([
@@ -71,6 +72,10 @@ function Routers() {
                 {
                     path: "writePage",
                     element: <WritePage />,
+                },
+                {
+                    path: "myBlogPage/editBlogPage/:id",
+                    element: <EditBlogPage />,
                 },
                 {
                     path: "/scheduleManagement",
