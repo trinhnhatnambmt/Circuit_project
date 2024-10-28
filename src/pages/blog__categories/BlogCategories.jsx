@@ -2,16 +2,18 @@ import { useParams } from "react-router-dom";
 import Blog_Menu from "../../components/blog/menu/Menu";
 import "./index.scss";
 import { useEffect, useState } from "react";
-import { getBlogWithCategories } from "~/services/apiServices";
 import Card from "~/components/blog/cardList/card/Card";
+import axios from "axios";
 function BlogCategories() {
     const params = useParams();
     const categoryPath = params.category;
     const [posts, setPosts] = useState([]);
 
     const fetchDataBlog = async () => {
-        const res = await getBlogWithCategories(categoryPath);
-        setPosts(res.data);
+        const res = await axios.get(
+            `http://167.71.220.5:8080/blog/view/by-category/${categoryPath}`
+        );
+        setPosts(res.data.data);
     };
 
     useEffect(() => {

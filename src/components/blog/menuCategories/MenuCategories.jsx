@@ -2,11 +2,14 @@ import { Link } from "react-router-dom";
 import "./index.scss";
 import { useEffect, useState } from "react";
 import { getBlogCategories } from "~/services/apiServices";
+import axios from "axios";
 function MenuCategories() {
     const [categories, setCategories] = useState([]);
     const fetchCategories = async () => {
-        const res = await getBlogCategories();
-        setCategories(res.data);
+        const res = await axios.get(
+            "http://167.71.220.5:8080/blog/category/get-all "
+        );
+        setCategories(res.data.data || []);
     };
 
     useEffect(() => {

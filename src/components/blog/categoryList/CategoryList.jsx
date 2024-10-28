@@ -2,12 +2,20 @@ import { Link } from "react-router-dom";
 import { background } from "../../../assets/image";
 import "./index.scss";
 import { useEffect, useState } from "react";
-import { getBlogCategories } from "~/services/apiServices";
+import axios from "axios";
+
 function CategoryList() {
     const [categories, setCategories] = useState([]);
+
     const fetchCategories = async () => {
-        const res = await getBlogCategories();
-        setCategories(res.data);
+        try {
+            const res = await axios.get(
+                "http://167.71.220.5:8080/blog/category/get-all"
+            );
+            setCategories(res.data.data || []);
+        } catch (error) {
+            console.error("Failed to fetch categories:", error);
+        }
     };
 
     useEffect(() => {

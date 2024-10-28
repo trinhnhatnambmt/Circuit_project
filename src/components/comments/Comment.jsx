@@ -1,44 +1,136 @@
-import { Button, Rate } from "antd";
+import { Button, Form, Rate, Spin, Dropdown, Menu } from "antd"; // Import Dropdown, Menu
 import TextArea from "antd/es/input/TextArea";
 import { mentor } from "../../assets/image";
 import { useState } from "react";
 import axios from "axios";
 import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
+import Modal from "antd/es/modal/Modal";
+import { useForm } from "antd/es/form/Form";
+import { EllipsisOutlined } from "@ant-design/icons"; // Import biểu tượng
 
-function Comments({ comments, blogId }) {
+function Comments({ comments, blogId, fetchBlogDetail }) {
     const accessToken = useSelector((state) => state.user.account.access_token);
     const [commentText, setCommentText] = useState("");
+    const [loading, setLoading] = useState(false);
+    const [loadingComments, setLoadingComments] = useState({});
     const userInfo = useSelector((state) => state.user.account.userInfo);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [currentCommentId, setCurrentCommentId] = useState(null);
     const author = userInfo.data.name;
+    const [form] = useForm();
+
+    const handleOk = async () => {
+        try {
+            await form.validateFields();
+            const values = form.getFieldsValue();
+            setLoading(true);
+            await handleEditComment(currentCommentId, values.description);
+            setIsModalOpen(false);
+            form.resetFields();
+        } catch (error) {
+            console.error("Validation Failed:", error);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const showModal = (comment) => {
+        setIsModalOpen(true);
+        setCurrentCommentId(comment.id);
+        form.setFieldsValue({ description: comment.description });
+    };
+
+    const handleCancel = () => {
+        setIsModalOpen(false);
+        form.resetFields();
+    };
 
     const handleComments = async () => {
-        await axios.post(
-            `http://167.71.220.5:8080/comment/create`,
-            {
-                blogId: blogId,
-                comment: commentText,
-            },
-            {
-                headers: {
-                    Authorization: `Bearer ${accessToken}`,
+        setLoading(true);
+        try {
+            await axios.post(
+                `http://167.71.220.5:8080/comment/create`,
+                {
+                    blogId: blogId,
+                    comment: commentText,
                 },
-            }
-        );
-        setCommentText("");
+                {
+                    headers: {
+                        Authorization: `Bearer ${accessToken}`,
+                    },
+                }
+            );
+
+            toast.success("Create comment successfully!!!");
+            fetchBlogDetail();
+            setCommentText("");
+        } catch (error) {
+            console.error("Failed to add comment:", error);
+            toast.error("Failed to create comment.");
+        } finally {
+            setLoading(false);
+        }
     };
 
     const handleDeleteComment = async (commentId) => {
-        const res = await axios.delete(
-            `http://167.71.220.5:8080/comment/delete/${commentId}`,
-            {
-                headers: {
-                    Authorization: `Bearer ${accessToken}`,
-                },
-            }
-        );
-        toast.success(res.data.message);
+        setLoadingComments((prev) => ({ ...prev, [commentId]: true }));
+        try {
+            const res = await axios.delete(
+                `http://167.71.220.5:8080/comment/delete/${commentId}`,
+                {
+                    headers: {
+                        Authorization: `Bearer ${accessToken}`,
+                    },
+                }
+            );
+
+            fetchBlogDetail();
+            toast.success(res.data.message);
+        } catch (error) {
+            console.error("Failed to delete comment:", error);
+            toast.error("Failed to delete comment.");
+        } finally {
+            setLoadingComments((prev) => ({ ...prev, [commentId]: false }));
+        }
     };
+
+    const handleEditComment = async (commentId, newDescription) => {
+        try {
+            const res = await axios.put(
+                `http://167.71.220.5:8080/comment/update/${commentId}`,
+                { comment: newDescription },
+                {
+                    headers: {
+                        Authorization: `Bearer ${accessToken}`,
+                    },
+                }
+            );
+
+            toast.success(res.data.message);
+            fetchBlogDetail();
+        } catch (error) {
+            console.error("Failed to update comment:", error);
+            toast.error("Failed to update comment.");
+        }
+    };
+
+    // Menu cho các hành động Edit và Delete
+    const menu = (comment) => (
+        <Menu>
+            <Menu.Item key="1" onClick={() => showModal(comment)}>
+                Edit
+            </Menu.Item>
+            <Menu.Item
+                key="2"
+                danger
+                onClick={() => handleDeleteComment(comment.id)}
+            >
+                Delete
+            </Menu.Item>
+        </Menu>
+    );
+
     return (
         <div className="mentor-detail__reviews">
             <div
@@ -71,10 +163,11 @@ function Comments({ comments, blogId }) {
                         Cancel
                     </button>
                     <button
-                        onClick={() => handleComments()}
+                        onClick={handleComments}
                         className="btn submit__btn"
+                        disabled={loading}
                     >
-                        Submit feedback
+                        {loading ? <Spin size="small" /> : "Submit feedback"}
                     </button>
                 </div>
             </div>
@@ -84,39 +177,85 @@ function Comments({ comments, blogId }) {
                 </div>
                 {comments.length > 0 ? (
                     comments.map((comment) => (
-                        //Comments
                         <div
                             className="customer__feedback-card"
                             key={comment.id}
                         >
-                            <img src={mentor} alt="" className="feedback-avt" />
+                            <img
+                                src={comment.authorAvatarUrl}
+                                alt=""
+                                className="feedback-avt"
+                            />
                             <div className="customer__feedback-info">
-                                <h1 className="info-name">
-                                    {comment.authorName}
-                                </h1>
+                                <div className="info-wrapper">
+                                    <h1 className="info-name">
+                                        {comment.authorName}
+                                    </h1>
+                                    {comment.authorName === author && (
+                                        <div className="comment__act">
+                                            <Dropdown
+                                                overlay={menu(comment)}
+                                                trigger={["click"]}
+                                            >
+                                                <Button
+                                                    icon={<EllipsisOutlined />}
+                                                />
+                                            </Dropdown>
+                                        </div>
+                                    )}
+                                </div>
                                 <p className="info-desc">
                                     {comment.description}
                                 </p>
-                                {comment.authorName === author && (
-                                    <div className="comment__act">
-                                        <Button type="primary">Edit</Button>
-                                        <Button
-                                            type="primary"
-                                            danger
-                                            onClick={() =>
-                                                handleDeleteComment(comment.id)
-                                            }
-                                        >
-                                            Delete
-                                        </Button>
-                                    </div>
-                                )}
                             </div>
                         </div>
                     ))
                 ) : (
                     <p style={{ marginTop: "10px" }}>No comments yet...</p>
                 )}
+                <Modal
+                    title="Edit Comment"
+                    open={isModalOpen}
+                    footer={[
+                        <Button key="back" onClick={handleCancel}>
+                            Cancel
+                        </Button>,
+                        <Button
+                            type="primary"
+                            onClick={handleOk}
+                            loading={loading}
+                            key=""
+                            style={{
+                                backgroundColor: "#b5ed3d",
+                                color: "#032e32",
+                            }}
+                        >
+                            Confirm
+                        </Button>,
+                    ]}
+                    onCancel={handleCancel}
+                >
+                    <Form
+                        name="basic"
+                        labelCol={{
+                            span: 24,
+                        }}
+                        form={form}
+                    >
+                        <Form.Item
+                            name="description"
+                            label="Description"
+                            rules={[
+                                {
+                                    required: true,
+                                    message: "Please input your description!",
+                                },
+                            ]}
+                        >
+                            <TextArea style={{ height: "100px" }} />
+                        </Form.Item>
+                    </Form>
+                </Modal>
             </div>
         </div>
     );
