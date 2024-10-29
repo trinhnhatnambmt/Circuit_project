@@ -7,8 +7,8 @@ function ManageBlog() {
     const columns = [
         {
             title: "Author",
-            dataIndex: "author",
-            key: "author",
+            dataIndex: "authorName",
+            key: "authorName",
         },
         {
             title: "Title",
@@ -20,6 +20,7 @@ function ManageBlog() {
     const fetchDataBlogs = async () => {
         const response = await getAdminBlogs();
         setDataSource(response.data);
+        console.log("res", response);
     };
 
     useEffect(() => {

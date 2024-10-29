@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import "./index.scss";
 import { menu } from "../data";
 function AdminMenu() {
@@ -8,7 +8,7 @@ function AdminMenu() {
                 <div className="item" key={item.id}>
                     <span className="title">{item.title}</span>
                     {item.listItems.map((listItem) => (
-                        <Link
+                        <NavLink
                             to={listItem.url}
                             className="listItem"
                             key={listItem.id}
@@ -17,7 +17,7 @@ function AdminMenu() {
                             <span className="listItemTitle">
                                 {listItem.title}
                             </span>
-                        </Link>
+                        </NavLink>
                     ))}
                 </div>
             ))}

@@ -104,7 +104,7 @@ function PersonalInfo() {
 
             dispatch(fetchUserData(accessToken));
             setLoading(false);
-            
+
             form.resetFields();
             setFileList([]);
             handleCloseModal();
@@ -176,7 +176,7 @@ function PersonalInfo() {
                             />
                             <div className="payment-card__number">
                                 <img src={money} alt="" />
-                                1234
+                                {userInfo.data.walletPoint}
                             </div>
                             <div className="payment-card__bottom">
                                 <div>

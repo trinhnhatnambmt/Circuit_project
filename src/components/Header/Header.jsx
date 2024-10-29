@@ -135,6 +135,11 @@ function Header() {
                                     Blog
                                 </Link>
                             </li>
+                            <li>
+                                <Link to="/project" className="navbar__link">
+                                    Project
+                                </Link>
+                            </li>
                         </ul>
                     </nav>
 
@@ -183,7 +188,7 @@ function Header() {
                                             className="icon top-act__icon"
                                         />
                                         <span className="top-act__title">
-                                            0
+                                            {userInfo?.data?.walletPoint}
                                         </span>
                                     </button>
                                 </div>

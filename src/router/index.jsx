@@ -26,6 +26,7 @@ import ManageTopic from "~/pages/admin/Topic/ManageTopic/ManageTopic";
 import ManageBlog from "~/pages/admin/ManageBlog/MangeBlog";
 import MyBlog from "~/pages/myBlogPage/MyBlog";
 import EditBlogPage from "~/pages/editBlogPage/EditBlogPage";
+import Project from "~/pages/Project/Project";
 
 function Routers() {
     const router = createBrowserRouter([
@@ -85,6 +86,10 @@ function Routers() {
                     path: "/myBlogPage",
                     element: <MyBlog />,
                 },
+                {
+                    path: "/project",
+                    element: <Project />,
+                },
             ],
         },
         {
@@ -117,7 +122,7 @@ function Routers() {
             element: <AdminLayout />,
             children: [
                 {
-                    path: "",
+                    path: "dashboard",
                     element: (
                         // <ProtectedRoute>
                         <Admin />

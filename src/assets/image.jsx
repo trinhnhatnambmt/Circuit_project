@@ -59,8 +59,16 @@ import fire from "./img/fire.png";
 import image from "./img/image.png";
 import plus from "./img/plus.png";
 import video from "./img/video.png";
+import account from "./icons/account.svg";
+import dashboard from "./icons/dashboard.svg";
+import student from "./icons/student.svg";
+import blog from "./icons/blog.svg";
 
 export {
+    blog,
+    student,
+    dashboard,
+    account,
     image,
     plus,
     video,

@@ -1,4 +1,12 @@
-import { home } from "../../assets/image";
+import {
+    account,
+    blog,
+    dashboard,
+    major,
+    mentor__icon,
+    myOrder,
+    student,
+} from "../../assets/image";
 
 export const menu = [
     {
@@ -8,8 +16,8 @@ export const menu = [
             {
                 id: 1,
                 title: "Dashboard",
-                url: "/admin",
-                icon: { home },
+                url: "/admin/dashboard",
+                icon: dashboard,
             },
         ],
     },
@@ -21,25 +29,25 @@ export const menu = [
                 id: 1,
                 title: "Users",
                 url: "/admin/manageUsers",
-                icon: "user.svg",
+                icon: account,
             },
             {
                 id: 2,
                 title: "Mentor",
                 url: "/admin/manageMentors",
-                icon: "product.svg",
+                icon: mentor__icon,
             },
             {
                 id: 3,
                 title: "Student",
                 url: "/admin/manageStudents",
-                icon: "order.svg",
+                icon: student,
             },
             {
                 id: 4,
                 title: "Appointment",
                 url: "/posts",
-                icon: "post2.svg",
+                icon: myOrder,
             },
         ],
     },
@@ -49,22 +57,15 @@ export const menu = [
         listItems: [
             {
                 id: 1,
-                title: "Topic",
+                title: "Project",
                 url: "/admin/manageTopic",
-                icon: "element.svg",
+                icon: major,
             },
             {
                 id: 2,
                 title: "Blogs",
                 url: "/admin/manageBlogs",
-                icon: "calendar.svg",
-            },
-
-            {
-                id: 4,
-                title: "Project ",
-                url: "/",
-                icon: "form.svg",
+                icon: blog,
             },
         ],
     },
@@ -74,7 +75,7 @@ export const menu = [
         listItems: [
             {
                 id: 1,
-                title: "Settings",
+                title: "Revenue",
                 url: "/",
                 icon: "setting.svg",
             },
@@ -83,6 +84,18 @@ export const menu = [
                 title: "Discounts",
                 url: "/",
                 icon: "backup.svg",
+            },
+            {
+                id: 3,
+                title: "Profit",
+                url: "/",
+                icon: "setting.svg",
+            },
+            {
+                id: 4,
+                title: "Settings",
+                url: "/",
+                icon: "setting.svg",
             },
         ],
     },

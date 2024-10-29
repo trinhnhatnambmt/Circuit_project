@@ -1,0 +1,13 @@
+.project {
+    background-color: #fff;
+    padding: 20px 0;
+
+    &__title {
+        font-size: 35px;
+        font-weight: 600;
+    }
+
+    &__desc {
+        margin-top: 20px;
+    }
+}
