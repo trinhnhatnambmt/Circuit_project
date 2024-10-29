@@ -50,6 +50,7 @@ function PersonalInfo() {
     const handleOk = () => {
         form.submit();
     };
+    
 
     const handleOpenModal = () => {
         setIsOpen(true);

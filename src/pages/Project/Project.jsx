@@ -2,7 +2,6 @@ import { Table, Tag } from "antd";
 import "./index.scss";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { render } from "sass";
 import { format } from "date-fns";
 function Project() {
     const [dataSource, setDataSource] = useState([]);
@@ -61,6 +60,7 @@ function Project() {
                 </p>
 
                 <div className="project__content">
+                    
                     <Table
                         dataSource={dataSource}
                         columns={columns}
