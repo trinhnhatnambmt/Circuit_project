@@ -12,6 +12,7 @@ import { getAdminTopics } from "~/services/apiServices";
 function ManageTopic() {
     const [dataSource, setDataSource] = useState([]);
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [loading, setLoading] = useState(false);
     const accessToken = useSelector((state) => state.user.account.access_token);
     const [form] = useForm();
     const columns = [
@@ -97,33 +98,40 @@ function ManageTopic() {
     };
 
     const handleSaveTopic = async (values) => {
-        if (values.id) {
-            const res = await axios.put(
-                `http://167.71.220.5:8080/topic/update/${values.id}`,
-                values,
-                {
-                    headers: {
-                        Authorization: `Bearer ${accessToken}`,
-                    },
-                }
-            );
-            toast.success(res.data.message);
-        } else {
-            const res = await axios.post(
-                "http://167.71.220.5:8080/topic/create",
-                values,
-                {
-                    headers: {
-                        Authorization: `Bearer ${accessToken}`,
-                    },
-                }
-            );
-            toast.success(res.data.message);
-        }
+        setLoading(true);
+        try {
+            if (values.id) {
+                const res = await axios.put(
+                    `http://167.71.220.5:8080/topic/update/${values.id}`,
+                    values,
+                    {
+                        headers: {
+                            Authorization: `Bearer ${accessToken}`,
+                        },
+                    }
+                );
+                toast.success(res.data.message);
+            } else {
+                const res = await axios.post(
+                    "http://167.71.220.5:8080/topic/create",
+                    values,
+                    {
+                        headers: {
+                            Authorization: `Bearer ${accessToken}`,
+                        },
+                    }
+                );
+                toast.success(res.data.message);
+            }
 
-        fetchDataTopic();
-        handleCancel();
-        form.resetFields();
+            fetchDataTopic();
+            handleCancel();
+            form.resetFields();
+        } catch (error) {
+            toast.error(error);
+        } finally {
+            setLoading(false);
+        }
     };
 
     const showModal = () => {
@@ -157,6 +165,20 @@ function ManageTopic() {
                 onOk={handleOk}
                 onCancel={handleCancel}
                 width={1000}
+                footer={[
+                    <Button key="back" onClick={handleCancel}>
+                        Cancel
+                    </Button>,
+                    <Button
+                        type="primary"
+                        onClick={handleOk}
+                        loading={loading}
+                        key=""
+                        style={{ backgroundColor: "#b5ed3d", color: "#032e32" }}
+                    >
+                        Confirm
+                    </Button>,
+                ]}
             >
                 <Form
                     name="basic"
