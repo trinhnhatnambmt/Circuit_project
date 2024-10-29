@@ -27,6 +27,7 @@ import ManageBlog from "~/pages/admin/ManageBlog/MangeBlog";
 import MyBlog from "~/pages/myBlogPage/MyBlog";
 import EditBlogPage from "~/pages/editBlogPage/EditBlogPage";
 import Project from "~/pages/Project/Project";
+import ProjectManagement from "~/pages/ProjectManagement/ProjectManagement";
 
 function Routers() {
     const router = createBrowserRouter([
@@ -81,6 +82,10 @@ function Routers() {
                 {
                     path: "/scheduleManagement",
                     element: <ScheduleManagement />,
+                },
+                {
+                    path: "/projectManagement",
+                    element: <ProjectManagement />,
                 },
                 {
                     path: "/myBlogPage",
