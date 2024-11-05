@@ -34,7 +34,7 @@ function Mentor() {
                                 <Loader />
                             </div>
                         )}
-                        {error && <p>Error: {error}</p>}
+                        {/* {error && <p>Error: {error}</p>} */}
                         {!loading &&
                             mentors.length > 0 &&
                             mentors.map((mentor, index) => (

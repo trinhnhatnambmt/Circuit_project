@@ -5,6 +5,8 @@ import Sidebar from "../../components/sidebar/Sidebar";
 import "./index.scss";
 import MyAppointment from "../../components/myAppointment/MyAppointment";
 import Password from "../../components/pass&Security/Password";
+import MyBooking from "~/components/myBooking/MyBooking";
+import MySchedule from "~/components/mySchedule/MySchedule";
 function Profile() {
     const [activeComponent, setActiveComponent] = useState("PersonalInfo");
 
@@ -17,6 +19,12 @@ function Profile() {
         }
         if (activeComponent === "MyAppointment") {
             return <MyAppointment />;
+        }
+        if (activeComponent === "MyBooking") {
+            return <MyBooking />;
+        }
+        if (activeComponent === "MySchedule") {
+            return <MySchedule />;
         }
         if (activeComponent === "Password&Security") {
             return <Password />;

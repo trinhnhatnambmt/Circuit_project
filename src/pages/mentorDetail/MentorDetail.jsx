@@ -50,7 +50,7 @@ function MentorDetail() {
                                 <img src={tick} alt="" />
                             </div>
                             <div className="mentor__detail-major">
-                                {mentorDetail.specializations.join(" / ")}
+                                {mentorDetail.specializations}
                                 <img className="icon" src={major} alt />
                             </div>
                             <div className="mentor__detail-desc">

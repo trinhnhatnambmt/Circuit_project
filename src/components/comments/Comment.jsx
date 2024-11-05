@@ -17,7 +17,8 @@ function Comments({ comments, blogId, fetchBlogDetail }) {
     const userInfo = useSelector((state) => state.user.account.userInfo);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [currentCommentId, setCurrentCommentId] = useState(null);
-    const author = userInfo.data.name;
+    const author = userInfo?.data?.name || "Anonymous";
+
     const [form] = useForm();
 
     const handleOk = async () => {

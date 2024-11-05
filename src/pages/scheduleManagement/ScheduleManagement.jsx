@@ -3,6 +3,8 @@ import "./index.scss";
 import { useState } from "react";
 import dayjs from "dayjs";
 import { toast } from "react-toastify";
+import axios from "axios";
+import { useSelector } from "react-redux";
 
 function ScheduleManagement() {
     const [value, setValue] = useState(() => dayjs());
@@ -10,7 +12,7 @@ function ScheduleManagement() {
     const [time, setTime] = useState([dayjs(), dayjs().add(2, "hour")]); // Mặc định khoảng cách 2 giờ
     const [formattedDateStarTime, setFormattedDateStarTime] = useState(""); // State for formatted start time
     const [formattedDateEndTime, setFormattedDateEndTime] = useState(""); // State for formatted end time
-    const [isOpen, setIsOpen] = useState(false);
+    const accessToken = useSelector((state) => state.user.account.access_token);
 
     const onSelect = (newValue) => {
         setValue(newValue);
@@ -22,28 +24,53 @@ function ScheduleManagement() {
     };
 
     const handleTimeChange = (newTime) => {
-        setTime(newTime);
-        const [startTime, endTime] = newTime;
+        if (newTime && newTime.length === 2) {
+            setTime(newTime);
 
-        const selectedDateStartTime = dayjs(selectedValue)
-            .hour(startTime.hour())
-            .minute(startTime.minute());
-        const formattedStart =
-            selectedDateStartTime.format("YYYY-MM-DD'T'HH:mm");
+            const [startTime, endTime] = newTime;
 
-        const selectedDateEndTime = dayjs(selectedValue)
-            .hour(endTime.hour())
-            .minute(endTime.minute());
-        const formattedEnd = selectedDateEndTime.format("YYYY-MM-DD'T'HH:mm");
+            const selectedDateStartTime = dayjs(selectedValue)
+                .hour(startTime.hour())
+                .minute(startTime.minute());
+            const formattedStart = selectedDateStartTime.format("HH:mm:ss");
 
-        setFormattedDateStarTime(formattedStart);
-        setFormattedDateEndTime(formattedEnd);
+            const selectedDateEndTime = dayjs(selectedValue)
+                .hour(endTime.hour())
+                .minute(endTime.minute());
+            const formattedEnd = selectedDateEndTime.format("HH:mm:ss");
+
+            setFormattedDateStarTime(formattedStart);
+            setFormattedDateEndTime(formattedEnd);
+        }
     };
 
-    const handleSubmit = () => {
-        console.log("Selected Start DateTime:", formattedDateStarTime);
-        console.log("Selected End DateTime:", formattedDateEndTime);
-        toast.success("Free schedule registration successful!!");
+    const handleSubmit = async () => {
+        // console.log(
+        //     `You selected date: ${selectedValue?.format("YYYY-MM-DD")}`
+        // );
+
+        // console.log("Selected Start DateTime:", formattedDateStarTime);
+        // console.log("Selected End DateTime:", formattedDateEndTime);
+        const res = await axios.post(
+            "http://167.71.220.5:8080/mentor/schedule/create",
+            {
+                date: `${selectedValue?.format("YYYY-MM-DD")}`,
+                startFrom: formattedDateStarTime,
+                endAt: formattedDateEndTime,
+            },
+            {
+                headers: {
+                    Authorization: `Bearer ${accessToken}`,
+                },
+            }
+        );
+
+        toast.success(res.data.message);
+        setValue(dayjs());
+        setSelectedValue(dayjs());
+        setTime([dayjs(), dayjs().add(2, "hour")]);
+        setFormattedDateStarTime("");
+        setFormattedDateEndTime("");
     };
 
     // Hàm để disable các giờ và phút cho endTime, đảm bảo cách ít nhất 2 giờ
@@ -127,31 +154,6 @@ function ScheduleManagement() {
                         >
                             Submit
                         </Button>
-                        <Button
-                            type="primary"
-                            style={{
-                                margin: "10px",
-                                backgroundColor: "#b5ed3d",
-                                color: "#032e32",
-                            }}
-                            onClick={() => setIsOpen(true)}
-                        >
-                            Show your free time
-                        </Button>
-                        <Drawer
-                            title="Your free time"
-                            onClose={() => setIsOpen(false)}
-                            open={isOpen}
-                        >
-                            <Alert
-                                message={`Your selected time on ${selectedValue?.format(
-                                    "YYYY-MM-DD"
-                                )}`}
-                                description={`From: ${formattedDateStarTime} To: ${formattedDateEndTime}`}
-                                type="success"
-                                showIcon
-                            />
-                        </Drawer>
                     </div>
                 </div>
             </div>

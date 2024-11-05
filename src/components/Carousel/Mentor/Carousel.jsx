@@ -11,9 +11,20 @@ import "./index.scss";
 // Import required modules
 import { Autoplay, Scrollbar } from "swiper/modules";
 import { mentor } from "../../../assets/image";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchMentorData } from "~/redux/features/mentor/mentorSlice";
 
 //defaults value of props
 export default function Carousel({ numberOfSlides = 4, autoplay = false }) {
+    const dispatch = useDispatch();
+    const { mentors, loading, error } = useSelector((state) => state.mentor);
+
+    useEffect(() => {
+        dispatch(fetchMentorData({}));
+    }, [dispatch]);
+
+    console.log("mentor:", mentors);
     return (
         <Swiper
             slidesPerView={numberOfSlides} // Hiển thị nhiều item trên một hàng
@@ -32,41 +43,24 @@ export default function Carousel({ numberOfSlides = 4, autoplay = false }) {
             }
             className={`carousel ${numberOfSlides > 1 ? "multi-items" : ""}`}
         >
-            <SwiperSlide>
-                <div className="mentor__item">
-                    <img src={mentor} alt="mentor" className="mentor__img" />
-                    <div className="mentor__name">Chris Haroun</div>
-                    <div className="mentor__major">Software engineer</div>
-                </div>
-            </SwiperSlide>
-            <SwiperSlide>
-                <div className="mentor__item">
-                    <img src={mentor} alt="mentor" className="mentor__img" />
-                    <div className="mentor__name">Chris Haroun</div>
-                    <div className="mentor__major">Software engineer</div>
-                </div>
-            </SwiperSlide>
-            <SwiperSlide>
-                <div className="mentor__item">
-                    <img src={mentor} alt="mentor" className="mentor__img" />
-                    <div className="mentor__name">Chris Haroun</div>
-                    <div className="mentor__major">Software engineer</div>
-                </div>
-            </SwiperSlide>
-            <SwiperSlide>
-                <div className="mentor__item">
-                    <img src={mentor} alt="mentor" className="mentor__img" />
-                    <div className="mentor__name">Chris Haroun</div>
-                    <div className="mentor__major">Software engineer</div>
-                </div>
-            </SwiperSlide>
-            <SwiperSlide>
-                <div className="mentor__item">
-                    <img src={mentor} alt="mentor" className="mentor__img" />
-                    <div className="mentor__name">Chris Haroun</div>
-                    <div className="mentor__major">Software engineer</div>
-                </div>
-            </SwiperSlide>
+            {mentors.length > 0 &&
+                mentors.map((mentor, index) => (
+                    <SwiperSlide key={index}>
+                        <div className="mentor__item">
+                            <img
+                                src={mentor.avatar}
+                                alt="mentor"
+                                className="mentor__img"
+                            />
+                            <div className="mentor__name">
+                                {mentor.accountName}
+                            </div>
+                            <div className="mentor__major">
+                                {mentor.accountEmail}
+                            </div>
+                        </div>
+                    </SwiperSlide>
+                ))}
         </Swiper>
     );
 }

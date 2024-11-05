@@ -60,14 +60,56 @@ function Sidebar({ setActiveComponent }) {
                 <div className="profile-menu">
                     <h3 className="profile-menu__title">My items</h3>
                     <ul className="profile-menu__list">
-                        <li onClick={() => setActiveComponent("MyAppointment")}>
-                            <Link href="#!" className="profile-menu__link">
-                                <span className="profile-menu__icon">
-                                    <img src={myOrder} alt className="icon" />
-                                </span>
-                                My Appointment
-                            </Link>
-                        </li>
+                        {userRole === "STUDENT" && (
+                            <li
+                                onClick={() =>
+                                    setActiveComponent("MyAppointment")
+                                }
+                            >
+                                <Link href="#!" className="profile-menu__link">
+                                    <span className="profile-menu__icon">
+                                        <img
+                                            src={myOrder}
+                                            alt
+                                            className="icon"
+                                        />
+                                    </span>
+                                    My Appointment
+                                </Link>
+                            </li>
+                        )}
+
+                        {userRole === "MENTOR" && (
+                            <li onClick={() => setActiveComponent("MyBooking")}>
+                                <Link to="#!" className="profile-menu__link">
+                                    <span className="profile-menu__icon">
+                                        <img
+                                            src={myOrder}
+                                            alt
+                                            className="icon"
+                                        />
+                                    </span>
+                                    My Booking
+                                </Link>
+                            </li>
+                        )}
+
+                        {userRole === "MENTOR" && (
+                            <li
+                                onClick={() => setActiveComponent("MySchedule")}
+                            >
+                                <Link to="#!" className="profile-menu__link">
+                                    <span className="profile-menu__icon">
+                                        <img
+                                            src={feedBack}
+                                            alt
+                                            className="icon"
+                                        />
+                                    </span>
+                                    My Schedule
+                                </Link>
+                            </li>
+                        )}
                         <li onClick={() => setActiveComponent("MyFavourite")}>
                             <Link className="profile-menu__link">
                                 <span className="profile-menu__icon">
@@ -76,21 +118,6 @@ function Sidebar({ setActiveComponent }) {
                                 My Favourite
                             </Link>
                         </li>
-
-                        {userRole === "MENTOR" && (
-                            <li>
-                                <a href="#!" className="profile-menu__link">
-                                    <span className="profile-menu__icon">
-                                        <img
-                                            src={feedBack}
-                                            alt
-                                            className="icon"
-                                        />
-                                    </span>
-                                    My Feedback
-                                </a>
-                            </li>
-                        )}
                     </ul>
                 </div>
                 {/* Menu 3 */}

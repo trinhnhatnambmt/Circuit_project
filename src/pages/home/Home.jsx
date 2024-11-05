@@ -193,7 +193,7 @@ function Home() {
                         </div>
                         <div className="home__mentor-desc">
                             <Link
-                                to=""
+                                to="/mentor"
                                 className="btn"
                                 style={{ fontSize: "16px" }}
                             >
