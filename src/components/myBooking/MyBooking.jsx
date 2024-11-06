@@ -3,7 +3,12 @@ import "./index.scss";
 import axios from "axios";
 import { useSelector } from "react-redux";
 import { Button, Space, Table, Tag } from "antd";
-import { CheckCircleOutlined, CloseCircleOutlined } from "@ant-design/icons";
+import {
+    CheckCircleOutlined,
+    CloseCircleOutlined,
+    LoadingOutlined,
+} from "@ant-design/icons";
+import { toast } from "react-toastify";
 function MyBooking() {
     const accessToken = useSelector((state) => state.user.account.access_token);
     const [bookings, setBookings] = useState([]);
@@ -23,6 +28,36 @@ function MyBooking() {
     useEffect(() => {
         fetchDataBooking();
     }, []);
+
+    const handleAcceptBooking = async (id) => {
+        const res = await axios.post(
+            `http://167.71.220.5:8080/mentor/booking/approve/${id}`,
+            {},
+            {
+                headers: {
+                    Authorization: `Bearer ${accessToken}`,
+                },
+            }
+        );
+
+        toast.success(res.data.message);
+        fetchDataBooking();
+    };
+
+    const handleRejectBooking = async (id) => {
+        const res = await axios.post(
+            `http://167.71.220.5:8080/mentor/booking/reject/${id}`,
+            {},
+            {
+                headers: {
+                    Authorization: `Bearer ${accessToken}`,
+                },
+            }
+        );
+
+        toast.success(res.data.message);
+        fetchDataBooking();
+    };
 
     const columns = [
         {
@@ -52,18 +87,42 @@ function MyBooking() {
             title: "Status",
             dataIndex: "status",
             key: "status",
-            render: (status) => <Tag color="green">{status}</Tag>,
+            render: (status) => {
+                if (status === "PROCESSING") {
+                    return (
+                        <Tag color="blue" icon={<LoadingOutlined spin />}>
+                            {status}
+                        </Tag>
+                    );
+                } else if (status === "SUCCESSFUL") {
+                    return (
+                        <Tag color="green" icon={<CheckCircleOutlined />}>
+                            {status}
+                        </Tag>
+                    );
+                } else if (status === "DECLINED") {
+                    return (
+                        <Tag color="red" icon={<CloseCircleOutlined />}>
+                            {status}
+                        </Tag>
+                    );
+                }
+                return <Tag>{status}</Tag>;
+            },
         },
         {
             title: "Action",
-            dataIndex: "id",
-            key: "id",
-            render: (id) => (
+            dataIndex: "status",
+            key: "action",
+            render: (status, record) => (
                 <Space>
                     <Button
                         type=""
                         icon={<CheckCircleOutlined />}
-                        // onClick={() => handleAccept(id)}
+                        disabled={
+                            status === "SUCCESSFUL" || status === "DECLINED"
+                        }
+                        onClick={() => handleAcceptBooking(record.bookingId)}
                     >
                         Accept
                     </Button>
@@ -71,7 +130,10 @@ function MyBooking() {
                         type="primary"
                         danger
                         icon={<CloseCircleOutlined />}
-                        // onClick={() => handleReject(id)}
+                        disabled={
+                            status === "SUCCESSFUL" || status === "DECLINED"
+                        }
+                        onClick={() => handleRejectBooking(record.bookingId)}
                     >
                         Reject
                     </Button>

@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import {
     avatar,
     feedBack,
@@ -43,7 +43,7 @@ function Sidebar({ setActiveComponent }) {
                     <h3 className="profile-menu__title">Manage Account</h3>
                     <ul className="profile-menu__list">
                         <li onClick={() => setActiveComponent("PersonalInfo")}>
-                            <Link className="profile-menu__link">
+                            <NavLink className="profile-menu__link">
                                 <span className="profile-menu__icon">
                                     <img
                                         src={personal_info}
@@ -52,7 +52,7 @@ function Sidebar({ setActiveComponent }) {
                                     />
                                 </span>
                                 Personal info
-                            </Link>
+                            </NavLink>
                         </li>
                     </ul>
                 </div>
@@ -66,7 +66,10 @@ function Sidebar({ setActiveComponent }) {
                                     setActiveComponent("MyAppointment")
                                 }
                             >
-                                <Link href="#!" className="profile-menu__link">
+                                <NavLink
+                                    href="#!"
+                                    className="profile-menu__link"
+                                >
                                     <span className="profile-menu__icon">
                                         <img
                                             src={myOrder}
@@ -75,13 +78,13 @@ function Sidebar({ setActiveComponent }) {
                                         />
                                     </span>
                                     My Appointment
-                                </Link>
+                                </NavLink>
                             </li>
                         )}
 
                         {userRole === "MENTOR" && (
                             <li onClick={() => setActiveComponent("MyBooking")}>
-                                <Link to="#!" className="profile-menu__link">
+                                <NavLink to="#!" className="profile-menu__link">
                                     <span className="profile-menu__icon">
                                         <img
                                             src={myOrder}
@@ -90,7 +93,7 @@ function Sidebar({ setActiveComponent }) {
                                         />
                                     </span>
                                     My Booking
-                                </Link>
+                                </NavLink>
                             </li>
                         )}
 
@@ -98,7 +101,7 @@ function Sidebar({ setActiveComponent }) {
                             <li
                                 onClick={() => setActiveComponent("MySchedule")}
                             >
-                                <Link to="#!" className="profile-menu__link">
+                                <NavLink to="#!" className="profile-menu__link">
                                     <span className="profile-menu__icon">
                                         <img
                                             src={feedBack}
@@ -107,16 +110,16 @@ function Sidebar({ setActiveComponent }) {
                                         />
                                     </span>
                                     My Schedule
-                                </Link>
+                                </NavLink>
                             </li>
                         )}
                         <li onClick={() => setActiveComponent("MyFavourite")}>
-                            <Link className="profile-menu__link">
+                            <NavLink className="profile-menu__link">
                                 <span className="profile-menu__icon">
                                     <img src={heart} alt className="icon" />
                                 </span>
                                 My Favourite
-                            </Link>
+                            </NavLink>
                         </li>
                     </ul>
                 </div>
@@ -131,12 +134,12 @@ function Sidebar({ setActiveComponent }) {
                                 setActiveComponent("Password&Security")
                             }
                         >
-                            <Link className="profile-menu__link">
+                            <NavLink className="profile-menu__link">
                                 <span className="profile-menu__icon">
                                     <img src={shield} alt className="icon" />
                                 </span>
                                 Password and Security
-                            </Link>
+                            </NavLink>
                         </li>
                     </ul>
                 </div>

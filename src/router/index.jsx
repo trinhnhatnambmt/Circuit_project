@@ -28,6 +28,7 @@ import MyBlog from "~/pages/myBlogPage/MyBlog";
 import EditBlogPage from "~/pages/editBlogPage/EditBlogPage";
 import Project from "~/pages/Project/Project";
 import ProjectManagement from "~/pages/ProjectManagement/ProjectManagement";
+import ManageBooking from "~/pages/admin/ManageBooking/ManageBooking";
 
 function Routers() {
     const router = createBrowserRouter([
@@ -153,6 +154,10 @@ function Routers() {
                 {
                     path: "manageBlogs",
                     element: <ManageBlog />,
+                },
+                {
+                    path: "manageBookings",
+                    element: <ManageBooking />,
                 },
             ],
         },

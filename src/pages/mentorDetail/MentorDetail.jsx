@@ -81,7 +81,7 @@ function MentorDetail() {
                                 </div>
                             </div>
 
-                            <BookAppointment />
+                            <BookAppointment mentorId={mentorId} />
                         </div>
                     </div>
 
