@@ -15,11 +15,16 @@ import "./index.scss";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { toast } from "react-toastify";
+
 function BookAppointment({ mentorId }) {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [dataSource, setDataSource] = useState([]);
+    const [locations, setLocations] = useState({});
+    const [locationNotes, setLocationNotes] = useState({});
     const navigate = useNavigate();
     const isAuthenticated = useSelector((state) => state.user.isAuthenticated);
+    const accessToken = useSelector((state) => state.user.account.access_token);
 
     const showModal = () => {
         if (!isAuthenticated) {
@@ -41,11 +46,42 @@ function BookAppointment({ mentorId }) {
         );
 
         setDataSource(res.data.data);
+        console.log("res", res.data.data);
     };
 
     useEffect(() => {
         fetchDataSchedule();
     }, []);
+
+    const handleBookNow = async (scheduleId) => {
+        try {
+            const res = await axios.post(
+                "http://167.71.220.5:8080/booking/student/create",
+                {
+                    location: locations[scheduleId] || "",
+                    locationNote: locationNotes[scheduleId] || "",
+                    scheduleId,
+                },
+                {
+                    headers: {
+                        Authorization: `Bearer ${accessToken}`,
+                    },
+                }
+            );
+            toast.success(res.data.message);
+            fetchDataSchedule();
+        } catch (error) {
+            toast.error(error.message);
+        }
+    };
+
+    const handleLocationChange = (scheduleId, value) => {
+        setLocations((prev) => ({ ...prev, [scheduleId]: value }));
+    };
+
+    const handleLocationNoteChange = (scheduleId, value) => {
+        setLocationNotes((prev) => ({ ...prev, [scheduleId]: value }));
+    };
 
     return (
         <div>
@@ -78,7 +114,9 @@ function BookAppointment({ mentorId }) {
                                 extra={
                                     <Button
                                         type="primary"
-                                        // onClick={() => handleDeleteSchedule(scheduleId)}
+                                        onClick={() =>
+                                            handleBookNow(item.scheduleId)
+                                        }
                                     >
                                         Book now
                                     </Button>
@@ -106,6 +144,13 @@ function BookAppointment({ mentorId }) {
                                         marginTop: "10px",
                                         marginBottom: "10px",
                                     }}
+                                    value={locations[item.scheduleId] || ""}
+                                    onChange={(e) =>
+                                        handleLocationChange(
+                                            item.scheduleId,
+                                            e.target.value
+                                        )
+                                    }
                                 />
                                 <Input
                                     placeholder="Enter location note"
@@ -113,6 +158,13 @@ function BookAppointment({ mentorId }) {
                                         marginTop: "10px",
                                         marginBottom: "10px",
                                     }}
+                                    value={locationNotes[item.scheduleId] || ""}
+                                    onChange={(e) =>
+                                        handleLocationNoteChange(
+                                            item.scheduleId,
+                                            e.target.value
+                                        )
+                                    }
                                 />
                             </Card>
                         ))}

@@ -77,7 +77,7 @@ function MentorDetail() {
                                         alt=""
                                         className="fee__img"
                                     />
-                                    <p>{mentorDetail.walletPoint}</p>
+                                    <p>{mentorDetail.servicePrice}</p>
                                 </div>
                             </div>
 

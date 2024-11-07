@@ -1,13 +1,40 @@
 import { Link } from "react-router-dom";
 import "./index.scss";
-import { major, mentor } from "../../assets/image";
 import { Tabs } from "antd";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import AppointmentItem from "./AppointmentItem";
-import { expiredAppointments, upcomingAppointments } from "./AppointmentData";
+import axios from "axios";
+import { useSelector } from "react-redux";
 
 function MyAppointment() {
     const [activeTab, setActiveTab] = useState("1");
+    const [appointments, setAppointments] = useState([]);
+    const accessToken = useSelector((state) => state.user.account.access_token);
+
+    const fetchDataAppointment = async () => {
+        const res = await axios.get(
+            "http://167.71.220.5:8080/booking/student/view-upcoming",
+            {
+                headers: {
+                    Authorization: `Bearer ${accessToken}`,
+                },
+            }
+        );
+        console.log("res", res.data.data);
+        setAppointments(res.data.data);
+    };
+
+    useEffect(() => {
+        fetchDataAppointment();
+    }, []);
+
+    const upcomingAppointments = appointments.filter(
+        (appointment) => appointment.bookingStatus === "PROCESSING"
+    );
+
+    const finishedAppointments = appointments.filter(
+        (appointment) => appointment.bookingStatus !== "PROCESSING"
+    );
 
     return (
         <div className="cart-info">
@@ -41,7 +68,7 @@ function MyAppointment() {
                     {
                         label: "Finished",
                         key: "2",
-                        children: expiredAppointments.map((appointment) => (
+                        children: finishedAppointments.map((appointment) => (
                             <AppointmentItem
                                 key={appointment.id}
                                 appointment={appointment}

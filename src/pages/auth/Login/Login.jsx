@@ -12,6 +12,8 @@ import { postLogin } from "../../../services/apiServices";
 import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
 import { FETCH_USER_LOGIN_SUCCESS } from "../../../redux/features/user/userSlice";
+import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+import { auth, googleProvider } from "../../../../config/firebase";
 
 function Login() {
     const [email, setEmail] = useState("");
@@ -32,6 +34,19 @@ function Login() {
             toast.error(res.message);
             toast.error(res.error);
         }
+    };
+
+    const handleLoginGoogle = async () => {
+        signInWithPopup(auth, googleProvider)
+            .then((result) => {
+                // This gives you a Google Access Token. You can use it to access the Google API.
+                const credential =
+                    GoogleAuthProvider.credentialFromResult(result);
+                console.log(credential);
+            })
+            .catch((error) => {
+                console.log(error);
+            });
     };
     return (
         <div className="auth">
@@ -123,7 +138,10 @@ function Login() {
                             >
                                 Login
                             </button>
-                            <button className="btn auth__btn auth__btn-outline">
+                            <button
+                                className="btn auth__btn auth__btn-outline"
+                                onClick={handleLoginGoogle}
+                            >
                                 <img
                                     src={google}
                                     alt=""
