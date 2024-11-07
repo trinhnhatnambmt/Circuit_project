@@ -1,4 +1,3 @@
-import { Link } from "react-router-dom";
 import "./index.scss";
 import { Tabs } from "antd";
 import { useEffect, useState } from "react";
@@ -26,6 +25,14 @@ function MyAppointment() {
 
     useEffect(() => {
         fetchDataAppointment();
+
+        // Thiết lập Polling mỗi 10 giây
+        const intervalId = setInterval(() => {
+            fetchDataAppointment();
+        }, 10000);
+
+        // Xóa interval khi component bị unmount
+        return () => clearInterval(intervalId);
     }, []);
 
     const upcomingAppointments = appointments.filter(
@@ -33,7 +40,10 @@ function MyAppointment() {
     );
 
     const finishedAppointments = appointments.filter(
-        (appointment) => appointment.bookingStatus !== "PROCESSING"
+        (appointment) => appointment.bookingStatus === "SUCCESSFUL"
+    );
+    const rejectAppointments = appointments.filter(
+        (appointment) => appointment.bookingStatus === "DECLINED"
     );
 
     return (
@@ -55,7 +65,15 @@ function MyAppointment() {
                 onChange={(key) => setActiveTab(key)}
                 items={[
                     {
-                        label: "Upcoming",
+                        label: (
+                            <span
+                                style={{
+                                    color: "", // Màu sắc cho tab "Upcoming"
+                                }}
+                            >
+                                Upcoming
+                            </span>
+                        ),
                         key: "1",
                         children: upcomingAppointments.map((appointment) => (
                             <AppointmentItem
@@ -66,9 +84,36 @@ function MyAppointment() {
                         )),
                     },
                     {
-                        label: "Finished",
+                        label: (
+                            <span
+                                style={{
+                                    color: "green", // Màu sắc cho tab "Upcoming"
+                                }}
+                            >
+                                Finished
+                            </span>
+                        ),
                         key: "2",
                         children: finishedAppointments.map((appointment) => (
+                            <AppointmentItem
+                                key={appointment.id}
+                                appointment={appointment}
+                                showCancel={false} // Không hiển thị nút Cancel trong tab Expired
+                            />
+                        )),
+                    },
+                    {
+                        label: (
+                            <span
+                                style={{
+                                    color: "red", // Màu sắc cho tab "Upcoming"
+                                }}
+                            >
+                                Declined
+                            </span>
+                        ),
+                        key: "3",
+                        children: rejectAppointments.map((appointment) => (
                             <AppointmentItem
                                 key={appointment.id}
                                 appointment={appointment}

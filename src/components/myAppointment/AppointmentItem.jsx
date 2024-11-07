@@ -1,8 +1,19 @@
 // AppointmentItem.js
 import { Link } from "react-router-dom";
 import { major, mentor } from "../../assets/image";
+import { Tag } from "antd";
 
 function AppointmentItem({ appointment, showCancel }) {
+    const getStatusTagColor = (status) => {
+        switch (status) {
+            case "DECLINED":
+                return "red";
+            case "SUCCESSFUL":
+                return "green";
+            default:
+                return "blue";
+        }
+    };
     return (
         <article className="cart-item">
             <Link to="">
@@ -21,12 +32,12 @@ function AppointmentItem({ appointment, showCancel }) {
                     </h3>
                     <p className="cart-item__price-wrap">
                         {appointment.price} |
-                        <span
-                            className="cart-item__status"
+                        <Tag
+                            color={getStatusTagColor(appointment.bookingStatus)} // Sử dụng màu theo trạng thái
                             style={{ marginLeft: "6px" }}
                         >
                             {appointment.bookingStatus}
-                        </span>
+                        </Tag>
                     </p>
                     <div className="cart-item__ctrl-wrap">
                         <div className="cart-item__ctrl cart-item__ctrl--md-block">
