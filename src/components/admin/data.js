@@ -45,7 +45,7 @@ export const menu = [
             },
             {
                 id: 4,
-                title: "Appointment",
+                title: "Booking",
                 url: "/admin/manageBookings",
                 icon: myOrder,
             },
