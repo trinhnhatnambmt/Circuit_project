@@ -189,7 +189,7 @@ function Home() {
                         <div className="home__mentor-title">Our mentor</div>
 
                         <div className="mentor__group">
-                            <Carousel numberOfSlides={4} autoplay />
+                            <Carousel numberOfSlides={1} autoplay />
                         </div>
                         <div className="home__mentor-desc">
                             <Link

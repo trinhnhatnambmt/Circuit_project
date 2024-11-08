@@ -24,7 +24,6 @@ export default function Carousel({ numberOfSlides = 4, autoplay = false }) {
         dispatch(fetchMentorData({}));
     }, [dispatch]);
 
-    console.log("mentor:", mentors);
     return (
         <Swiper
             slidesPerView={numberOfSlides} // Hiển thị nhiều item trên một hàng

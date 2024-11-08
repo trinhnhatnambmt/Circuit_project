@@ -1,6 +1,7 @@
-import { Button, Dropdown, Menu, Space, Tooltip } from "antd";
+import { Button, Dropdown, Input, Menu, Space, Tooltip } from "antd";
 import {
     AntCloudOutlined,
+    CloseOutlined,
     CopyOutlined,
     CreditCardOutlined,
     DeleteOutlined,
@@ -15,6 +16,8 @@ import ListCards from "./ListCards/ListCards";
 import { mapOrder } from "~/utils/sort";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
+import { useState } from "react";
+import { toast } from "react-toastify";
 
 function Column({ column }) {
     const {
@@ -34,6 +37,20 @@ function Column({ column }) {
     };
 
     const orderedCards = mapOrder(column?.cards, column?.cardOrderIds, "_id");
+
+    const [openNewCardForm, setOpenNewCardForm] = useState(false);
+    const toggleOpenNewCardForm = () => setOpenNewCardForm(!openNewCardForm);
+
+    const [newCardTitle, setNewCardTitle] = useState("");
+    const addNewCardTitle = () => {
+        if (!newCardTitle) {
+            toast.error("Please input your Card title!!!");
+        }
+        console.log(newCardTitle);
+        //goi api...
+        setNewCardTitle("");
+    };
+
     const menu = (
         <Menu style={{ width: "250px" }}>
             <Menu.Item key="1" icon={<CreditCardOutlined />}>
@@ -87,29 +104,79 @@ function Column({ column }) {
                 <ListCards cards={orderedCards} />
 
                 <div className="boardContent__column-footer">
-                    <Button
-                        type="text"
-                        style={{
-                            width: "100%",
-                            display: "flex",
-                            justifyContent: "space-between",
-                        }}
-                    >
-                        <div style={{ display: "flex", gap: "10px" }}>
-                            <PlusOutlined style={{ color: "#399151" }} />
-                            <p
+                    {!openNewCardForm ? (
+                        <Button
+                            type="text"
+                            style={{
+                                width: "100%",
+                                display: "flex",
+                                justifyContent: "space-between",
+                            }}
+                            onClick={toggleOpenNewCardForm}
+                        >
+                            <div style={{ display: "flex", gap: "10px" }}>
+                                <PlusOutlined style={{ color: "#399151" }} />
+                                <p
+                                    style={{
+                                        fontWeight: 600,
+                                        color: "#399151",
+                                    }}
+                                >
+                                    Add new card
+                                </p>
+                            </div>
+                            <Tooltip title="Drag to move">
+                                <DragOutlined />
+                            </Tooltip>
+                        </Button>
+                    ) : (
+                        <div style={{ display: "flex" }}>
+                            <Input
+                                autoFocus
+                                placeholder="Enter card title..."
+                                value={newCardTitle}
+                                onChange={(e) =>
+                                    setNewCardTitle(e.target.value)
+                                }
+                            />
+                            <div
                                 style={{
-                                    fontWeight: 600,
-                                    color: "#399151",
+                                    padding: "10px",
+                                    display: "flex",
+                                    gap: "10px",
                                 }}
                             >
-                                Add new card
-                            </p>
+                                <Button
+                                    type="primary"
+                                    style={{
+                                        // width: "100%",
+                                        display: "flex",
+                                        justifyContent: "space-between",
+                                    }}
+                                    onClick={addNewCardTitle}
+                                >
+                                    <div
+                                        style={{ display: "flex", gap: "10px" }}
+                                    >
+                                        <p
+                                            style={{
+                                                fontWeight: 600,
+                                                // color: "#399151",
+                                            }}
+                                        >
+                                            Add
+                                        </p>
+                                    </div>
+                                </Button>
+                                <Button
+                                    type="text"
+                                    onClick={toggleOpenNewCardForm}
+                                >
+                                    <CloseOutlined />
+                                </Button>
+                            </div>
                         </div>
-                        <Tooltip title="Drag to move">
-                            <DragOutlined />
-                        </Tooltip>
-                    </Button>
+                    )}
                 </div>
             </div>
         </div>

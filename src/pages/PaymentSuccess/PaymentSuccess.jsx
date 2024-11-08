@@ -1,4 +1,5 @@
 import { Button, Result } from "antd";
+import { Link } from "react-router-dom";
 
 function PaymentSuccess() {
     return (
@@ -14,7 +15,7 @@ function PaymentSuccess() {
                         color: "#fff ",
                     }}
                 >
-                    Back to homepage
+                    <Link to="/">Back to homepage</Link>
                 </Button>,
             ]}
         />
