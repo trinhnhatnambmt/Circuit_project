@@ -9,10 +9,13 @@ import {
 } from "~/redux/features/user/userSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
+import Wallet from "./Wallet";
 function AdminNavbar() {
     const dispatch = useDispatch();
     const accessToken = useSelector((state) => state.user.account.access_token);
     const userInfo = useSelector((state) => state.user.account.userInfo);
+    const walletPoint = userInfo.data.walletPoint;
+
     const navigate = useNavigate();
     useEffect(() => {
         if (accessToken) {
@@ -66,6 +69,7 @@ function AdminNavbar() {
     return (
         <div className="adminNavbar">
             <Logo />
+            <Wallet walletPoint={walletPoint} />
             <Dropdown overlay={menu} trigger={["click"]}>
                 <div className="icons">
                     <div className="user" style={{ cursor: "pointer" }}>

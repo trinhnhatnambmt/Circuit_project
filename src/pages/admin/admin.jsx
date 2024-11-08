@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import {
     barChartBoxRevenue,
     barChartBoxVisit,
@@ -12,7 +13,20 @@ import CharBox from "../../components/chartBox/CharBox";
 import PieChartBox from "../../components/PieCharBox/PieCharBox";
 import Topbox from "../../components/topBox/Topbox";
 import "./index.scss";
+import axios from "axios";
 function Admin() {
+    const [userChartData, setUserChartData] = useState(null);
+    const getDataUser = async () => {
+        const res = await axios.get(
+            "http://167.71.220.5:8080/dashboard/chart-box-user"
+        );
+        console.log("res", res);
+        setUserChartData(res.data);
+    };
+
+    useEffect(() => {
+        getDataUser();
+    }, []);
     return (
         <div className="admin">
             <div className="box box1">

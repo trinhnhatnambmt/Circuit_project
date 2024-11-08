@@ -12,7 +12,7 @@ import {
 import { useEffect, useState } from "react";
 import "./index.scss";
 import { useForm } from "antd/es/form/Form";
-import {  PlusSquareOutlined } from "@ant-design/icons";
+import { PlusSquareOutlined } from "@ant-design/icons";
 import {
     deleteUser,
     getAllUser,
@@ -77,7 +77,7 @@ function ManageUsers({ roleFilter, showAddButton = true }) {
             render: (id, user) => (
                 <div>
                     {/* Nút Update */}
-                    <Button
+                    {/* <Button
                         style={{
                             marginRight: "10px",
                             backgroundColor: "#b5ed3d",
@@ -90,7 +90,7 @@ function ManageUsers({ roleFilter, showAddButton = true }) {
                         }}
                     >
                         Update
-                    </Button>
+                    </Button> */}
 
                     {/* Nút Delete */}
                     <Popconfirm
