@@ -15,6 +15,7 @@ import { FETCH_USER_LOGIN_SUCCESS } from "../../../redux/features/user/userSlice
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { auth, googleProvider } from "../../../../config/firebase";
 import { jwtDecode } from "jwt-decode";
+import axios from "axios";
 
 function Login() {
     const [email, setEmail] = useState("");
@@ -39,7 +40,7 @@ function Login() {
 
     const handleLoginGoogle = async () => {
         signInWithPopup(auth, googleProvider)
-            .then((result) => {
+            .then(async (result) => {
                 // This gives you a Google Access Token. You can use it to access the Google API.
                 const credential =
                     GoogleAuthProvider.credentialFromResult(result);
@@ -52,6 +53,16 @@ function Login() {
                 // Access specific fields in the decoded token
                 const email = decodedToken.email;
                 console.log("Email:", email);
+                const res = await axios.post(
+                    "http://167.71.220.5:8080/auth/login/google",
+                    { email: email }
+                );
+                console.log("res", res);
+                if (res && res.data.code === 200) {
+                    dispatch(FETCH_USER_LOGIN_SUCCESS(res.data));
+                    toast.success(res.data.message);
+                    navigate("/");
+                }
             })
             .catch((error) => {
                 console.log(error);

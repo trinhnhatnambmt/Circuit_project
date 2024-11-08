@@ -22,6 +22,7 @@ function BookAppointment({ mentorId }) {
     const [dataSource, setDataSource] = useState([]);
     const [locations, setLocations] = useState({});
     const [locationNotes, setLocationNotes] = useState({});
+    const [loadingState, setLoadingState] = useState({}); // Track loading state for each button
     const navigate = useNavigate();
     const isAuthenticated = useSelector((state) => state.user.isAuthenticated);
     const accessToken = useSelector((state) => state.user.account.access_token);
@@ -46,7 +47,6 @@ function BookAppointment({ mentorId }) {
         );
 
         setDataSource(res.data.data);
-        console.log("res", res.data.data);
     };
 
     useEffect(() => {
@@ -54,6 +54,8 @@ function BookAppointment({ mentorId }) {
     }, []);
 
     const handleBookNow = async (scheduleId) => {
+        setLoadingState((prev) => ({ ...prev, [scheduleId]: true })); // Set loading for specific scheduleId
+
         try {
             const res = await axios.post(
                 "http://167.71.220.5:8080/booking/student/create",
@@ -72,6 +74,8 @@ function BookAppointment({ mentorId }) {
             fetchDataSchedule();
         } catch (error) {
             toast.error(error.message);
+        } finally {
+            setLoadingState((prev) => ({ ...prev, [scheduleId]: false })); // Reset loading after request
         }
     };
 
@@ -114,6 +118,7 @@ function BookAppointment({ mentorId }) {
                                 extra={
                                     <Button
                                         type="primary"
+                                        loading={loadingState[item.scheduleId]} // Show loading for specific button
                                         onClick={() =>
                                             handleBookNow(item.scheduleId)
                                         }
