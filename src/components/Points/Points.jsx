@@ -1,14 +1,13 @@
 import { money } from "../../assets/image";
 import "./index.scss";
 
-function Points({ points = 460, amount = "50.000", bonus = "0" }) {
+function Points({ points = 50000, amount = "50.000" }) {
     return (
         <div className="points">
             <div className="points__group">
                 <img src={money} alt="" className="point__img" />
                 <div className="points__item">
                     <p className="point__quantity">{points}</p>
-                    <span className="point__bonus">+{bonus} bonus</span>
                 </div>
             </div>
             <button className="btn points__btn">{amount} VND</button>

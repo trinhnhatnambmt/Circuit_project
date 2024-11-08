@@ -1,7 +1,7 @@
 import "./index.scss";
-function Transaction({ children }) {
+function Transaction({ children, onDeposit }) {
     return (
-        <div className="transaction__component">
+        <div className="transaction__component" onClick={onDeposit}>
             <div className="transaction">
                 <div className="left-side">
                     <div className="card">

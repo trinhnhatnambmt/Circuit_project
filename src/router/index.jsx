@@ -29,6 +29,7 @@ import EditBlogPage from "~/pages/editBlogPage/EditBlogPage";
 import Project from "~/pages/Project/Project";
 import ProjectManagement from "~/pages/ProjectManagement/ProjectManagement";
 import ManageBooking from "~/pages/admin/ManageBooking/ManageBooking";
+import PaymentSuccess from "~/pages/PaymentSuccess/PaymentSuccess";
 
 function Routers() {
     const router = createBrowserRouter([
@@ -121,6 +122,10 @@ function Routers() {
         {
             path: "/createNewPassword",
             element: <CreateNewPassWord />,
+        },
+        {
+            path: "/paymentSuccess",
+            element: <PaymentSuccess />,
         },
 
         {

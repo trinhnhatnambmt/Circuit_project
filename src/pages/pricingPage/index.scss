@@ -12,8 +12,9 @@
 
     .pricing__page-group {
         display: grid;
-        grid-template-columns: repeat(3, 1fr); /* 3 items trên mỗi hàng */
+        grid-template-columns: repeat(2, 1fr); /* 3 items trên mỗi hàng */
         gap: 30px; /* Khoảng cách giữa các items */
         justify-items: center; /* Căn giữa các items trong mỗi cột */
     }
 }
+

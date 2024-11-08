@@ -16,8 +16,6 @@ function Header() {
     const dispatch = useDispatch();
     const accessToken = useSelector((state) => state.user.account.access_token);
     const userInfo = useSelector((state) => state.user.account.userInfo);
-    console.log("info", userInfo);
-    
 
     useEffect(() => {
         if (accessToken) {
