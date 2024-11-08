@@ -9,6 +9,7 @@ import { mentor } from "~/assets/image";
 import { useForm } from "antd/es/form/Form";
 import axios from "axios";
 import { useSelector } from "react-redux";
+import { toast } from "react-toastify";
 function BoardBar({ board }) {
     const [openDrawer, setOpenDrawer] = useState(false);
     const [openModal, setOpenModal] = useState(false);
@@ -47,6 +48,9 @@ function BoardBar({ board }) {
             }
         );
         console.log("Check invite Email:", res);
+        toast.success(res.data.message);
+        setOpenModal(false);
+        form.resetFields();
     };
     return (
         <div className="boardBar">
