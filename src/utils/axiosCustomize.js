@@ -1,8 +1,9 @@
 import axios from "axios";
 import { store } from "../redux/store";
+export const BASE_URL = import.meta.env.VITE_REACT_APP_API_URL;
 
 const instance = axios.create({
-    baseURL: "http://167.71.220.5:8080/",
+    baseURL: BASE_URL,
 });
 
 // Add a request interceptor

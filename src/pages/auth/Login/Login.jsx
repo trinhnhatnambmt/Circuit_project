@@ -52,7 +52,6 @@ function Login() {
 
                 // Access specific fields in the decoded token
                 const email = decodedToken.email;
-                console.log("Email:", email);
                 const res = await axios.post(
                     "http://167.71.220.5:8080/auth/login/google",
                     { email: email }
