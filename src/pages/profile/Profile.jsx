@@ -7,12 +7,16 @@ import MyAppointment from "../../components/myAppointment/MyAppointment";
 import Password from "../../components/pass&Security/Password";
 import MyBooking from "~/components/myBooking/MyBooking";
 import MySchedule from "~/components/mySchedule/MySchedule";
+import ServiceAndSpecialization from "~/components/Service&Spe/Service&Spe";
 function Profile() {
     const [activeComponent, setActiveComponent] = useState("PersonalInfo");
 
     const renderComponent = () => {
         if (activeComponent === "PersonalInfo") {
             return <PersonalInfo />;
+        }
+        if (activeComponent === "Service&Spe") {
+            return <ServiceAndSpecialization />;
         }
         if (activeComponent === "MyFavourite") {
             return <MyFavourite />;

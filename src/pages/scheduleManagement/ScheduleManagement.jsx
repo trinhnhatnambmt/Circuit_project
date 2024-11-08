@@ -1,4 +1,4 @@
-import { Alert, Button, Calendar, Drawer, TimePicker } from "antd";
+import { Alert, Button, Calendar, TimePicker } from "antd";
 import "./index.scss";
 import { useState } from "react";
 import dayjs from "dayjs";
@@ -45,12 +45,6 @@ function ScheduleManagement() {
     };
 
     const handleSubmit = async () => {
-        // console.log(
-        //     `You selected date: ${selectedValue?.format("YYYY-MM-DD")}`
-        // );
-
-        // console.log("Selected Start DateTime:", formattedDateStarTime);
-        // console.log("Selected End DateTime:", formattedDateEndTime);
         const res = await axios.post(
             "http://167.71.220.5:8080/mentor/schedule/create",
             {
@@ -71,31 +65,6 @@ function ScheduleManagement() {
         setTime([dayjs(), dayjs().add(2, "hour")]);
         setFormattedDateStarTime("");
         setFormattedDateEndTime("");
-    };
-
-    // Hàm để disable các giờ và phút cho endTime, đảm bảo cách ít nhất 2 giờ
-    const disabledEndTime = (selectedStartTime) => {
-        if (!selectedStartTime) return {};
-
-        const startHour = selectedStartTime.hour();
-        const startMinute = selectedStartTime.minute();
-
-        return {
-            disabledHours: () => {
-                const hours = Array.from({ length: 24 }, (_, i) => i).filter(
-                    (hour) => hour <= startHour || hour < startHour + 2
-                );
-                return hours;
-            },
-            disabledMinutes: (selectedHour) => {
-                if (selectedHour === startHour) {
-                    return Array.from({ length: 60 }, (_, i) => i).filter(
-                        (minute) => minute <= startMinute
-                    );
-                }
-                return [];
-            },
-        };
     };
 
     return (
@@ -138,10 +107,7 @@ function ScheduleManagement() {
                             format="HH:mm"
                             value={time}
                             onChange={handleTimeChange}
-                            minuteStep={30} // Chỉ cho phép chọn phút là 00 hoặc 30
-                            disabledTime={(_, type) =>
-                                type === "end" ? disabledEndTime(time[0]) : {}
-                            } // Disable các giờ và phút cho endTime
+                            minuteStep={30}
                         />
                         <Button
                             type="primary"

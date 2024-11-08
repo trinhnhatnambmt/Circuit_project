@@ -94,13 +94,13 @@ function MyBooking() {
                             {status}
                         </Tag>
                     );
-                } else if (status === "SUCCESSFUL") {
+                } else if (status === "SUCCESSFUL" || status === "COMPLETED") {
                     return (
                         <Tag color="green" icon={<CheckCircleOutlined />}>
                             {status}
                         </Tag>
                     );
-                } else if (status === "DECLINED") {
+                } else if (status === "DECLINED" || status === "CANCELLED") {
                     return (
                         <Tag color="red" icon={<CloseCircleOutlined />}>
                             {status}
@@ -120,7 +120,10 @@ function MyBooking() {
                         type=""
                         icon={<CheckCircleOutlined />}
                         disabled={
-                            status === "SUCCESSFUL" || status === "DECLINED"
+                            status === "SUCCESSFUL" ||
+                            status === "DECLINED" ||
+                            status === "COMPLETED" ||
+                            status === "CANCELLED"
                         }
                         onClick={() => handleAcceptBooking(record.bookingId)}
                     >
@@ -131,7 +134,10 @@ function MyBooking() {
                         danger
                         icon={<CloseCircleOutlined />}
                         disabled={
-                            status === "SUCCESSFUL" || status === "DECLINED"
+                            status === "SUCCESSFUL" ||
+                            status === "DECLINED" ||
+                            status === "COMPLETED" ||
+                            status === "CANCELLED"
                         }
                         onClick={() => handleRejectBooking(record.bookingId)}
                     >

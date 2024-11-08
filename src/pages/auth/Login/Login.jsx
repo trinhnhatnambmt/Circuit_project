@@ -14,6 +14,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { FETCH_USER_LOGIN_SUCCESS } from "../../../redux/features/user/userSlice";
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { auth, googleProvider } from "../../../../config/firebase";
+import { jwtDecode } from "jwt-decode";
 
 function Login() {
     const [email, setEmail] = useState("");
@@ -43,6 +44,14 @@ function Login() {
                 const credential =
                     GoogleAuthProvider.credentialFromResult(result);
                 console.log(credential);
+                const idToken = credential.idToken;
+
+                // Decode the ID Token to access its content
+                const decodedToken = jwtDecode(idToken);
+
+                // Access specific fields in the decoded token
+                const email = decodedToken.email;
+                console.log("Email:", email);
             })
             .catch((error) => {
                 console.log(error);

@@ -54,6 +54,22 @@ function Sidebar({ setActiveComponent }) {
                                 Personal info
                             </NavLink>
                         </li>
+                        {userRole === "MENTOR" && (
+                            <li
+                                onClick={() => setActiveComponent("Service&Spe")}
+                            >
+                                <NavLink to="#!" className="profile-menu__link">
+                                    <span className="profile-menu__icon">
+                                        <img
+                                            src={feedBack}
+                                            alt
+                                            className="icon"
+                                        />
+                                    </span>
+                                    Service and Specialization
+                                </NavLink>
+                            </li>
+                        )}
                     </ul>
                 </div>
                 {/* Menu 2 */}
