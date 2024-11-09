@@ -14,7 +14,7 @@ function AdminNavbar() {
     const dispatch = useDispatch();
     const accessToken = useSelector((state) => state.user.account.access_token);
     const userInfo = useSelector((state) => state.user.account.userInfo);
-    const walletPoint = userInfo.data.walletPoint;
+    const walletPoint = userInfo?.data?.walletPoint;
 
     const navigate = useNavigate();
     useEffect(() => {

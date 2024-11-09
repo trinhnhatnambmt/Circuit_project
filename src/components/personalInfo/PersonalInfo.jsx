@@ -50,7 +50,6 @@ function PersonalInfo() {
     const handleOk = () => {
         form.submit();
     };
-    
 
     const handleOpenModal = () => {
         setIsOpen(true);
@@ -177,7 +176,7 @@ function PersonalInfo() {
                             />
                             <div className="payment-card__number">
                                 <img src={money} alt="" />
-                                {userInfo.data.walletPoint}
+                                {userInfo?.data?.walletPoint}
                             </div>
                             <div className="payment-card__bottom">
                                 <div>
