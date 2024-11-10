@@ -109,7 +109,9 @@ function ServiceAndSpecialization() {
                 },
             }
         );
+        console.log("rés", res);
         toast.success(res.data.message);
+        dispatch(fetchUserData(accessToken));
         form.resetFields();
     };
 

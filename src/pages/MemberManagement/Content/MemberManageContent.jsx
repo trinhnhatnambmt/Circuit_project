@@ -110,31 +110,36 @@ function MemberManageContent() {
         await updatePriority(item.taskId, value);
     };
 
-    const handleAssigneeChange = (key, value) => {
-        const newData = data.map((item) =>
-            item.key === key ? { ...item, assignee: value } : item
+    const handleAssigneeChange = async (key, accountId) => {
+        console.log(
+            "Changing assignee for key:",
+            key,
+            "to accountId:",
+            accountId
         );
-        setData(newData);
-    };
 
-    const assignees = [
-        {
-            name: "John Doe",
-            avatar: "https://randomuser.me/api/portraits/men/1.jpg",
-        },
-        {
-            name: "Jane Smith",
-            avatar: "https://randomuser.me/api/portraits/women/1.jpg",
-        },
-        {
-            name: "Alice Johnson",
-            avatar: "https://randomuser.me/api/portraits/women/2.jpg",
-        },
-        {
-            name: "Bob Brown",
-            avatar: "https://randomuser.me/api/portraits/men/2.jpg",
-        },
-    ];
+        // Tìm thông tin người được chỉ định (assignee) từ `accountId`
+        const selectedAssignee = members.find(
+            (member) => member.accountId === accountId
+        );
+
+        // Tạo dữ liệu mới với `accountId` và `accountName`
+        const newData = data.map((item) =>
+            item.key === key
+                ? {
+                      ...item,
+                      assignee: accountId,
+                      assigneeName: selectedAssignee.accountName,
+                  }
+                : item
+        );
+
+        const index = newData.findIndex((item) => key === item.key);
+        const item = newData[index];
+
+        setData(newData);
+        await handleUpdateAssignee(item.taskId, accountId);
+    };
 
     const columns = [
         {
@@ -232,14 +237,30 @@ function MemberManageContent() {
             width: "20%",
             render: (_, record) => (
                 <Select
-                    value={record.assigneeName}
+                    value={{
+                        label: (
+                            <div
+                                style={{
+                                    display: "flex",
+                                    alignItems: "center",
+                                }}
+                            >
+                                <Avatar
+                                    src={record.assigneeAvatar}
+                                    size="small"
+                                    style={{ marginRight: 8 }}
+                                />
+                                {record.assigneeName}
+                            </div>
+                        ),
+                    }}
                     onChange={(value) =>
                         handleAssigneeChange(record.key, value)
                     }
                     style={{ width: "100%" }}
                 >
                     {members.map((assignee, index) => (
-                        <Option key={index} value={assignee.accountName}>
+                        <Option key={index} value={assignee.accountId}>
                             <div
                                 style={{
                                     display: "flex",
@@ -374,6 +395,7 @@ function MemberManageContent() {
                 },
             }
         );
+        console.log("res", res.data);
         setMembers(res.data.data.studentList);
     };
 
@@ -456,8 +478,50 @@ function MemberManageContent() {
         toast.success(res.data.message);
         fetchDataTask();
     };
+
+    const handleCreateTask = async () => {
+        const res = await axios.post(
+            "http://167.71.220.5:8080/project-progress/task/create",
+            {},
+            {
+                headers: {
+                    Authorization: `Bearer ${accessToken}`,
+                },
+            }
+        );
+        toast.success(res.data.message);
+        fetchDataTask();
+    };
+
+    const handleUpdateAssignee = async (taskId, accountId) => {
+        const res = await axios.put(
+            `http://167.71.220.5:8080/project-progress/task/update/assignee/${taskId}`,
+            {
+                assigneeId: accountId,
+            },
+            {
+                headers: {
+                    Authorization: `Bearer ${accessToken}`,
+                },
+            }
+        );
+        toast.success(res.data.message);
+        fetchDataTask();
+    };
     return (
         <div className="boardContent">
+            <Button
+                type="primary"
+                style={{
+                    marginBottom: "10px",
+                    color: "#333",
+                    backgroundColor: "#b5ed3d",
+                    fontWeight: "600",
+                }}
+                onClick={handleCreateTask}
+            >
+                Add new button
+            </Button>
             <Table
                 columns={columns}
                 dataSource={data}

@@ -23,13 +23,16 @@ function BoardBar({ board }) {
 
     const handleFetchData = async () => {
         const res = await axios.get(
-            "http://167.71.220.5:8080/group/view-my-group",
+            "http://167.71.220.5:8080/project-progress/my-group/task",
             {
                 headers: {
                     Authorization: `Bearer ${accessToken}`,
                 },
             }
         );
+
+        console.log("rés", res);
+
         setMembers(res.data.data.studentList);
     };
 
