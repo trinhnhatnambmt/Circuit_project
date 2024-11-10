@@ -152,7 +152,7 @@ function BoardBar({ board }) {
                         </div>
                     ))}
                 </Drawer>
-                <AvatarGroup />
+                <AvatarGroup members={members} />
             </div>
         </div>
     );

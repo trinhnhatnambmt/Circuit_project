@@ -19,7 +19,7 @@ function MyAppointment() {
                 },
             }
         );
-        console.log("res", res.data.data);
+        // console.log("res", res.data.data);
         setAppointments(res.data.data);
     };
 
@@ -80,6 +80,7 @@ function MyAppointment() {
                                 key={appointment.id}
                                 appointment={appointment}
                                 showCancel={true} // Hiển thị nút Cancel trong tab Upcoming
+                                fetchDataAppointment={fetchDataAppointment}
                             />
                         )),
                     },

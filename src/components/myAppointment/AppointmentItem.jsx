@@ -1,9 +1,15 @@
 // AppointmentItem.js
 import { Link } from "react-router-dom";
 import { major, mentor } from "../../assets/image";
-import { Tag } from "antd";
+import { Button, Tag } from "antd";
+import { useSelector } from "react-redux";
+import { toast } from "react-toastify";
+import axios from "axios";
+import { useState } from "react";
 
-function AppointmentItem({ appointment, showCancel }) {
+function AppointmentItem({ appointment, showCancel, fetchDataAppointment }) {
+    const [loading, setLoading] = useState(false);
+    const accessToken = useSelector((state) => state.user.account.access_token);
     const getStatusTagColor = (status) => {
         switch (status) {
             case "DECLINED":
@@ -14,6 +20,30 @@ function AppointmentItem({ appointment, showCancel }) {
                 return "blue";
         }
     };
+
+    const cancelAppointment = async (bookingId) => {
+        setLoading(true);
+        try {
+            const response = await axios.post(
+                `http://167.71.220.5:8080/account/booking/cancel/${bookingId}`,
+                {},
+                {
+                    headers: {
+                        Authorization: `Bearer ${accessToken}`,
+                    },
+                }
+            );
+            console.log("Check cancel:", response);
+            // Xử lý phản hồi từ API nếu cần
+            toast.success(response.data.message);
+            fetchDataAppointment();
+        } catch (error) {
+            toast.error(error);
+        } finally {
+            setLoading(false);
+        }
+    };
+
     return (
         <article className="cart-item">
             <Link to="">
@@ -77,9 +107,16 @@ function AppointmentItem({ appointment, showCancel }) {
                         {appointment.mentorPrice} VND
                     </p>
                     {showCancel && (
-                        <button className="btn myAppointment__btn">
+                        <Button
+                            danger
+                            type="primary"
+                            loading={loading}
+                            onClick={() =>
+                                cancelAppointment(appointment.bookingId)
+                            }
+                        >
                             Cancel appointment
-                        </button>
+                        </Button>
                     )}
                 </div>
             </div>

@@ -7,12 +7,13 @@ import {
     DatePicker,
     Button,
 } from "antd";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Icon, {
     UserOutlined,
     CalendarOutlined,
     RightOutlined,
     DeleteOutlined,
+    CloseOutlined,
 } from "@ant-design/icons";
 import { format } from "date-fns";
 import dayjs from "dayjs"; // Ensure you are using dayjs for date handling
@@ -24,85 +25,52 @@ import {
     PlayCircleOutlined,
     UpCircleOutlined,
 } from "@ant-design/icons";
+import axios from "axios";
+import { useSelector } from "react-redux";
+import { toast } from "react-toastify";
 
 const { Option } = Select;
 
 function MemberManageContent() {
-    const [data, setData] = useState([
-        {
-            key: "1",
-            taskKey: "T001",
-            taskSummary: "Complete the project documentation",
-            status: "IN_PROGRESS",
-            assignee: "John Doe",
-            dueDate: "2024-12-01",
-            priority: "High",
-        },
-        {
-            key: "2",
-            taskKey: "T002",
-            taskSummary: "Design the landing page",
-            status: "TO_DO",
-            assignee: "Jane Smith",
-            dueDate: "2024-12-10",
-            priority: "Medium",
-        },
-        {
-            key: "3",
-            taskKey: "T003",
-            taskSummary: "Implement user authentication",
-            status: "DONE",
-            assignee: "Alice Johnson",
-            dueDate: "2024-11-20",
-            priority: "Low",
-        },
-    ]);
+    const [data, setData] = useState([]);
 
     const [editingSummaryKey, setEditingSummaryKey] = useState("");
     const [editingSummary, setEditingSummary] = useState("");
 
     const [editingDueDateKey, setEditingDueDateKey] = useState("");
     const [editingDueDate, setEditingDueDate] = useState(dayjs("2024-12-01"));
+    const [members, setMembers] = useState([]);
 
     const isEditingSummary = (record) => record.key === editingSummaryKey;
     const isEditingDueDate = (record) => record.key === editingDueDateKey;
+
+    //Edit summary
 
     const editSummary = (record) => {
         setEditingSummaryKey(record.key);
         setEditingSummary(record.taskSummary);
     };
 
-    const saveSummary = (key) => {
+    const saveSummary = async (key) => {
         const newData = [...data];
         const index = newData.findIndex((item) => key === item.key);
         if (index > -1) {
             const item = newData[index];
             newData.splice(index, 1, { ...item, taskSummary: editingSummary });
             setData(newData);
+            await updateSummary(item.taskId);
             setEditingSummaryKey("");
         }
     };
 
-    const handleStatusChange = (key, value) => {
-        const newData = data.map((item) =>
-            item.key === key ? { ...item, status: value } : item
-        );
-        setData(newData);
-    };
-
-    const handleAssigneeChange = (key, value) => {
-        const newData = data.map((item) =>
-            item.key === key ? { ...item, assignee: value } : item
-        );
-        setData(newData);
-    };
+    //Edit date
 
     const editDate = (record) => {
         setEditingDueDateKey(record.key);
         setEditingDueDate(dayjs(record.dueDate)); // Ensure using dayjs here
     };
 
-    const saveDate = (key) => {
+    const saveDate = async (key) => {
         const newData = [...data];
         const index = newData.findIndex((item) => key === item.key);
         if (index > -1 && editingDueDate.isValid()) {
@@ -113,8 +81,40 @@ function MemberManageContent() {
                 dueDate: editingDueDate.format("YYYY-MM-DD"), // Use dayjs.format() instead of date-fns
             });
             setData(newData);
+            await updateDueDateTask(item.taskId);
             setEditingDueDateKey("");
         }
+    };
+
+    const handleStatusChange = async (key, value) => {
+        console.log("Changing status for key:", key, "to", value);
+        const newData = data.map((item) =>
+            item.key === key ? { ...item, status: value } : item
+        );
+        const index = newData.findIndex((item) => key === item.key);
+        const item = newData[index];
+
+        setData(newData);
+        await updateStatus(item.taskId, value);
+    };
+
+    const handlePriorityChange = async (key, value) => {
+        const newData = data.map((item) =>
+            item.key === key ? { ...item, status: value } : item
+        );
+        const index = newData.findIndex((item) => key === item.key);
+        const item = newData[index];
+
+        setData(newData);
+
+        await updatePriority(item.taskId, value);
+    };
+
+    const handleAssigneeChange = (key, value) => {
+        const newData = data.map((item) =>
+            item.key === key ? { ...item, assignee: value } : item
+        );
+        setData(newData);
     };
 
     const assignees = [
@@ -153,6 +153,7 @@ function MemberManageContent() {
                 </>
             ),
             dataIndex: "taskSummary",
+            key: "taskSummary",
             width: "25%",
             render: (_, record) => {
                 const editable = isEditingSummary(record);
@@ -196,11 +197,11 @@ function MemberManageContent() {
                     <PlayCircleOutlined /> Status
                 </>
             ),
-            dataIndex: "status",
+            dataIndex: "taskStatus",
             width: "10%",
             render: (_, record) => (
                 <Select
-                    value={record.status}
+                    value={record.taskStatus}
                     onChange={(value) => handleStatusChange(record.key, value)}
                 >
                     <Option value="TO_DO">
@@ -227,18 +228,18 @@ function MemberManageContent() {
                     <UserOutlined /> Assignee
                 </>
             ),
-            dataIndex: "assignee",
+            dataIndex: "assigneeName",
             width: "20%",
             render: (_, record) => (
                 <Select
-                    value={record.assignee}
+                    value={record.assigneeName}
                     onChange={(value) =>
                         handleAssigneeChange(record.key, value)
                     }
                     style={{ width: "100%" }}
                 >
-                    {assignees.map((assignee) => (
-                        <Option key={assignee.name} value={assignee.name}>
+                    {members.map((assignee, index) => (
+                        <Option key={index} value={assignee.accountName}>
                             <div
                                 style={{
                                     display: "flex",
@@ -246,11 +247,11 @@ function MemberManageContent() {
                                 }}
                             >
                                 <Avatar
-                                    src={assignee.avatar}
+                                    src={assignee.accountAvatar}
                                     size="small"
                                     style={{ marginRight: 8 }}
                                 />
-                                {assignee.name}
+                                {assignee.accountName}
                             </div>
                         </Option>
                     ))}
@@ -272,13 +273,23 @@ function MemberManageContent() {
                         <DatePicker
                             value={editingDueDate}
                             onChange={(date) => setEditingDueDate(date)}
-                            format="DD-MM-YYYY"
+                            format="YYYY-MM-DD"
                             style={{ marginRight: 8 }}
                         />
                         <Tooltip title="Confirm">
                             <CheckOutlined
                                 onClick={() => saveDate(record.key)}
                                 style={{ color: "green", cursor: "pointer" }}
+                            />
+                        </Tooltip>
+                        <Tooltip title="Cancel">
+                            <CloseOutlined
+                                style={{
+                                    color: "red",
+                                    cursor: "pointer",
+                                    marginLeft: "5px",
+                                }}
+                                onClick={() => setEditingDueDateKey("")}
                             />
                         </Tooltip>
                     </div>
@@ -290,7 +301,7 @@ function MemberManageContent() {
                             justifyContent: "space-between",
                         }}
                     >
-                        {dayjs(record.dueDate).format("DD-MM-YYYY")}
+                        {dayjs(record.dueDate).format("YYYY-MM-DD")}
                         <EditOutlined
                             onClick={() => editDate(record)}
                             style={{ marginLeft: 8, cursor: "pointer" }}
@@ -305,14 +316,14 @@ function MemberManageContent() {
                     <Icon component={UpCircleOutlined} /> Priority
                 </>
             ),
-            dataIndex: "priority",
+            dataIndex: "taskPriority",
             width: "10%",
             render: (_, record) => (
                 <Select
-                    value={record.priority}
-                    // onChange={(value) =>
-                    //     // handlePriorityChange(record.key, value)
-                    // }
+                    value={record.taskPriority}
+                    onChange={(value) =>
+                        handlePriorityChange(record.key, value)
+                    }
                 >
                     <Option value="Low">Low</Option>
                     <Option value="Medium">Medium</Option>
@@ -328,13 +339,123 @@ function MemberManageContent() {
             ),
             dataIndex: "priority",
             render: (_, record) => (
-                <Button danger>
+                <Button danger onClick={() => handleDeleteTask(record.taskId)}>
                     <DeleteOutlined />
                 </Button>
             ),
         },
     ];
 
+    const accessToken = useSelector((state) => state.user.account.access_token);
+
+    const fetchDataTask = async () => {
+        const res = await axios.get(
+            "http://167.71.220.5:8080/project-progress/my-group/task",
+            {
+                headers: {
+                    Authorization: `Bearer ${accessToken}`,
+                },
+            }
+        );
+        setData(
+            res.data.data.taskList.map((item, index) => ({
+                ...item,
+                key: index,
+            }))
+        );
+    };
+
+    const fetchDataMember = async () => {
+        const res = await axios.get(
+            "http://167.71.220.5:8080/project-progress/my-group/task",
+            {
+                headers: {
+                    Authorization: `Bearer ${accessToken}`,
+                },
+            }
+        );
+        setMembers(res.data.data.studentList);
+    };
+
+    useEffect(() => {
+        fetchDataTask();
+        fetchDataMember();
+    }, []);
+
+    const updateDueDateTask = async (taskId) => {
+        const payload = editingDueDate.format("YYYY-MM-DD");
+        await axios.put(
+            `http://167.71.220.5:8080/project-progress/task/update/due-date/${taskId}`,
+            {
+                dueDate: payload,
+            },
+            {
+                headers: {
+                    Authorization: `Bearer ${accessToken}`,
+                },
+            }
+        );
+    };
+
+    const updateSummary = async (taskId) => {
+        await axios.put(
+            `http://167.71.220.5:8080/project-progress/task/update/summary/${taskId}`,
+            {
+                summary: editingSummary,
+            },
+            {
+                headers: {
+                    Authorization: `Bearer ${accessToken}`,
+                },
+            }
+        );
+    };
+
+    const updateStatus = async (taskId, value) => {
+        const res = await axios.put(
+            `http://167.71.220.5:8080/project-progress/task/update/status/${taskId}`,
+            {
+                taskStatus: value,
+            },
+            {
+                headers: {
+                    Authorization: `Bearer ${accessToken}`,
+                },
+            }
+        );
+        toast.success(res.data.message);
+        fetchDataTask();
+    };
+
+    const updatePriority = async (taskId, value) => {
+        const res = await axios.put(
+            `http://167.71.220.5:8080/project-progress/task/update/priority/${taskId}`,
+            value,
+            {
+                headers: {
+                    Authorization: `Bearer ${accessToken}`,
+                    "Content-Type": "application/json",
+                },
+            }
+        );
+        console.log("rés", res);
+        toast.success(res.data.message);
+        fetchDataTask();
+    };
+
+    const handleDeleteTask = async (taskId) => {
+        const res = await axios.delete(
+            `http://167.71.220.5:8080/project-progress/task/delete/${taskId}`,
+            {
+                headers: {
+                    Authorization: `Bearer ${accessToken}`,
+                },
+            }
+        );
+
+        toast.success(res.data.message);
+        fetchDataTask();
+    };
     return (
         <div className="boardContent">
             <Table

@@ -2,7 +2,7 @@ import { AntDesignOutlined, UserOutlined } from "@ant-design/icons";
 import { Avatar, Tooltip } from "antd";
 import { mentor } from "~/assets/image";
 
-function AvatarGroup() {
+function AvatarGroup({ members }) {
     return (
         <div className="avatarGroup">
             <Avatar.Group
@@ -14,28 +14,9 @@ function AvatarGroup() {
                     },
                 }}
             >
-                <Avatar src={mentor} />
-                <Avatar
-                    style={{
-                        backgroundColor: "#f56a00",
-                    }}
-                >
-                    K
-                </Avatar>
-                <Tooltip title="Ant User" placement="top">
-                    <Avatar
-                        style={{
-                            backgroundColor: "#87d068",
-                        }}
-                        icon={<UserOutlined />}
-                    />
-                </Tooltip>
-                <Avatar
-                    style={{
-                        backgroundColor: "#1677ff",
-                    }}
-                    icon={<AntDesignOutlined />}
-                />
+                {members.map((member, index) => (
+                    <Avatar src={member.accountAvatar} key={index} />
+                ))}
             </Avatar.Group>
         </div>
     );
